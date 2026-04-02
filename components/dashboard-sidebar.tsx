@@ -1,0 +1,41 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const items = [
+  { href: "/dashboard", label: "Overview" },
+  { href: "/dashboard/profile", label: "Profile" },
+  { href: "/dashboard/settings", label: "Settings" },
+] as const;
+
+export function DashboardSidebar() {
+  const pathname = usePathname();
+
+  return (
+    <aside className="flex w-56 shrink-0 flex-col border-r border-[var(--studio-border)] bg-[var(--studio-surface-muted)]">
+      <nav className="flex flex-col gap-1 p-4" aria-label="Dashboard">
+        {items.map(({ href, label }) => {
+          const active =
+            href === "/dashboard"
+              ? pathname === "/dashboard"
+              : pathname.startsWith(href);
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={
+                "rounded-xl px-3 py-2.5 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-[var(--studio-teal)] focus-visible:outline-none " +
+                (active
+                  ? "bg-[var(--studio-mauve-dim)] text-[var(--studio-ink)] dark:bg-[var(--studio-mauve-dim)]"
+                  : "text-[var(--studio-ink-muted)] hover:bg-[var(--studio-surface)] hover:text-[var(--studio-ink)]")
+              }
+            >
+              {label}
+            </Link>
+          );
+        })}
+      </nav>
+    </aside>
+  );
+}

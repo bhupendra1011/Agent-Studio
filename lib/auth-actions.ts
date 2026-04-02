@@ -13,11 +13,11 @@ export async function signInWithCredentials(formData: FormData) {
     await signIn("credentials", {
       username,
       password,
-      redirectTo: "/",
+      redirectTo: "/dashboard",
     });
   } catch (error) {
     if (error instanceof AuthError) {
-      redirect("/?error=credentials");
+      redirect("/login?error=credentials");
     }
     throw error;
   }

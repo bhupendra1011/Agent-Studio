@@ -5,6 +5,17 @@ import { getExpectedCredentials } from "@/lib/auth-credentials";
 import { credentialsSchema } from "@/lib/credentials-schema";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  pages: {
+    signIn: "/login",
+  },
+  callbacks: {
+    authorized({ auth, request }) {
+      const { pathname } = request.nextUrl;
+      if (pathname.startsWith("/api/auth")) return true;
+      if (pathname.startsWith("/dashboard")) return !!auth?.user;
+      return true;
+    },
+  },
   providers: [
     Credentials({
       credentials: {

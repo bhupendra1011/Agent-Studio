@@ -7,27 +7,31 @@ export function SignInForm() {
       action={signInWithCredentials}
       className="flex w-full max-w-sm flex-col gap-4"
     >
-      <label className="flex flex-col gap-1.5 text-sm font-medium text-zinc-900 dark:text-zinc-100">
+      <label className="flex flex-col gap-1.5 text-sm font-medium text-[var(--studio-ink)]">
         Username
         <input
           name="username"
           type="text"
           autoComplete="username"
           required
-          className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-base text-zinc-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-zinc-400 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50 dark:focus-visible:ring-zinc-600"
+          className="rounded-lg border border-[var(--studio-border)] bg-[var(--studio-surface-muted)] px-3 py-2 text-base text-[var(--studio-ink)] outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-[var(--studio-teal)]"
         />
       </label>
-      <label className="flex flex-col gap-1.5 text-sm font-medium text-zinc-900 dark:text-zinc-100">
+      <label className="flex flex-col gap-1.5 text-sm font-medium text-[var(--studio-ink)]">
         Password
         <input
           name="password"
           type="password"
           autoComplete="current-password"
           required
-          className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-base text-zinc-900 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-zinc-400 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50 dark:focus-visible:ring-zinc-600"
+          className="rounded-lg border border-[var(--studio-border)] bg-[var(--studio-surface-muted)] px-3 py-2 text-base text-[var(--studio-ink)] outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-[var(--studio-teal)]"
         />
       </label>
-      <Button type="submit" size="lg" className="mt-1 h-11 w-full rounded-lg">
+      <Button
+        type="submit"
+        size="lg"
+        className="mt-1 h-11 w-full rounded-xl bg-[var(--studio-teal)] text-[var(--studio-surface)] hover:bg-[var(--studio-teal)]/90"
+      >
         Sign in
       </Button>
     </form>
