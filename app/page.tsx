@@ -1,11 +1,58 @@
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
+import { SignInForm } from "@/components/sign-in-form";
+import { auth } from "@/auth";
+import { signOutAction } from "@/lib/auth-actions";
 
-export default function Home() {
+type Props = {
+  searchParams: Promise<{ error?: string }>;
+};
+
+export default async function Home({ searchParams }: Props) {
+  const session = await auth();
+  const { error } = await searchParams;
+
+  if (!session?.user) {
+    return (
+      <div className="flex min-h-full flex-1 flex-col items-center justify-center bg-zinc-50 px-4 py-16 font-sans dark:bg-black">
+        <div className="w-full max-w-sm rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
+          <h1 className="mb-1 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+            Sign in
+          </h1>
+          <p className="mb-6 text-sm text-zinc-600 dark:text-zinc-400">
+            Enter your username and password.
+          </p>
+          {error === "credentials" ? (
+            <p
+              className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-200"
+              role="alert"
+            >
+              Invalid username or password.
+            </p>
+          ) : null}
+          <SignInForm />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+        <div className="mb-8 flex w-full flex-wrap items-center justify-end gap-3 text-sm">
+          <span className="text-zinc-600 dark:text-zinc-400">
+            Signed in as{" "}
+            <strong className="text-zinc-900 dark:text-zinc-100">
+              {session.user.name}
+            </strong>
+          </span>
+          <form action={signOutAction}>
+            <Button type="submit" variant="outline" size="sm">
+              Sign out
+            </Button>
+          </form>
+        </div>
         <Image
           className="dark:invert"
           src="/next.svg"
