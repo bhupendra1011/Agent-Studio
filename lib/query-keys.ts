@@ -1,4 +1,11 @@
-import type { AgentPipelineListParams, DeployedAgentListParams } from "@/lib/types/api";
+import type {
+  AgentPipelineListParams,
+  DeployedAgentListParams,
+  KnowledgeBaseListParams,
+  McpListParams,
+  StudioResourceListParams,
+} from "@/lib/types/api";
+
 
 export type PipelineQueryKeyParams = AgentPipelineListParams & {
   disabled?: boolean;
@@ -38,3 +45,61 @@ export const agentKeys = {
   list: (params: DeployedAgentListParams) =>
     [...agentKeys.lists(), normalizeDeployedAgentKeyParams(params)] as const,
 };
+
+export function normalizeResourceKeyParams(
+  params: StudioResourceListParams
+): StudioResourceListParams {
+  const n = { ...params };
+  if (!n.keyword || n.keyword.trim() === "") delete n.keyword;
+  return n;
+}
+
+export function normalizeKbKeyParams(
+  params: KnowledgeBaseListParams
+): KnowledgeBaseListParams {
+  const n = { ...params };
+  const s = n.search ?? n.keyword;
+  if (!s || s.trim() === "") {
+    delete n.search;
+    delete n.keyword;
+  } else {
+    n.search = s.trim();
+    delete n.keyword;
+  }
+  return n;
+}
+
+export function normalizeMcpKeyParams(params: McpListParams): McpListParams {
+  const n = { ...params };
+  const s = n.search ?? n.keyword;
+  if (!s || s.trim() === "") {
+    delete n.search;
+    delete n.keyword;
+  } else {
+    n.search = s.trim();
+    delete n.keyword;
+  }
+  return n;
+}
+
+export const integrationKeys = {
+  resources: {
+    all: ["studio-resources"] as const,
+    lists: () => [...integrationKeys.resources.all, "list"] as const,
+    list: (params: StudioResourceListParams) =>
+      [...integrationKeys.resources.lists(), normalizeResourceKeyParams(params)] as const,
+  },
+  knowledgeBases: {
+    all: ["knowledge-bases"] as const,
+    lists: () => [...integrationKeys.knowledgeBases.all, "list"] as const,
+    list: (params: KnowledgeBaseListParams) =>
+      [...integrationKeys.knowledgeBases.lists(), normalizeKbKeyParams(params)] as const,
+  },
+  mcps: {
+    all: ["mcps"] as const,
+    lists: () => [...integrationKeys.mcps.all, "list"] as const,
+    list: (params: McpListParams) =>
+      [...integrationKeys.mcps.lists(), normalizeMcpKeyParams(params)] as const,
+  },
+};
+

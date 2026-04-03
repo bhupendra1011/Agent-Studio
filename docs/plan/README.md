@@ -10,3 +10,4 @@ This folder holds **design and implementation plans** for custom-studio-app so w
 | Document | Summary |
 |----------|---------|
 | [custom-studio-agents-parity.md](./custom-studio-agents-parity.md) | Agents tab: MergedAgent parity, MSW mock mode, env-driven Studio API base, Create Agent POST — standalone port from convo-ai-studio patterns |
+| [integration-tab.md](./integration-tab.md) | Integration hub + Credentials / Knowledge bases / MCP servers: Studio EN APIs, React Query, MSW, dashboard routes |

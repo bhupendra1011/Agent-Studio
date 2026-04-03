@@ -156,3 +156,139 @@ export interface CreateProjectResponse {
   key?: string;
   signkey?: string;
 }
+
+/** Studio resource (BYOK credential) — list item */
+export interface StudioResource {
+  id: number;
+  uuid: string;
+  name: string;
+  type?: string;
+  type_key?: string;
+  source?: string;
+  description?: string;
+  icon_url?: string;
+  status?: number;
+  vendor?: string;
+  resource_data?: Record<string, unknown>;
+  creator?: string;
+  create_time?: string;
+  update_time?: string;
+}
+
+export interface StudioResourceListParams extends PaginationParams {
+  source?: string;
+  type?: string;
+  vendor?: string;
+  sort?: string;
+  category?: string;
+}
+
+export interface StudioResourceListPayload {
+  total: number;
+  list: StudioResource[];
+}
+
+export interface CreateStudioResourceRequest {
+  name: string;
+  type_key: string;
+  vendor: string;
+  description?: string;
+  icon_url?: string;
+  resource_data: Record<string, unknown>;
+}
+
+export interface UpdateStudioResourceRequest {
+  name?: string;
+  description?: string;
+  icon_url?: string;
+  vendor?: string;
+  resource_data?: Record<string, unknown>;
+}
+
+export type KnowledgeBaseStatus = string;
+
+export interface KnowledgeBase {
+  id: string;
+  uuid: string;
+  name: string;
+  description?: string;
+  status?: KnowledgeBaseStatus;
+  totalDocuments?: number;
+  totalSize?: number;
+  processingDocuments?: number;
+  failedDocuments?: number;
+  createdAt?: string;
+  updatedAt?: string;
+  createdBy?: string;
+  updatedBy?: string;
+}
+
+export interface KnowledgeBaseListParams extends PaginationParams {
+  search?: string;
+}
+
+export interface KnowledgeBaseListPayload {
+  list: KnowledgeBase[];
+  total: number;
+  page?: number;
+  page_size?: number;
+}
+
+export type McpTransportApi = "sse" | "http" | "streamable_http";
+
+export interface McpServerConfig {
+  endpoint: string;
+  transport: string;
+  timeout_ms?: number;
+  headers?: Record<string, string>;
+  queries?: Record<string, string>;
+}
+
+export interface McpServer {
+  id: string;
+  uuid: string;
+  name: string;
+  description?: string;
+  status?: string;
+  icon_url?: string;
+  config: McpServerConfig;
+  creator?: string;
+  createTime?: string;
+  updateTime?: string;
+  last_detected_time?: string | null;
+}
+
+export interface McpListParams extends PaginationParams {
+  search?: string;
+  status?: string;
+  sort_field?: string;
+  sort_order?: string;
+}
+
+export interface McpListPayload {
+  list: McpServer[];
+  total: number;
+  page?: number;
+  page_size?: number;
+}
+
+export interface CreateMcpRequest {
+  name: string;
+  description?: string;
+  icon_url?: string;
+  config: {
+    endpoint: string;
+    transport: McpTransportApi;
+    timeout_ms: number;
+    headers?: Record<string, string>;
+    queries?: Record<string, string>;
+  };
+}
+
+export interface UpdateMcpRequest {
+  name?: string;
+  description?: string;
+  icon_url?: string;
+  config?: CreateMcpRequest["config"];
+}
+
