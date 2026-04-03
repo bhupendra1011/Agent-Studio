@@ -1,0 +1,43 @@
+import type { Project } from "@/lib/types/api";
+
+export const mockProjects: Project[] = [
+  {
+    id: 1001,
+    name: "Voice Agent Demo",
+    projectId: "proj_voice_001",
+    key: "abcdef1234567890abcdef1234567890",
+    signkey: "signkey_mock_001",
+    projectType: "live",
+    stage: 2,
+    status: 1,
+    allowStaticWithDynamic: 1,
+    isFavorite: true,
+    createdAt: "2025-06-15T10:00:00Z",
+  },
+  {
+    id: 1002,
+    name: "Customer Support Bot",
+    projectId: "proj_support_002",
+    key: "fedcba0987654321fedcba0987654321",
+    signkey: "signkey_mock_002",
+    projectType: "live",
+    stage: 2,
+    status: 1,
+    allowStaticWithDynamic: 1,
+    isFavorite: false,
+    createdAt: "2025-07-20T14:30:00Z",
+  },
+  {
+    id: 1003,
+    name: "Sales Assistant",
+    projectId: "proj_sales_003",
+    key: "aabbccdd11223344aabbccdd11223344",
+    signkey: "signkey_mock_003",
+    projectType: "live",
+    stage: 2,
+    status: 1,
+    allowStaticWithDynamic: 0,
+    isFavorite: false,
+    createdAt: "2025-08-10T09:15:00Z",
+  },
+];

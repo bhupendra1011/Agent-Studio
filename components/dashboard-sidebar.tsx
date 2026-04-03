@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 
 const items = [
   { href: "/dashboard", label: "Overview" },
+  { href: "/dashboard/agents", label: "Agents" },
   { href: "/dashboard/profile", label: "Profile" },
   { href: "/dashboard/settings", label: "Settings" },
 ] as const;
@@ -23,7 +24,7 @@ export function DashboardSidebar() {
             const active =
               href === "/dashboard"
                 ? pathname === "/dashboard"
-                : pathname.startsWith(href);
+                : pathname === href || pathname.startsWith(`${href}/`);
             return (
               <Link
                 key={href}

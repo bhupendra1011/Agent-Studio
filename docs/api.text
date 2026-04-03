@@ -1,0 +1,9266 @@
+Authentication
+Base URLanswered_duration_seconds
+Agora Projects
+GET /api/v2/projects?fetchAll=true - Get Agora Projects
+POST /api/v2/project - create a new project
+GET /api/v2/temp-token - Get Temp Access token(RTC and RTM)
+GET /api/v2/token - Get Temp Access token
+GET /api/v2/:project_id/rtm2/data - Get rtm2 data (check if grant rtm2)
+GET /api/v1/studio/en/restful-api/check - get whether has restful-api keys
+POST /api/v1/studio/en/restful-api/keys - create restful api key
+POST /api/v1/studio/en/rtm/:project_id/data - grant rtm2
+POST /api/v1/studio/en/uap/setting/:projectId/:cloudTypeId - Create UAP Setting (for grant convoai)
+GET /api/v1/studio/en/uap/setting/:projectId/:cloudTypeId - Get UAP Setting (for convoai)
+Agent Templates
+GET /api/v1/studio/en/agent-templates - Get Template List
+GET /api/v1/studio/en/agent-templates/{id} - Get Template Details
+Agent Pipeline
+GET /api/v1/studio/en/agent-pipeline - Get Agent Pipeline List
+GET /api/v1/studio/en/agent-pipeline/{id} - Get Agent Pipeline Details
+POST /api/v1/studio/en/agent-pipeline - Create Agent Project
+PUT /api/v1/studio/en/agent-pipeline/{pipeline_id} - Update Agent Pipeline
+DELETE /api/v1/studio/en/agent-pipeline/{pipeline_id} - Delete Agent Pipeline
+POST /api/v1/studio/en/agent-pipeline/{projectId}/start - Start Agent Preview
+DELETE /api/v1/studio/en/agent-pipeline/{projectId}/{agent_id}/stop - Stop Agent
+POST /api/v1/studio/en/agent-pipeline/{pipeline_id}/deploy - Deploy Agent Pipelinea
+GET /api/v1/studio/en/agent-pipeline/{pipeline_id}/edit-status - Get pipeline edit status
+GET /api/v1/studio/en/agent-deploy-pipeline/{deployed_id}/edit-status - Get deployment edit status
+PUT /api/v1/studio/en/agent-deploy-pipeline/{project_id}/{deploy_id}/status - Update Pipeline Status
+GET /api/v1/studio/en/agent-deploy-pipeline - Get Deployed Pipeline Management List
+GET /api/v1/studio/en/agent-pipeline/{pipeline_id}/deploy-records - Get Pipeline Deployment Records
+Resources
+GET /api/v1/studio/en/resources/1/avatar-list - Get Digital Human List
+GET /api/v1/studio/en/marketplace/products - Get Studio Marketplace Vendor List
+GET /api/v1/studio/en/marketplace/products/{product_id} - Get Marketplace Plugin Details
+GET /api/v1/studio/en/resources - Get Resource List
+POST /api/v1/studio/en/resources - Create My Resource
+PUT /api/v1/studio/en/resources/{resource_id} - Update My Resource
+GET /api/v1/studio/en/resources/{resource_id} - Get Resource Details
+GET /api/v1/studio/en/resources/{resource_id}/operation-status- check my resource operation-status
+DELETE /api/v1/studio/en/resources/{resource_id} - delete my resource
+POST /api/v1/studio/en/resources/purchase - Purchase Resource
+Get /api/v1/studio/en/resources/:resource_uuid/dependencies - Get resource related agent-deployments
+GET /api/v1/studio/en/resell-resources - get Resell Resource
+SIP
+POST /api/v1/studio/en/sip-numbers - Create SIP Number
+GET /api/v1/studio/en/sip-numbers - Get SIP Numbers
+PUT /api/v1/studio/en/sip-numbers/:uuid - Update SIP Numbers
+DELETE /api/v1/studio/en/sip-numbers/:uuid - DELETE SIP Numbers
+POST /api/v1/studio/en/sip-numbers/:id/inbound-agent/:pipeline_deploy_uuid  -  bind inbound agent
+DELETE /api/v1/studio/en/sip-numbers/:id/inbound-agent/:pipeline_deploy_uuid  -  unbind inbound agent
+GET /api/v1/studio/en/inbound-agent/sip-numbers/:phone_number_id  -  get sip inbound config
+GET /api/v1/studio/en/sip-numbers/call-history/:call_id  -  get call detail
+GET /api/v1/studio/en/sip-numbers/all/call-history - Get Call History
+GET /api/v1/studio/en/sip-numbers/all/call-history/export - Get Call History download export
+GET /api/v1/studio/en/sip-numbers/all/call-history/filter-options - Get Call History filter options
+GET /api/v1/studio/en/sip-numbers/all/call-history/overview - Get Overview
+GET /api/v1/studio/en/sip-numbers/all/call-history/analysis - Get Analysis
+GET /api/v1/studio/en/sip-numbers/all/edit-status - Check SIP Number edit status
+Campaign
+POST /api/v1/studio/en/campaigns - Create Campaign
+PUT /api/v1/studio/en/campaigns/:compaign_id - Update Campaign
+POST /api/v1/studio/en/campaigns/:campaign_id/drafts/publish - Publish campaign draft
+GET /api/v1/studio/en/campaigns - Get Campaign List
+POST /api/v1/studio/en/campaigns/:campaign_id/interrupt  - Interrupt Campaign
+DELETE /api/v1/studio/en/campaigns/:campaign_id - Delete Campaign
+GET /api/v1/studio/en/campaigns/:campaign_id - Get Campaign Details
+GET /api/v1/studio/en/campaigns/:campaign_id/summary - Get Campaign Call summary
+POST /api/v1/studio/en/campaigns/recipients/upload - Upload Recipients CSV File
+GET /api/v1/studio/en/campaigns/:campaign_id/summary/export - Download Campaign Results
+GET /api/v1/studio/en/campaigns/:campaign_id/redial/export  - Download Redial List csv
+GET /api/v1/studio/en/campaigns/:campaign_id/redial/category-distribution  - Get redial category-distribution
+GET /api/v1/studio/en/campaigns/template/export  - Download Template
+GET /api/v1/studio/en/campaigns/:campaign_id/calls/agents/:agent_id - Get Call Detail 
+GET /api/v1/studio/en/campaigns/:campaign_id/call-history  - Get Campaign Call History
+GET /api/v1/studio/en/campaigns/:campaign_id/call-history/export  - Get Campaign Call History download export
+GET /api/v1/studio/en/metadata/system-evaluations - Get system evaluation metadata
+GET /api/v1/studio/en/metadata/variable-names/:variable-name/association-counts - Get evaluation metadata
+POST /api/v1/studio/en/metadata/variable-names/association-counts - Get batch evaluation metadata
+GET /api/v1/studio/en/metadata/variable-names/:variable-name/inbound-agents - Get evaluation metadata associated inbound-agents
+GET /api/v1/studio/en/studio/allowed-entries- check if the company is allowed to visit studio （whitelist cid）
+MCP
+POST /api/v1/studio/en/mcp - create mcp
+Get /api/v1/studio/en/mcps -get mcp list
+PUT /api/v1/studio/en/mcp/:uuid -update mcp
+DELETE /api/v1/studio/en/mcp/:uuid -delete mcp
+GET /api/v1/studio/en/mcp/:uuid -get mcp details
+GET /api/v1/studio/en/mcp/:uuid/status -get mcp status
+GET /api/v1/studio/en/mcp/:uuid/tools -get mcp tools
+Knowledage Base
+POST /api/v1/studio/en/knowledge-bases - create knowledge
+GET /api/v1/studio/en/knowledge-bases - get knowledge list
+PUT /api/v1/studio/en/knowledge-bases/:id - update KB
+DELETE /api/v1/studio/en/knowledge-bases/:id - delete KB
+GET /api/v1/studio/en/knowledge-bases/:uuid - get KB detail
+DELETE /api/v1/studio/en/knowledge-bases/:kb_uuid/documents/:doc_uuid - delete document
+POST /api/v1/studio/en/knowledge-bases/:kb_uuid/documents - upload documents
+GET  /api/v1/studio/en/knowledge-bases/:kb_uuid/documents/:doc_uuid/export - get KB document
+GET /api/v1/studio/en/knowledge-bases/:kb_uuid/documents - get KB documents
+GET /api/v1/studio/en/knowledge-bases/:kb_uuid/deployments - get KB deployments
+Voice Library
+GET /api/v1/studio/en/vendors - get voice library vendors
+GET /api/v1/studio/en/vendors/:uuid/voice-library - get voice library by vendor uuid
+POST /api/v1/studio/en/vendors/:uuid/voice-library/bookmarks - create voice bookmark
+DELETE /api/v1/studio/en/vendors/:uuid/voice-library/bookmarks - delete voice bookmark
+POST /api/v1/studio/en/voice/minimax/t2a - create audio from text (cn only)
+Evaluations
+GET /api/v1/studio/en/metadata/all-evaluations - get all evaluations list
+POST /api/v1/studio/en/metadata/custom-evaluations - create custom evaluations
+PUT /api/v1/studio/en/metadata/custom-evaluations/:uuid -update custom evaluations
+DELETE /api/v1/studio/en/metadata/custom-evaluations/:uuid -delete custom evaluations
+PUT /api/v1/studio/en/metadata/system-evaluations/:template_code -update system evaluations
+Debugging Tools
+GET /api/v1/studio/en/debugging/tasks - get debugging list
+GET /api/v1/studio/en/debugging/tasks/:task_id/detail - get debugging task by ID
+GET /api/v1/studio/en/debugging/tasks/:task_id/events - get debugging task events by ID
+Error Code Page
+Server Codes
+Business Code
+Campaign Upstream Server Code
+Call-history Upstream Server Code
+Notes
+Authentication
+Studio uses the same session cookie as Console. All APIs are called under the cid context.
+
+Base URLanswered_duration_seconds
+enable_user_auto_hangupStaging: https://console-staging.agora.io/
+
+Agora Projects
+GET /api/v2/projects?fetchAll=true - Get Agora Projects
+Reminder: For Staging Environment, only specific project/account is valid. If you need to test on staging, contact sunmingda or doc creator to make sure you are using a valid login account or a valid project.
+
+Response:c
+
+{ "success": true, "code": 0, "data": { "cid": "115130", "number": "10235739", "vendor": "byo", "created_from": "studio", "source": "domestic", "type": "fixed", "area_code": null, "description": "国内号码", "config": { "max_concurrent": 30, "outbound_configs": { "address": "xxx:xxx@agora-test-sa.pstn.twilio.com:5060", "transport": "tls" }, "inbound_configs": { "allowed_addresses": [ "112.126.15.64/27", "110.126.15.64/27" ] } }, "status": 0, "is_deleted": 0, "creator": "j2k793wm@linshiyouxiang.net", "id": 10 } }
+POST /api/v2/project - create a new project
+Request
+
+{ "enableCertificate": true, // secure mode or testing mode "projectName": "project name", "useCaseId": "0" // select case or set into 0 if no case }
+Response
+
+{ "name": "tets project", "useCaseId": "0", "company": { "id": 884132 //companyId/cid }, "key": "75fab8d924be41fe9819947e745511bd", // appid "projectId": "52aIZuo5Z", "stage": 3, "signkeySignal": "376f24fa3c9e4e9e84b65226f021b28a", //cert "isDeleted": false, "projectType": "PAAS", "companyId": 884132, //companyId/cid "id": 2459547 }de
+
+
+GET /api/v2/temp-token - Get Temp Access token(RTC and RTM)
+Request:
+
+id	
+
+string	Yes	project id	
+zPPCCSAeZ
+productTokenList
+
+
+object	Yes	
+
+
+product	
+string	Yes	RTC | RTM	
+
+fields	
+object	Yes	
+
+
+
+channelName	string	No	set this field when product field is RTC	
+
+
+userId	string	No	set this field when product field is RTM	
+curl 'https://console-staging.shengwang.cn/api/v2/temp-token' \
+  -H 'accept: application/json, text/plain, */*' \
+  -H 'accept-language: zh-CN,zh;q=0.9,en;q=0.8' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -b 'agora-dashboard-staging=xxxxxx' \
+  --data-raw '{"id":"zPPCCSAeZ","productTokenList":[{"product":"RTC","fields":{"channelName":"1"}},{"product":"RTM","fields":{"userId":"1"}}]}'
+Response:
+
+{"token":"007eJxTYPhhs7TH9NqSh2U+rM+f6jFd2LYtYP/r3y8lNJOZ+1qkHtUqMJgYGZmnJpkbGSZappikJiVbGpubGSdZJCWnJBsZWRgb3AgoyGwIZGRIOtjAysTACIYgPiODIQMDEzIXAAqaII4=","expiredTs":1769054808}
+
+
+GET /api/v2/token - Get Temp Access token
+Request Parameters:
+
+type	string	Yes	token type, temporary token is fixed at 1 and valid for 24 hours	1
+channel	string	Yes	channel Name	123
+id	string	Yes	projectId	n18y-GoIV
+curl 'https://console-staging.agora.io/api/v2/token?type=1&channel=123&id=n18y-GoIV' \ -H 'accept: application/json, text/plain, */*' \ -H 'accept-language: zh-CN,zh;q=0.9,en;q=0.8' \ -H 'cache-control: no-cache' \
+
+
+Response:
+
+{ "token": "007eJxTYEgrkpw/J1lhfqJXxusXJ6I77zz6mfhB9Ny0mexzSn/ud2ZUYDBJSTU1M08zTE0xMzMxMza0tDBMTjKxTEm0SExNTUwx6FK+ldEQyMhQ3mHOwsgAgSA+M4OhkTEDAwCfVx/j", "expiredTs": 1759212810 }
+
+
+GET /api/v2/:project_id/rtm2/data - Get rtm2 data (check if grant rtm2)
+Response:
+
+{
+  "id": 200000009,
+  "extensionId": "RTM2",
+  "productKey": "rtm2",
+  "companyId": 884208,
+  "vendorId": 1601731,
+  "status": 1,
+  "isDeleted": 0,
+  "configData": {
+    "app_id": "86bfb92f668344b48e58a158db1d71b6",
+    "region": "EU",
+    "debounce": "2",
+    "interval": "30",
+    "occupancy": "50",
+    "lockEnabled": false,
+    "storageEnabled": false,
+    "stream_channel_enabled": false,
+    "user_subscribe_enabled": false,
+    "channel_subscribe_enabled": false
+  },
+  "author": "test",
+  "createTime": "2026-02-02T09:46:29+00:00",
+  "updateTime": "2026-02-02T09:46:29+00:00"
+}
+
+
+GET /api/v1/studio/en/restful-api/check - get whether has restful-api keys
+response:
+
+{ hasRestfulKey: false }
+POST /api/v1/studio/en/restful-api/keys - create restful api key
+response:
+
+{ "code": 0, "message":"success",  "data":{"companyId": 100005465, "key": "d89dd82bfd6c4ac2bbb0a6de107ddda9"}}
+
+POST /api/v1/studio/en/rtm/:project_id/data - grant rtm2
+path	
+
+
+
+
+
+project_id	string	Yes	project id	
+body	
+
+
+
+
+
+region	string	Yes	
+region, global api only
+
+NA
+AP
+EU
+NA(North America)
+response:
+
+{ "code": 0, "message":"success",  "data":{...}}
+
+
+POST /api/v1/studio/en/uap/setting/:projectId/:cloudTypeId - Create UAP Setting (for grant convoai)
+request:
+
+path	
+
+
+
+
+
+project_id	string	Yes	project id	
+
+cloudTypeId	string	Yes	
+'ConversationAI' = 30 // cn
+'ConvoaiGlobal' = 31 // en
+
+global using 31,
+
+cn using 30
+
+
+
+GET /api/v1/studio/en/uap/setting/:projectId/:cloudTypeId - Get UAP Setting (for convoai)
+request:
+
+path	
+
+
+
+
+
+project_id	string	Yes	project id	
+
+cloudTypeId	string	Yes	
+'ConversationAI' = 30 // cn
+'ConvoaiGlobal' = 31 // en
+
+global using 31,
+
+cn using 30
+
+response:
+
+{ "status": 1, ...} // status = 1 means already granted, status = 0 means not granted.
+Agent Templates
+GET /api/v1/studio/en/agent-templates - Get Template List
+Retrieves a list of agent templates.
+
+Request Parameters:
+
+keyword	string	No	Template name/tag keyword	"Voice"
+page	integer	No	Page number (default: 1)	1
+page_size	integer	No	Items per page (default: 10)	10
+type	string	No	Template type (e.g., chatbot)	"chatbot"
+
+
+Response:
+
+{ "list": [ { "id": "1", "name": "Customer Service Bot", "type": "convoai", "description": "I am a customer service bot starting from a basic template to handle common queries.", "icon_url": "https://www.shengwang.cn/wp-content/uploads/2025/02/logo_blue.svg", "creator": "Agora", "creator_avatar_url": "https://www.shengwang.cn/wp-content/uploads/2025/02/logo_blue.svg", "last_published_time": "2025-07-31T16:00:00.000Z", "graph_data": { "asr": { "params": {}, "vendor": "fengming", "language": "zh-CN" }, "llm": {}, "tts": { "params": { "key": "xxxx", "model": "speech-01-turbo", "group_id": "xxxx", "audio_setting": { "sample_rate": 16000 }, "voice_setting": { "voice_id": "female-shaonv" } }, "vendor": "minimax", "skip_patterns": [1] }, "parameters": { "silence_config": { "action": "think", "content": "<silent>", "timeout_ms": 4000 } }, "idle_timeout": 120, "turn_detection": { "threshold": 0.5, "interrupt_mode": "interrupt", "prefix_padding_ms": 800, "silence_duration_ms": 480 }, "advanced_features": { "enable_aivad": true } }, "create_time": "2025-08-11T08:43:01.000Z" } ], "total": 2 }
+GET /api/v1/studio/en/agent-templates/{id} - Get Template Details
+Retrieves details of a specific agent template.
+
+Response:
+
+{ "id": "1", "name": "Customer Service Bot", "type": "convoai", "region": "cn", "description": "I am a customer service bot starting from a basic template to handle common queries.", "icon_url": "http://agora-web-cdn.oss-cn-beijing.aliyuncs.com/dashboard/studio/template_bot.png", "creator": "Agora", "creator_avatar_url": "https://www.shengwang.cn/wp-content/uploads/2025/02/logo_blue.svg", "last_published_time": "2025-07-31T16:00:00.000Z", "graph_data": { "asr": { "params": {}, "vendor": "fengming", "language": "zh-CN" }, "llm": { "url": "https://api.minimax.chat/v2/text/chatcompletion_v2", "params": { "model": "abab6.5s-chat", "top_p": 0.8, "temperature": 0.8 }, "api_key": "xxx", "max_history": 32, "failure_message": "Sorry, I cannot answer this question.", "system_messages": [ { "role": "system", "content": "You are a helpful chatbot." } ], "greeting_message": "Hello, how can I assist you?" }, "tts": { "params": { "key": "xxxx", "model": "speech-01-turbo", "group_id": "xxxx", "audio_setting": { "sample_rate": 16000 }, "voice_setting": { "voice_id": "female-shaonv" } }, "vendor": "minimax", "skip_patterns": [1] }, "parameters": { "silence_config": { "action": "think", "content": "<silent>", "timeout_ms": 4000 } }, "idle_timeout": 120, "turn_detection": { "threshold": 0.5, "interrupt_mode": "interrupt", "prefix_padding_ms": 800, "silence_duration_ms": 480 }, "advanced_features": { "enable_aivad": true } }, "description_html": "**Supported features:**\n\nUsers can input their store's product titles, choose the training mode: pre-sale or after-sale service, then generate AI scripts. After generation, simulated dialogues can be started. After sufficient dialogue rounds, AI mentor scoring can be performed.\n\n**Quick start guide:**\n\nYour role is customer service. Your task is to interact with AI customers to facilitate quick orders.\n\nPlease enter the product title the AI customer wants to purchase, then choose pre-sale or after-sale scenario to generate the corresponding AI script. Format: \"Product title: [Your product title]\". Note: must include \"Product title\" prefix.\nYou can also proceed directly to step two, which will use the default product: \"Xiaomi Smart Speaker\".", "create_time": "2025-08-11T08:43:01.000Z" }
+a
+Agent Pipeline
+GET /api/v1/studio/en/agent-pipeline - Get Agent Pipeline List
+Retrieves a list of agent pipelines.
+
+Request Parameters:
+
+keyword	string	No	Project name keyword	"Customer Service"
+page	integer	No	Page number (default: 1)	1
+page_size	integer	No	Items per page (default: 10)	20
+status	integer	No	Status: -1 (All), 0 (Not published), 1 (Published)	1
+sort_field	string	No	update_time | create_time	update_time
+sort_order	string	No	DESC | ASC	DESC
+category	string	No	studio | call-center	default null
+
+
+Response:
+
+{
+    "list": [
+        {
+            "id": "8",
+            "uuid": "3d38f04ca48741bba938c49699ab4349",
+            "name": "1",
+            "type": "chatbot",
+            "category": "call-center",
+            "description": "dfafsdf",
+            "vid": 396554,
+            "icon_url": "https://web-cdn.agora.io/dashboard/studio/pipeline-default-icon.png",
+            "creator": "j2k793wm@linshiyouxiang.net",
+            "last_deployed_time": null,
+            "current_pipeline_version": "v1.0.0",
+            "deploy_version_id": null,
+            "deploy_app_ids": [],
+            "deploy_vids": [],
+            "deploy_uuids": [],
+            "deploy_status": 0,
+            "deployments": [],
+            "graph_data": {
+                "asr": {
+                    "params": {},
+                    "vendor": "fengming",
+                    "language": "zh-CN"
+                },
+                "llm": {
+                    "url": "https://api.minimax.chat/v2/text/chatcompletion_v2",
+                    "params": {
+                        "model": "abab6.5s-chat",
+                        "top_p": 0.8,
+                        "temperature": 0.8
+                    },
+                    "api_key": "",
+                    "max_history": 32,
+                    "failure_message": "抱歉，我无法回答这个问题。",
+                    "system_messages": [
+                        {
+                            "role": "system",
+                            "content": "You are a helpful chatbot."
+                        }
+                    ],
+                    "greeting_message": "您好，有什么可以帮您？"
+                },
+                "tts": {
+                    "params": {
+                        "token": "",
+                        "app_id": "",
+                        "cluster": "volcano_tts",
+                        "emotion": "",
+                        "voice_type": "BV700_streaming",
+                        "pitch_ratio": 1,
+                        "speed_ratio": 1,
+                        "volume_ratio": 1
+                    },
+                    "vendor": "bytedance",
+                    "skip_patterns": []
+                },
+                "vad": {
+                    "threshold": 0.5,
+                    "prefix_padding_ms": 800,
+                    "silence_duration_ms": 480,
+                    "interrupt_duration_ms": 160
+                },
+                "avatar": {
+                    "enable": false,
+                    "params": {},
+                    "vendor": "sensetime"
+                },
+                "parameters": {
+                    "silence_config": {
+                        "action": "think",
+                        "content": "",
+                        "timeout_ms": 4000
+                    }
+                },
+                "idle_timeout": 120,
+                "turn_detection": {
+                    "interrupt_mode": "interrupt"
+                },
+                "advanced_features": {
+                    "enable_sal": false,
+                    "enable_aivad": false
+                }
+            },
+            "create_time": "2026-01-14T10:17:45.000Z",
+            "update_time": "2026-01-14T10:17:45.000Z"
+        }
+    ],
+    "total": 3
+}
+GET /api/v1/studio/en/agent-pipeline/{id} - Get Agent Pipeline Details
+Retrieves details of a specific agent pipeline.
+
+category	string	No	
+studio | call-center
+
+you can pass this field to do validation that whether this agent is in this category
+
+studio
+
+
+
+
+Response:
+
+{ "id": 1, "name": "Customer Service Assistant", "type": "chatbot", "description": "Intelligent customer service solution", "icon_url": "https://...", "creator": "user@example.com", "last_deployed_time": "2025-06-15T10:30:00Z", "current_version": "v1.0.0", "deploy_version_id": null, "deploy_vids": [], "deploy_status": 1, "graph_data": { "asr": { "params": { "key": "", "language": "en-US", "region": "eastus" }, "vendor": "microsoft" }, "llm": { "api_key": "", "failure_message": "Please hold on a second.", "greeting_message": "Hello, how can I assist you", "max_history": 32, "params": { "model": "gpt-4o-mini" }, "system_messages": [ { "content": "You are a helpful chatbot.", "role": "system" } ], "url": "https://api.openai.com/v1/chat/completions" }, "tts": { "params": { "key": "", "language": "en-US", "region": "eastus" }, "vendor": "microsoft" } }, "create_time": "2025-05-01T08:00:00Z", "update_time": "2025-05-01T08:00:00Z" }
+POST /api/v1/studio/en/agent-pipeline - Create Agent Project
+Creates a new agent project.
+
+graph_data refer to:
+
+cn: https://doc.shengwang.cn/doc/convoai/restful/convoai/operations/start-agent
+
+global: https://docs.agora.io/en/conversational-ai/rest-api/agent/join
+
+Request:
+
+{
+  "name": "Smart Customer Service", // Required
+  "description": "Intelligent customer service assistant",
+  "type": "chatbot",            // Required, default: chatbot
+  "icon_url": "https://...",    // Optional
+  "template_id": 1,           //  Optional, template ID. Default: three-stage if not provided
+  "vid": 12345,                 // Optional, Agora project VID for testing/dry run: if no VID, backend will set it into `0`
+  "category":"studio",          // studio | call-center, default: studio
+  "graph_data": { ... }         // Optional, orchestration configuration
+  "graph_data_params_config": {
+    "llm": {
+       "system_messages": {
+         "active_mode": "structured",
+         "simple_text": "你是一个专业客服...",
+         "structured_sections": [
+      { "id": "s1", "title": "角色", "content": "你是..."},
+      { "id": "s2", "title": "目标", "content": "确认客户需求"},
+      { "id": "s3", "title": "边界", "content": "", "order": 3},
+      { "id": "s4", "title": "工具", "content": "提到价格时..."},
+      { "id": "s5", "title": "风格", "content": "每次不超过2句"}
+      ]
+   }}
+  }
+}
+ 
+ 
+// to enable knowledge-base: using below param format
+llm.rag_config.search_config.kb_id?: string
+Which kb_id is knowledge_base uuid
+example:
+ 
+ 
+    "llm": {
+        "rag_config": {
+            "search_config": {             
+                "kb_id": "bcf9c42db74143f6af5ff0ae3619407c"     
+                }  
+            }
+            ...,
+        }
+
+category	string	No	studio | call-center	studio
+
+...	
+
+
+
+
+
+
+
+Response:
+
+{ "id": 1, "name": "Customer Service Assistant", "type": "chatbot", "description": "Intelligent customer service solution", "icon_url": "https://...", "creator": "user@example.com", "last_deployed_time": "2025-06-15T10:30:00Z", "current_version": "v1.0.0", "deploy_status": 1, "graph_data": { "asr": { "params": { "key": "", "language": "en-US", "region": "eastus" }, "vendor": "microsoft" }, "llm": { "api_key": "", "failure_message": "Please hold on a second.", "greeting_message": "Hello, how can I assist you", "max_history": 32, "params": { "model": "gpt-4o-mini" }, "system_messages": [ { "content": "You are a helpful chatbot.", "role": "system" } ], "url": "https://api.openai.com/v1/chat/completions" }, "tts": { "params": { "key": "", "language": "en-US", "region": "eastus" }, "vendor": "microsoft" } }, "create_time": "2025-05-01T08:00:00Z" }
+PUT /api/v1/studio/en/agent-pipeline/{pipeline_id} - Update Agent Pipeline
+Updates an existing agent pipeline.
+
+graph_data refer to:
+
+cn: https://doc.shengwang.cn/doc/convoai/restful/convoai/operations/start-agent
+
+global: https://docs.agora.io/en/conversational-ai/rest-api/agent/join
+
+
+
+Request:
+
+{
+  "name": "Smart Customer Service",
+  "description": "Intelligent customer service assistant",
+  "icon_url": "https://...",
+  "vid": 12345,
+  "graph_data_params_config": {
+    "llm": {
+       "system_messages": {
+         "active_mode": "structured",
+         "simple_text": "你是一个专业客服...",
+         "structured_sections": [
+      { "id": "s1", "title": "角色", "content": "你是..."},
+      { "id": "s2", "title": "目标", "content": "确认客户需求"},
+      { "id": "s3", "title": "边界", "content": "", "order": 3},
+      { "id": "s4", "title": "工具", "content": "提到价格时..."},
+      { "id": "s5", "title": "风格", "content": "每次不超过2句"}
+      ]
+   }}
+  },
+  "graph_data": {
+    "asr": {
+      "params": {
+        "url": "wss://asr.cloud.tencent.com/asr/v2/",
+        "resource_id": "32cae6b3cd884d59a7ab8ead7362fcf2",
+        "engine_model_type": "16k_zh"
+      },
+      "vendor": "tencent",
+      "language": "zh-CN"
+    },
+    "llm": {
+      "url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+      "params": {
+        "model": "qwen-turbo",
+        "max_token": 1024
+      },
+      "mcp_servers": [
+        {
+          "name": "cz-test-3",
+          "_uuid": "85ce03dff3f449a7945021eddbe1a756",
+          "headers": {
+            "CONTEXT7_API_KEY": "ctx7sk-42c995df-6d83-4c75-8af7-ad50ae95da50"
+          },
+          "queries": {},
+          "endpoint": "https://mcp.context7.com/mcp",
+          "transport": "streamable_http",
+          "timeout_ms": 10000,
+          "allowed_tools": [
+            "resolve-library-id",
+            "get-library-docs"
+          ]
+        },
+        {
+          "name": "agora-doc-mcp",
+          "_uuid": "887f8bb55583408abc168da598f91c73",
+          "headers": {},
+          "queries": {},
+          "endpoint": "https://doc-mcp.shengwang.cn/mcp",
+          "transport": "streamable_http",
+          "timeout_ms": 10000,
+          "allowed_tools": [
+            "search-docs",
+            "list-docs"
+          ]
+        }
+      ],
+      "max_history": 10,
+      "resource_id": "a7bd73da10ee4ee699b49566dfacb60f",
+      "failure_message": "I encountered an error, please wait!",
+      "system_messages": [
+        {
+          "role": "system",
+          "content": ""
+        }
+      ],
+      "greeting_message": "Hello, how can I help you?"
+    },
+    "tts": {
+      "params": {
+        "emotion": "",
+        "voice_type": "BV700_streaming",
+        "pitch_ratio": 1,
+        "resource_id": "03d3d2aaffa24cc086714d63d0b043b4",
+        "speed_ratio": 1,
+        "volume_ratio": 1
+      },
+      "vendor": "bytedance"
+    },
+    "avatar": {
+      "enable": true,
+      "vendor": "sensetime",
+      "params": {
+        "avatar_id": "a2296686b0694a92bce529edc1d329fc_s1",
+        "resourse_id": "bd2b22e0c5be4d68b04e453b9d9c1183"
+      }
+    },
+    "vad": {
+      "threshold": 0.5,
+      "silence_duration_ms": 480,
+      "interrupt_duration_ms": 160
+    },
+    "parameters": {
+      "silence_config": {
+        "action": "think",
+        "content": "",
+        "timeout_ms": 4000
+      }
+    },
+    "idle_timeout": 120,
+    "turn_detection": {
+      "threshold": 0.5,
+      "interrupt_mode": "interrupt",
+      "prefix_padding_ms": 800,
+      "silence_duration_ms": 480
+    },
+    "advanced_features": {
+      "enable_sal": false,
+      "enable_aivad": false
+    },
+    "custom_settings": {
+      "llm": {
+        "api_key": "xxxxx",
+        "failure_message": "我挂了，你等下！",
+        "greeting_message": "你好呀，你叫啥？",
+        "max_history": 2,
+        "params": {
+          "max_tokens": 1024,
+          "model": "ep-20250208161736-zslcj",
+          "userName": "Tomas"
+        },
+        "system_messages": [
+          {
+            "content": "你是一个有礼貌的聊天Agent，请以好的，谢谢，没问题，不好意思等词语开始你的回答。",
+            "role": "system"
+          }
+        ],
+        "url": "https://ark.cn-beijing.volces.com/api/v3/chat/completions"
+      }
+    }
+  }
+}
+
+
+Response:
+
+{ "id": 1, "name": "Customer Service Assistant", "type": "chatbot", "description": "Intelligent customer service solution", "icon_url": "https://...", "creator": "user@example.com", "last_deployed_time": "2025-06-15T10:30:00Z", "current_version": "v1.0.0", "deploy_status": 1, "graph_data": { "asr": { "params": { "key": "", "language": "en-US", "region": "eastus" }, "vendor": "microsoft" }, "llm": { "api_key": "", "failure_message": "Please hold on a second.", "greeting_message": "Hello, how can I assist you", "max_history": 32, "params": { "model": "gpt-4o-mini" }, "system_messages": [ { "content": "You are a helpful chatbot.", "role": "system" } ], "url": "https://api.openai.com/v1/chat/completions" }, "tts": { "params": { "key": "", "language": "en-US", "region": "eastus" }, "vendor": "microsoft" } }, "create_time": "2025-05-01T08:00:00Z" }
+DELETE /api/v1/studio/en/agent-pipeline/{pipeline_id} - Delete Agent Pipeline
+Response
+
+{ code: 0, message: 'success' }
+POST /api/v1/studio/en/agent-pipeline/{projectId}/start - Start Agent Preview
+Starts an agent for preview.
+
+graph data for vendor: ConvoAI Studio - Credentials samples (BYOK / Marketplace)
+
+Request:
+
+
+pipeline_id	number	No	pipeline id use to determine agent category, different category(studio | call-center) will trigger different agent config	
+
+...	
+
+
+
+
+
+
+
+{
+  "vid": 2459060,
+  "graph_data": {
+    "name": "convaiconsole65725_194255",
+    "properties": {
+      "channel": "convaiconsole65725_194255",
+      "token": "007eJxTYOhcJnD/huhdG4WX5QcYDyvuvHI/bIr2Wbbur+vW6fIrTItVYLBISk4zTDIzT7IwMTUxNbVMNDE2sLQwNUk0Sks0MU2xWDd/bkZDICNDX2YqMyMDBIL4kgzJ+XlliZlAsjg/J9XM1NzINN7Q0sTI1JSBAQBXMSX+",
+      "agent_rtc_uid": "47698",
+      "remote_rtc_uids": ["*"],
+      "enable_string_uid": true,
+      "asr": {
+        "params": {
+          "language": "en-US",
+          "resource_id": "a2296b21310694a92bce529124354214"
+        },
+        "vendor": "microsoft"
+      }
+    },
+    "llm": {
+      "url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+      "params": {
+        "model": "gpt-4o-mini"
+      },
+      "max_history": 32,
+      "resource_id": "xxxxxxx",
+      "failure_message": "I encountered an error, please wait!",
+      "system_messages": [
+        {
+          "role": "system",
+          "content": ""
+        }
+      ],
+      "greeting_message": "Hello, how can I help you?"
+    },
+    "tts": {
+      "params": {
+        "voice_name": "en-US-AndrewMultilingualNeural",
+        "speed": 1,
+        "volume": 70,
+        "sample_rate": 24000,
+        "resource_id": "xxxxxx"
+      },
+      "vendor": "microsoft"
+    },
+    "vad": {
+      "threshold": 0.5,
+      "silence_duration_ms": 480,
+      "interrupt_duration_ms": 160,
+      "prefix_padding_ms": 300
+    },
+    "parameters": {
+      "silence_config": {
+        "action": "think",
+        "content": "",
+        "timeout_ms": 4000
+      },
+      "transcript": {
+        "enable": true,
+        "protocol_version": "v2",
+        "enable_words": false,
+        "redundant": false
+      },
+      "enable_metrics": true,
+      "audio_scenario": "default",
+      "enable_flexible": true,
+      "enable_dump": true,
+      "enable_error_message": true
+    },
+    "idle_timeout": 120,
+    "turn_detection": {
+      "threshold": 0.5,
+      "interrupt_mode": "interrupt",
+      "prefix_padding_ms": 800,
+      "silence_duration_ms": 480
+    },
+    "advanced_features": {
+      "enable_sal": false,
+      "enable_aivad": false
+    },
+    "custom_settings": {
+      "llm": {
+        "api_key": "xxxxx",
+        "failure_message": "我挂了，你等下！",
+        "greeting_message": "你好呀，你叫啥？",
+        "max_history": 2,
+        "params": {
+          "max_tokens": 1024,
+          "model": "ep-20250208161736-zslcj",
+          "userName": "Tomas"
+        },
+        "system_messages": [
+          {
+            "content": "你是一个有礼貌的聊天Agent，请以好的，谢谢，没问题，不好意思等词语开始你的回答。",
+            "role": "system"
+          }
+        ],
+        "url": "https://ark.cn-beijing.volces.com/api/v3/chat/completions"
+      }
+    }
+  }
+  }
+}
+参数	参数	
+类型	必填	说明	备注
+vid	
+
+number	是	
+vid
+
+graph_data
+
+
+
+object	是	
+
+
+https://docs.agora.io/en/conversational-ai/rest-api/join
+
+
+name
+
+
+string	是	The unique identifier of the agent. 	
+
+
+properties
+
+
+string
+
+是
+
+Configuration details of the agent.
+
+
+
+
+
+channal
+
+string
+
+是
+
+The name of the channel to join.
+
+
+
+
+
+token
+
+string
+
+是
+
+The authentication token used by the agent to join the channel.
+
+
+
+
+agent_rtc_uid
+
+string
+
+是
+
+The user ID of the agent in the channel. A value of 0 means that a random UID is generated and assigned. Set the token accordingly.
+
+
+
+
+remote_rtc_uids
+
+array[string]
+
+是
+
+A list of user IDs that the agent subscribes to in the channel. Only subscribed users can interact with the agent. Use "*" to subscribe to all users in the channel.
+
+
+
+
+enable_string_uid
+
+boolean	
+否
+
+Whether to enable String uid:
+
+true: Both agent and subscriber user IDs use strings.
+
+false: Both agent and subscriber user IDs must be integers.
+
+
+
+
+asr	object	是	
+Need to upload the resource first and get the resource uuid
+
+
+e.g.
+ "asr": { "params": { "language": "en-US", "resource_id": "a2296b21310694a92bce529124354214" }, "vendor": "microsoft", },
+
+Reference：ConvoAI Studio - Credentials samples (BYOK / Marketplace)
+
+
+tts	object	是	
+Need to upload the resource first and get the resource uuid
+
+
+llm	object	是	
+Need to upload the resource first and get the resource uuid
+
+
+vad
+
+object
+
+否
+
+Voice Activity Detection (VAD) configuration.
+
+When creating a pipeline, these parameters will be set by default and can be passed directly, if the client does not provide the configuration of relevant fields to the customer.
+
+
+
+
+
+
+
+
+
+parameters
+
+object
+
+否
+
+Agent configuration parameters.
+
+
+
+idle_timeout
+
+number
+
+否
+
+Sets the timeout after all the users specified in remote_rtc_uids are detected to have left the channel.
+
+
+turn_detection
+
+object
+
+否
+
+Conversation turn detection settings.
+
+
+advanced_features
+
+object
+
+否
+
+Advanced features configuration.
+
+
+
+
+Response:
+
+{"agent_id":"A42AA87JH42KA84LN66LK34EA96VT23V","create_ts":1766802955,"status":"RUNNING"}
+DELETE /api/v1/studio/en/agent-pipeline/{projectId}/{agent_id}/stop - Stop Agent
+Stops a running agent.
+
+Response:
+
+{ "code": 0, "message": "success" }
+POST /api/v1/studio/en/agent-pipeline/{pipeline_id}/deploy - Deploy Agent Pipelinea
+Deploys an agent pipeline.
+
+Request:
+
+{ "vids": ["vid1", "vid2"], // Required, target APPID list "note": "Fixed LLM response latency issue", // Optional, deployment notes "graph_data": {} }
+Response:
+
+{ "id": 1, "pipeline_id": 1, "vid": 123, "name": "Customer Service Assistant", "type": "chatbot", "description": "Intelligent customer service solution", "icon_url": "https://...", "creator": "user@example.com", "last_deployed_time": "2025-06-15T10:30:00Z", "current_version": "v1.0.0", "deploy_status": 1, "graph_data": { "asr": { "params": { "key": "", "language": "en-US", "region": "eastus" }, "vendor": "microsoft" }, "llm": { "api_key": "", "failure_message": "Please hold on a second.", "greeting_message": "Hello, how can I assist you", "max_history": 32, "params": { "model": "gpt-4o-mini" }, "system_messages": [ { "content": "You are a helpful chatbot.", "role": "system" } ], "url": "https://api.openai.com/v1/chat/completions" }, "tts": { "params": { "key": "", "language": "en-US", "region": "eastus" }, "vendor": "microsoft" } }, "create_time": "2025-05-01T08:00:00Z" }
+GET /api/v1/studio/en/agent-pipeline/{pipeline_id}/edit-status - Get pipeline edit status
+Request:
+
+path	pipeline_id	string	Yes	
+Response:
+
+{
+    code: 0,
+    message: 'success',
+    data: {
+    editable: true,
+    hasInbound: false,
+    hasOutbound: false
+}
+GET /api/v1/studio/en/agent-deploy-pipeline/{deployed_id}/edit-status - Get deployment edit status
+Request:
+
+path	pipeline_id	string	Yes	
+Response:
+
+{
+    code: 0,
+    message: 'success',
+    data: {
+    editable: true,
+    hasInbound: false,
+    hasOutbound: false
+}
+PUT /api/v1/studio/en/agent-deploy-pipeline/{project_id}/{deploy_id}/status - Update Pipeline Status
+Updates the online/offline status of a pipeline.
+
+Request:
+
+{ "status": 0 // Required, 0 - Offline, 1 - Online }
+Response:
+
+{ "code": 0, "message": "success" }
+GET /api/v1/studio/en/agent-deploy-pipeline - Get Deployed Pipeline Management List
+Retrieves a list of deployed pipelines for management.
+
+Request Parameters:
+
+keyword	string	No	Pipeline/APP name keyword	"Agent"
+page	integer	No	Page number (default: 1)	1
+page_size	integer	No	Items per page (default: 10)	10
+status	integer	No	Online status: 0 (Offline), 1 (Online)	1
+category	string	No	studio | call-center	
+
+
+2025-12-15
+
+warning: There's one new pipeline_deploy_name field which means the corresponding name of pipeline_deploy_uuid(deployment, a.k.a agent). and the name field is corresponding name of pipeline_uuid(pipeline).
+
+Response:
+
+{
+   "total": 2,
+   "list": [
+      {
+         "id": 1,
+         "project_id": "QYZKJJ1Zc",
+         "project_name": "test",
+         "pipeline_id": "42",
+         "app_id":"xxxxx",
+         "pipeline_uuid": "2d2cf07f62164f6a8896d36176d254f1",
+         "pipeline_deploy_uuid": "9f96b0f17cf34031816b6addd451a2c2",
+         "vid": 322320,
+         "name": "Customer Service Assistant",
+         "pipeline_deploy_name":"agent_name",
+         "type": "chatbot",
+         "description": "Intelligent customer service solution",
+         "icon_url": "https://...",
+         "creator": "user@example.com",
+         "last_deployed_time": "2025-06-15T10:30:00Z",
+         "current_version": "v1.0.0",
+         "deploy_status": 1,
+         "graph_data": {
+            "asr": {
+               "params": {
+                  "key": "",
+                  "language": "en-US",
+                  "region": "eastus"
+               },
+               "vendor": "microsoft"
+            },
+            "llm": {
+               "api_key": "",
+               "failure_message": "Please hold on a second.",
+               "greeting_message": "Hello, how can I assist you",
+               "max_history": 32,
+               "params": {
+                  "model": "gpt-4o-mini"
+               },
+               "system_messages": [
+                  {
+                     "content": "You are a helpful chatbot.",
+                     "role": "system"
+                  }
+               ],
+               "url": "https://api.openai.com/v1/chat/completions"
+            },
+            "tts": {
+               "params": {
+                  "key": "",
+                  "language": "en-US",
+                  "region": "eastus"
+               },
+               "vendor": "microsoft"
+            }
+         },
+         "create_time": "2025-05-01T08:00:00Z"
+      }
+   ]
+}
+GET /api/v1/studio/en/agent-pipeline/{pipeline_id}/deploy-records - Get Pipeline Deployment Records
+Retrieves deployment version records for a pipeline.
+
+Response:
+
+{ "total": 12, "list": [ { "id": 789, "pipeline_id": 11, "version": "v1.2.0", "graph_data": {}, "deploy_time": "2025-06-18T09:15:00Z", "creator": "user@shengwang.cn", "app_ids": ["app_123"], "status": 1, "note": "First official release", "create_time": "2025-08-20T09:22:40.000Z", "update_time": "2025-08-20T09:22:40.000Z" } ] }
+Resources
+GET /api/v1/studio/en/resources/1/avatar-list - Get Digital Human List
+Retrieves a list of available digital humans.
+
+Response:
+
+[ { "avatarId": "a2296686b0694a92bce529edc1d329fc_s1", "avatarName": "Nana", "bgImgUrl": "https://demo-app-download.agora.io/convoai/avatar/sensetime_bg_a2296686b0694a92bce529edc1d329fc_s1.jpg", "thumbImgUrl": "https://demo-app-download.agora.io/convoai/avatar/sensetime_thumb_a2296686b0694a92bce529edc1d329fc_s1.jpg", "vendor": "sensetime", "webBgImgUrl": "https://demo-app-download.agora.io/convoai/avatar/web_sensetime_bg_a2296686b0694a92bce529edc1d329fc_s1.jpg" } ]
+GET /api/v1/studio/en/marketplace/products - Get Studio Marketplace Vendor List
+For Extensions Page (convo-ai-studio) to retrieve a list of marketplace vendors.
+
+Query Parameters:
+
+type	string	No	Vendor type (returns all if not specified): llm, asr, tts	llm
+keyword	string	No	Keyword filter based on product_cn_name, provide_cn_name, cn_description	
+
+
+Response:
+
+{
+    "code": 0,
+    "success": true,
+    "data": [
+        {
+            "product_id": "azure-llm",
+            "type_key": "llm",
+            "product_cn_name": "Azure",
+            "product_en_name": "",
+            "provide_cn_name": "azure",
+            "provide_en_name": "",
+            "cn_description": "",
+            "en_description": "",
+            "product_cn_description": "",
+            "product_en_description": "",
+            "product_photo_url": "",
+            "product_thumbnail_url": "",
+            "version": "",
+            "purchase_count": 0,
+            "updated_at": "2025-10-23T02:55:27+00:00",
+            "free_trial": 0,
+            "is_internal_plugin": 0,
+            "core_features": "",
+            "status": 0
+        }
+    ]
+}
+code	
+是	int	
+Status code (0: success, 400: parameter error, 500: server error)
+
+
+
+message	
+否	string	Message
+data	
+
+array	插件列表
+
+product_id
+
+是	string	Plugin ID (string)
+
+type_key	是	string	
+Plugin Type
+
+
+product_cn_name
+
+是	string	Plugin name - Chinese (string)
+
+product_en_name
+
+是	string	Plugin name - English (string)
+
+provide_cn_name
+
+是	string	Vendor - Chinese (string)
+
+provide_en_name
+
+是	string	Vendor - English (string)
+
+cn_description
+
+是	string	Plugin description - Chinese (string)
+
+en_description
+
+是	string	Plugin description - English (string)
+
+product_photo_url
+
+是	string	Product large image (string)
+
+product_thumbnail_url
+
+是	string	Product thumbnail (string)
+
+version
+
+是	string	
+Version
+
+
+purchase_count
+
+是	number	
+Purchase Count
+
+
+free_trial
+
+是	number	Free trial period
+
+updated_at
+
+是	string	Update time
+GET /api/v1/studio/en/marketplace/products/{product_id} - Get Marketplace Plugin Details
+Retrieves details of a specific marketplace plugin.
+
+Path Parameters:
+
+
+
+product_id	string	Yes	Product ID (from vendor list)	huoshan
+
+
+Response:
+
+{
+    "code": 0,
+    "success": true,
+    "data": {
+        "product_id": "huoshan-asr",
+        "type_key": "asr",
+        "category": [
+            "ASR"
+        ],
+        "product_cn_name": "豆包流式语音识别",
+        "product_en_name": "",
+        "provide_cn_name": "bytedance",
+        "provide_en_name": "",
+        "cn_description": "",
+        "en_description": "",
+        "product_cn_description": "火山大模型流式语音识别、语音识别 ",
+        "product_en_description": "",
+        "product_photo_url": "https://agora-ticket.oss-accelerate.aliyuncs.com/dashboard-dev/marketplace/03fd1d62.png?OSSAccessKeyId=LTAI5tKb6gYzW4dWj5VSEkTm&Expires=1767581567&Signature=puPQD6asg3wHnWX6BvjmNgrb4ak%3D",
+        "version": "",
+        "purchase_count": 13,
+        "company_purchase_count": 1,
+        "updated_at": "2025-12-27T12:32:37+00:00",
+        "pricing_table": [
+            {
+                "usage": "1000分钟",
+                "cost": "58.3",
+                "category": "",
+                "remark": "默认支持10并发，超出部分按100元/并发/月",
+                "key": 0
+            }
+        ],
+        "free_trial": 0,
+        "is_internal_plugin": 0,
+        "core_features": "自动情感理解和演绎：依托新一代语音大模型能力，语音模型可以根据上下文，智能预测文本情绪、语调等信息，并进行自然演绎；",
+        "custom_document": {
+            "产品简介": "语音识别（Automatic Speech Recognition，ASR）采用业内领先的端到端算法模型，准确地将语音内容转写成文字。产品支持时间戳，区分讲话人，数字格式智能转换，智能标点等功能。适用于录音质检、会议总结、音频内容分析、课堂内容分析等场景。",
+            "流式语音识别": "支持将长音频实时识别成文字，达到“边说话边出文字”的效果，适用于实时语音识别的场景，如实时会议字幕、直播字幕、智能外呼等。",
+            "核心功能": "支持语种：<br>- 办公（16K）-适用于企业办公、政府会议/访谈内容转写：中文、英文、日语、韩语、法语、西班牙语、葡萄牙语、俄语、印尼语、马来语<br>- 客服（8K）-适用于智能客服、质检内容转写，建议8K音频：中文<br>返回时效：实时，即边说话边出文字<br>智能分句：支持<br>字/词时间戳：支持<br>支持的音频格式：PCM、WAV、MP3、OPUS<br>采样率：单声道，采样率无要求<br>流式输入输出：支持<br>自动标点：支持<br>并发限制：默认10并发"
+        },
+        "status": 0,
+        "privacy_policy_url": "https://www.volcengine.com/docs/6256/64902",
+        "tos_url": "https://www.volcengine.com/docs/6256/64903"
+    }
+}
+Response Fields:
+
+code: Status code (0: success, 400: parameter error, 500: server error)
+
+message: Message
+
+data: Plugin details object
+
+product_id: Plugin ID (string)
+
+type_key: Plugin type (string)
+
+product_cn_name: Plugin name - Chinese (string)
+
+product_en_name: Plugin name - English (string)
+
+provide_cn_name: Vendor - Chinese (string)
+
+provide_en_name: Vendor - English (string)
+
+cn_description: Plugin description - Chinese (string)
+
+en_description: Plugin description - English (string)
+
+product_cn_description: Product detailed description - Chinese (string)
+
+product_en_description: Product detailed description - English (string)
+
+product_photo_url: Product large image (string)
+
+version: Version number (string)
+
+purchase_count: Purchase count (string)
+
+pricing_table: Pricing details (JSON string)
+
+free_trial: Free trial period (number)
+
+updated_at: Update time (string)
+
+GET /api/v1/studio/en/resources - Get Resource List
+For My Resources page(convo-ai-studio) to retrieve a list of resources.
+
+Query Parameters:
+
+
+
+source	string	No	Resource source: user_upload, platform_purchased	user_upload
+type	string	No	Resource type: llm, asr, tts, avatar	llm
+vendor	string	No	vendor	openai
+page	integer	No	Page number (default: 1)	1
+page_size	integer	No	Items per page (default: 10)	10
+keyword	string	No	Resource name keyword	"OpenAI"
+sort	string	No	Sort string format: [sort_key]:[sort_by]. Default: create_time:desc	type_key:asc,create_time:desc
+category	string	No	studio | call-center, using category to determine whether list shows avatar. (call-center category don't display avatar type)	call-center
+
+
+Response:
+
+{ "code": 0, "success": true, "data": { "total": 10, "list": [ { "id": 1, "uuid": "a7bd73da10ee4ee699b49566dfacb60f", "name": "llm resource", "type": "llm", "source": "user_upload", "description": "llm resource desc", "icon_url": "https://web-cdn.agora.io/dashboard/studio/115130/bG9vcHku.jpg", "status": 1, "vendor": "openai", "resource_data": {}, "creator": "xxx@agora.io", "create_time": "2025-08-12T10:42:59.000Z", "update_time": "2025-09-03T09:59:32.000Z" } ] } }
+Response Fields:
+
+
+
+
+
+
+
+code	
+
+是	int	
+状态码
+
+0: "success"
+
+400: 参数错误，message 有出错的说明
+500: 服务器错误
+
+message	
+
+否	string	消息
+data	
+
+
+
+
+
+total	
+是	number	总数
+
+list
+
+是	array	
+
+
+
+
+id
+是	int	resource ID
+
+
+uuid	是	string	resource UUID
+
+
+name	是	string	资源名
+
+
+type_key
+
+是	string	
+资源类别，枚举值
+
+llm
+tts
+asr
+
+
+description
+
+是	string	资源描述(仅自己添加的资源存在描述，插件市场购买的没有此字段)
+
+
+icon_url
+
+是	
+string
+
+图标
+
+
+vendor
+
+是	string	
+厂商
+
+
+
+resource_data
+
+是	json	
+空对象
+
+
+
+status
+
+是	number	
+状态
+1 - 已激活
+0 - 已失效
+
+
+
+source	是	string	
+来源，枚举值
+
+user_upload (BYOK)
+platform_purchased (云市场激活)
+white_label (白牌)
+
+
+platform_vendor_detail
+
+否	object	
+插件详情，当source = platform_purchased 会返回
+
+{ product_id: 'xxx' //vendor, purchase_count: 0 // 购买次数, product_photo_url: '' // 插件大图, product_thumbnail_url: '' // 插件缩略图, product_cn_name: '' // 插件名 product_cn_description: '' // 插件描述 provide_cn_name: '' // 供应商 }
+
+
+creator	是	string	创建者
+
+
+create_time	是	string	创建时间
+
+
+update_time	是	string	更新时间
+
+
+POST /api/v1/studio/en/resources - Create My Resource
+Request
+
+{
+  "name": "OpenAI GPT-4 Service", // Required, resource name
+  "type_key": "llm", // Required, resource type identifier
+  "description": "GPT-4 service for production environment", // Optional
+  "icon_url": "https://example.com/openai-icon.png", // Optional
+  "vendor": "agora",
+  "resource_data": { // Required, resource configuration
+           "api_key": "sk-...d3R5",
+           "base_url": "https://api.openai.com/v1"
+          }
+}
+name	string	是	
+Resource Name
+OpenAI GPT-4 服务
+type_key	string	是	
+Resource Type
+
+llm
+asr
+tts
+avatar
+description
+string	否	
+
+icon_url
+string	否	
+图标
+vendor
+string	是	Vendor	
+ConvoAI Studio - Credentials samples (BYOK / Marketplace)
+
+文档中的 vendor 是否确认？
+
+resource_data
+json	是	
+asr	deepgram	
+{
+"url": "wss://api.deepgram.com/v1/listen",
+"key": "<deepgram_key>"
+}
+
+asr	microsoft	
+{
+"key": "<microsoft_key>",
+"region": "eastus"
+}
+
+
+
+asr	speechmatics	{
+"key": "<SPEECHMATICS_API_KEY>",
+}
+llm	azure-openai	{
+"url": "xxx",
+"api_key": "xxx"
+}
+llm	gemini	{
+"url": "xxx"
+}
+llm	google	{
+"url": "xxx",
+"api_key": "xxx"
+}
+llm	
+claude-anthropic
+
+{
+"url": "xxx",
+"api_key": "xxx"
+}
+llm	dify	{
+"url": "xxx",
+"api_key": "xxx"
+}
+tts	microsoft	{
+"key": "xxx",
+"region": "xxx"
+}
+tts	elevenlabs	
+{
+"key": "xxx",
+}
+
+tts	openai	
+{
+"api_key": "xxxx"
+}
+
+tts	cartesia	{
+"api_key": "xxxx"
+}
+Response
+
+{ "code": 0, "success": true, "data": { "id": 248, "uuid": "9ec8cf35ef98409893c1255da7370a5a", "name": "asr resource", "type_key": "asr", "source": "user_upload", "description": "123", "icon_url": "http://agora-web-cdn.oss-cn-beijing.aliyuncs.com/dashboard/studio/bg_asr.png", "status": 1, "create_time": "2025-10-09T15:23:09.000Z", "creator": "test@agora.io" } }
+
+
+code	
+是	int	
+0: success
+
+6008: parameter error
+
+message	
+否	string	Message
+data	
+
+
+
+
+id
+是	int	Resource ID
+
+uuid	是	string	Resource UUID
+
+name	是	string	Resource name
+
+type_key
+
+是	string	Resource type
+
+description
+
+是	string	Resource description
+
+icon_url
+
+是	
+string
+
+Icon URL
+
+status
+
+是	number	
+Resource Status
+
+1 - active
+0 - inactive
+2 - deleted
+
+
+source	是	string	
+Resource type
+
+user_upload
+platform_purchased
+white_label
+
+creator	是	string	Creator
+
+create_time	是	string	create time
+
+update_time	是	string	update time
+PUT /api/v1/studio/en/resources/{resource_id} - Update My Resource
+Updates an existing custom resource.
+
+Request:
+
+{ "name": "OpenAI GPT-4 Turbo Service", // Optional "description": "Updated to latest GPT-4 Turbo model", // Optional "icon_url": "https://example.com/new-icon.png", // Optional "status": 1 // Optional }
+resource_id	string	是	url parmas, resource ID (not uuid)
+name
+
+string	否	
+Resource Name
+
+description
+
+string	否	
+icon_url
+
+string	否	Icon URL
+status
+
+int	否	
+Resource Status
+
+1 - active
+0 - inactive
+
+Response
+
+{"code":0,"success":true}
+参数	类型	必填	说明
+code	string	是	
+0: success
+
+6008: parameter error
+
+message
+
+string	是
+GET /api/v1/studio/en/resources/{resource_id} - Get Resource Details
+Request
+
+resource_id	string	是	url parmas, resource ID (not uuid)
+Response
+
+{ "id": 78901, "uuid": "9ec8cf35ef98409893c1255da7370a5a", "name": "OpenAI GPT-4 Service", "type_key": "llm", "description": "GPT-4 service for production environment", "icon_url": "https://example.com/openai-icon.png", "resource_data": { "api_key": "", // Sensitive field masked }, "source": "user_upload", "status": 1, "creator": "user@shengwang.cn", "create_time": "2025-06-25T14:30:00Z", "update_time": "2025-06-26T09:15:00Z" }
+id
+是	int	Resource ID
+uuid	是	string	Resource UUID
+name	是	string	Resource name
+type_key
+
+是	string	Resource type
+description
+
+是	string	Resource description
+icon_url
+
+是	
+string
+
+Icon URL
+vendor	是	string	Vendor
+status
+
+是	number	
+Resource Status
+
+1 - active
+0 - inactive
+2 - deleted
+
+source	是	string	
+Resource type
+
+user_upload
+platform_purchased
+white_label
+resource_data
+
+是	json	
+{
+
+api_key: ""
+
+}
+
+creator	是	string	Creator
+create_time	是	string	create time
+update_time	是	string	update time
+GET /api/v1/studio/en/resources/{resource_id}/operation-status- check my resource operation-status
+Response
+
+// cannot delete
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "deletable": false,
+    "reason": "Resource is being used in agent pipelines",
+    "references": {
+      "pipelines": [
+        {
+          "pipeline_id": "4084602a5ffb4c11b0b6953d6c5041af",
+          "name": "83 edit1",
+          "app_id": "8bcf1b67b8454559a4309854a2fa45d8",
+          "app_name": "testIM",
+          "version": "v1.0.2",
+          "creator": "j2k793wm@linshiyouxiang.net",
+          "last_deployed_time": "2025-11-13T12:16:46.000Z"
+        }
+      ]
+    }
+  }
+}
+ 
+ 
+// can delete
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "deletable": true
+  }
+}
+
+
+
+DELETE /api/v1/studio/en/resources/{resource_id} - delete my resource
+Response
+
+{ "code": 0, "message": "success" }
+
+
+
+
+
+code	
+
+是	int	
+状态码
+
+0: "success"
+
+400: params error
+
+25005: pipelines exist that utilize this resource
+
+
+
+message	
+
+否	string	
+data	
+
+
+
+
+
+pipelines	
+否	array	pipeline list ，will return when code = 25005
+
+
+pipeline_id	否	number	pipeline ID
+
+
+app_id	否	string	APP ID
+
+
+app_name	否	string	app_name
+
+
+version	否	
+string
+
+version
+
+
+creator	否	string	
+creator
+
+
+
+last_deployed_time	否	string	last_deployed_time
+
+resource_id	
+否	number	resource_id，will return when code = 0
+POST /api/v1/studio/en/resources/purchase - Purchase Resource
+Purchases a resource from the marketplace.
+
+Request:
+
+
+
+{ "product_id": "huoshan", // Required, product ID from vendor plugin interface "quantity": 1, // Optional, default: 1}
+Response:
+
+{ "code": 0, "message": "success", "data": [ { "id": 101, "name": "Internal GPT Service", "type": "llm", "type_name": "Large Language Model", "source": "platform_purchased", "description": "Purchased large model", "icon_url": "https://cdn.example.com/llm-icon.png", "status": 1, "creator": "user@shengwang.cn", "create_time": "2025-05-10T08:00:00Z", "update_time": "2025-06-15T14:30:00Z" } ] }
+Get /api/v1/studio/en/resources/:resource_uuid/dependencies - Get resource related agent-deployments
+Request:
+
+resource_uuid	string	是	resource uuid
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "resource_uuid": "8c05924c6eb54141b409cfc65def7698",
+        "total": 1,
+        "deployments": [
+            {
+                "deployment_id": "4",
+                "deployment_uuid": "43b02f8e251e43ffb2c6d14e77c96a90",
+                "deployment_name": "智能客服更新名字2",
+                "app_id": "6736ac8197de4773bc32879f5a68406e",
+                "app_name": "testapaasrtm",
+                "pipeline_id": "15",
+                "pipeline_name": "智能客服更新名字2",
+                "status": 1,
+                "last_deployed_time": "2025-10-20T11:17:37.000Z",
+                "create_time": "2025-09-24T03:01:10.000Z"
+            }
+        ]
+    }
+}
+
+
+GET /api/v1/studio/en/resell-resources - get Resell Resource
+Request:
+
+keyword	string	No	Resource name keyword	
+type	string	No	llm | tts | asr | avatar	
+vendor	string	No	
+openai
+sort	string	No	Sort string format: [sort_key]:[sort_by]. Default: create_time:desc	type_key:asc,create_time:desc
+page	string	No	Page number (default: 1)	
+page_size	string	No	Items per page (default: 10)	
+
+
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "list": [
+            {
+                "id": 21,
+                "uuid": "fedf374f89b44eb1a46a0d831ae1a02c",
+                "name": "DeepGram ASR",
+                "type": "asr",
+                "source": "resell",
+                "description": "DeepGram ASR service for Resell",
+                "icon_url": "",
+                "status": 1,
+                "vendor": "deepgram",
+                "product_id": "",
+                "creator": "j2k793wm@linshiyouxiang.net",
+                "create_time": "2026-02-25T09:56:23.000Z",
+                "update_time": "2026-02-25T09:56:23.000Z"
+            }
+        ],
+        "total": 1
+    }
+}
+
+
+
+SIP
+POST /api/v1/studio/en/sip-numbers - Create SIP Number
+create sip number
+
+Request Body:
+
+number	
+
+
+
+
+Yes	string	SIP number
+description
+
+
+
+
+
+
+
+Yes	string	SIP Display name
+vendor	
+
+
+
+
+Yes	string	sip number vendor, like 'twilio'
+source
+
+
+
+
+
+
+
+Yes	string	
+CN:
+
+domestic
+aliyun
+Global:
+
+twilio
+type	
+
+
+
+
+
+
+string	
+CN only
+Global don't need this field
+FYI: this field will be set to 'international' in console backend.
+area_code	
+
+
+
+
+
+No	string	
+CN only
+Global don't need this field
+config
+
+
+
+
+
+
+Yes	json	
+
+
+outbound_configs
+
+
+
+
+
+Yes	json	The API structure defined by the SIP manager
+
+
+address
+
+
+
+
+Yes	string	sip domain, twilio config
+
+
+user
+
+
+
+No	string	sip username, twilio config
+
+
+password	
+
+
+No	string	sip password, twilio config
+
+
+transport	
+
+
+Yes	string	transport, ["tcp", "udp", "tls"]
+
+inbound_configs	
+
+
+
+
+
+
+
+
+allowed_addresses	
+
+
+Yes	string[]	
+inbound_agent_config	
+
+
+
+
+
+
+Global only.
+
+If this field is passed, the calling agent will be directly associated when the number is created
+
+
+
+agent_uuid	
+
+
+Yes	string	
+
+
+inbound_configs	
+
+
+
+object	
+
+
+
+hangup_configuration
+
+
+
+
+
+
+
+
+
+
+max_duration_seconds
+
+
+
+int	
+
+
+
+
+max_silence_duration_seconds
+
+
+
+int	
+
+
+
+
+max_ring_duration_seconds
+
+
+
+int	
+
+
+
+switch_configuration
+
+
+
+
+
+
+
+
+
+
+enable_transcript
+
+
+
+boolean	
+
+
+
+
+enable_recording
+
+
+
+boolean	
+
+
+
+
+enable_user_auto_hangup
+
+
+
+boolean	
+
+
+
+
+enable_max_silence_duration_hangup	
+
+boolean	
+
+
+
+
+enable_llm_call_evaluation	
+
+boolean	
+
+
+
+llm_call_evaluation_configuration	
+
+
+
+
+
+
+
+
+call_success_evaluation	
+
+object	
+
+
+
+
+
+criteria	No	string	
+Call success evaluation criteria. Required when enable_llm_call_evaluation is true.
+
+
+
+
+custom_evaluations	
+
+object[]	
+
+
+
+
+
+variable_name	
+Yes
+string	
+Custom variable names 
+⚠️Cannot be the same as system-built-in variable names. 
+You need to call the `/metedata/system-evaluations` api to obtain system variable names. 
+The front-end needs to validate the user-inputted custom variable names.
+
+
+
+
+
+type	
+Yes
+
+string	
+string
+number
+boolean
+array
+
+
+
+
+
+criteria	
+Yes
+string	
+Evaluation criteria cannot be empty characters.
+
+
+
+
+
+options	
+No
+array<string>	
+Range of options for results
+
+
+
+agent_config
+
+
+
+
+
+
+
+
+
+
+llm
+
+
+
+map<string,any>	
+
+
+
+sip_transfer
+
+
+
+
+
+
+
+
+
+
+enable_sip_transfer
+
+
+
+boolean	
+
+
+
+
+format_e164
+
+
+
+boolean	
+
+
+
+
+static_target
+
+
+
+dict	
+
+
+
+
+
+phone_number	
+string	
+
+
+
+
+
+transfer_description	
+string	
+
+
+
+
+
+sub_number
+
+
+string	
+
+
+
+
+dynamic_target
+
+
+
+string	
+Request curl:
+
+curl --location 'https://console-staging.agora.io/api/v1/studio/en/sip-numbers' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Cookie: agora-dashboard-staging=xxxxxxx' \
+--data '{
+  "number": "+8612312341234",
+  "description": "Sip Test 3",
+  "source": "twilio",
+  "config": {
+    "outbound_configs": {
+      "address": "39.106.177.85:5030",
+      "transport": "udp",
+      "user": "username",
+      "password": "password"
+    }
+  }
+}'
+
+
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+{
+    "message": "success",
+    "code": 0,
+    "data": {
+        "phone_number_id": "69329ebf1ba7c46acf73c4c6",
+        "cid": 115130,
+        "source": "aliyun",
+        "type": "international",
+        "phone_number": "188888881",
+        "area_code": "",
+        "vendor": "byo",
+        "description": "SIP test zhaoren",
+        "status": 1,
+        "created_from": "studio",
+        "agent_uuid": "",
+        "config": {
+            "outbound_configs": {
+                "address": "39.106.177.85",
+                "transport": "udp",
+                "user": "123456",
+                "password": "2343432423"
+            },
+            "inbound_configs": {
+                "allowed_addresses": [
+                    "192.168.1.1",
+                    "10.0.0.1"
+                ]
+            }
+        },
+        "created_at": "2025-12-05T08:58:39Z",
+        "updated_at": "2025-12-05T08:58:39Z"
+    }
+}
+
+GET /api/v1/studio/en/sip-numbers - Get SIP Numbers
+get sip number
+
+Request Query:
+
+page	integer
+Yes	page
+page_size
+
+integer
+Yes	
+page size
+
+status	int	No	
+Review Status | 0 = Pending Review, 1 = Approved, 2 = Rejected
+keyword	string	No	
+Request curl:
+
+curl --location 'https://console-staging.agora.io/api/v1/studio/en/sip-numbers?keyword=string&page=1&page_size=10' \
+--header 'Accept: application/json' \
+--header 'Cookie: agora-dashboard-staging=xxxxxx'
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+ 
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "list": [
+            {
+                "phone_number_id": "6977448d05ae6a252c326951",
+                "cid": 115130,
+                "source": "domestic",
+                "type": "fixed",
+                "phone_number": "52890921",
+                "area_code": "021",
+                "vendor": "byo",
+                "description": "Call Center实验室发版测试借用-prodv0.2.1",
+                "status": 1,
+                "created_from": "studio",
+                "agent_uuid": "b851e562b97e470c98e3e8c8b0c3808d",
+                "config": {
+                    "outbound_configs": {
+                        "address": "icc.icsoc.net:5066",
+                        "transport": "udp"
+                    },
+                    "inbound_configs": {
+                        "allowed_addresses": [
+                            "10.10.10.10"
+                        ]
+                    },
+                    "max_concurrent": 30
+                },
+                "created_at": "2026-01-26T10:40:13Z",
+                "updated_at": "2026-01-26T10:41:50Z",
+                "id": "6977448d05ae6a252c326951",
+                "agent_name": "",
+                "pipeline_id": null
+            }
+        ],
+        "total": 86
+    }
+}
+PUT /api/v1/studio/en/sip-numbers/:uuid - Update SIP Numbers
+update sip number
+
+Request Params:
+
+:uuid	string	是	SIP number uuid
+Request Body:
+
+number	
+
+
+
+
+No	string	SIP number
+description
+
+
+
+
+
+
+
+Yes	
+SIP number name
+config
+
+
+
+
+
+
+Yes	json	
+
+
+outbound_configs
+
+
+
+
+
+Yes	json	
+
+
+address
+
+
+
+
+Yes	string	sip domain
+
+
+transport	
+
+
+Yes	string	transport, ["tcp", "udp", "tls"]
+
+
+user	
+
+
+No	string	sip username
+
+
+password	
+
+
+No	string	sip password
+
+inbound_configs	
+
+
+
+Yes	
+
+
+
+allowed_addresses	
+
+
+
+string[]	
+unbind_agent_uuid	
+
+
+
+
+No	
+Global only.
+
+when setting this field, service side will call unbind inbound agent api after update complete, Also if this field set, you should not pass inbound_agent_config field any more.
+
+inbound_agent_config	
+
+
+
+
+否	
+Global only.
+
+If this field is passed, the calling agent will be directly associated when the number is created
+
+
+
+agent_uuid	
+
+
+
+
+
+
+
+inbound_configs	
+
+
+是	object	
+
+
+
+hangup_configuration
+
+
+
+是	
+
+
+
+
+
+max_duration_seconds
+
+
+是	int	
+
+
+
+
+max_silence_duration_seconds
+
+
+是	int	
+
+
+
+
+max_ring_duration_seconds
+
+
+是	int	
+
+
+
+switch_configuration
+
+
+
+是	
+
+
+
+
+
+enable_transcript
+
+
+否	boolean	
+
+
+
+
+enable_recording
+
+
+否	boolean	
+
+
+
+
+enable_user_auto_hangup
+
+
+否	boolean	
+
+
+
+
+enable_max_silence_duration_hangup	
+否	boolean	
+
+
+
+
+enable_llm_call_evaluation	
+否	boolean	
+
+
+
+llm_call_evaluation_configuration	
+
+
+
+
+
+
+
+
+call_success_evaluation	
+否	
+
+
+
+
+
+
+criteria	否	string	
+Call success evaluation criteria. Required when enable_llm_call_evaluation is true.
+
+
+
+
+custom_evaluations	
+
+object[]	
+
+
+
+
+
+variable_name	
+Yes
+string	
+Custom variable names 
+⚠️Cannot be the same as system-built-in variable names. 
+You need to call the `/metedata/system-evaluations` api to obtain system variable names. 
+The front-end needs to validate the user-inputted custom variable names.
+
+
+
+
+
+type	
+Yes
+
+string	
+string
+number
+boolean
+array
+
+
+
+
+
+criteria	
+Yes
+string	
+Evaluation criteria cannot be empty characters.
+
+
+
+options	No	
+
+array<string>	
+Range of options for results
+
+
+
+agent_config
+
+
+
+
+
+
+
+
+
+
+llm
+
+
+否	
+map<string,any>
+
+
+
+
+
+sip_transfer
+
+
+
+
+
+
+
+
+
+
+enable_sip_transfer
+
+
+否	boolean	
+
+
+
+
+format_e164
+
+
+否	boolean	
+
+
+
+
+static_target
+
+
+否	dict	
+
+
+
+
+
+phone_number	否	string	
+
+
+
+
+
+transfer_description	否	string	
+
+
+
+
+
+sub_number
+
+否	string	
+
+
+
+
+dynamic_target
+
+
+否	string	
+Request curl:
+
+curl --location --request PUT 'https://console-staging.agora.io/api/v1/studio/en/sip-numbers/340' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Cookie: agora-dashboard-staging=xxxxxxx' \
+--data '{
+  "number": "32143214321",
+  "description": "update Sip test",
+  "config": {
+    "outbound_configs": {
+      "address": "39.106.177.85:5031",
+      "transport": "tcp",
+      "user": "user1",
+      "password": "pwd1"
+    }
+  }
+}'
+
+
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+{
+    "message": "success",
+    "code": 0,
+    "data": {
+        "id": "340",
+        "cid": "116630",
+        "number": "+8612312341234",
+        "vendor": "byo",
+        "created_from": "studio",
+        "source": "twilio",
+        "type": "international",
+        "area_code": "",
+        "description": "update Sip test",
+        "config": {
+            "outbound_configs": {
+                "address": "39.106.177.85:5031",
+                "transport": "tcp",
+                "user": "user1",
+                "password": "pwd1"
+            }
+        },
+        "status": 1,
+        "is_deleted": 0,
+        "creator": "xueqifang16@agora.io",
+        "create_time": "2025-11-13T06:49:04.000Z",
+        "update_time": "2025-11-13T06:49:04.000Z"
+    }
+}
+
+
+DELETE /api/v1/studio/en/sip-numbers/:uuid - DELETE SIP Numbers
+delete sip number
+
+Request Params:
+
+:uuid	string	是	SIP number uuid
+Request curl:
+
+curl --location --request DELETE 'https://console-staging.agora.io/api/v1/studio/en/sip-numbers/692eaacc5451eeaf593b39ec' \
+--header 'Accept: application/json' \
+--header 'Cookie: agora-dashboard-staging=xxxxxx'
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+{
+    "message": "success",
+    "code": 0,
+    "data": null
+}
+POST /api/v1/studio/en/sip-numbers/:id/inbound-agent/:pipeline_deploy_uuid  -  bind inbound agent
+Request:
+
+path	
+
+
+
+
+
+
+
+:id	
+
+
+yes	string	SIP number id
+
+:pipeline_deploy_uuid	
+
+
+yes	string	
+body	
+
+
+
+
+
+
+
+inbound_config
+
+
+
+
+
+object	
+
+
+hangup_configuration
+
+
+
+yes	
+
+
+
+
+max_duration_seconds
+
+
+yes	int	
+Maximum call duration , Unit: seconds 
+
+
+
+max_silence_duration_seconds
+
+
+yes	int	
+The agent will automatically disconnect after a period of inactivity (in seconds).
+
+
+
+max_ring_duration_seconds
+
+
+yes	int	
+Maximum ringing duration , Unit: seconds
+
+
+switch_configuration
+
+
+
+yes	
+
+
+
+
+enable_transcript
+
+
+no
+boolean	
+Whether to enable subtitles
+
+
+
+enable_recording
+
+
+no
+boolean	
+Enable call recording?
+
+
+
+enable_user_auto_hangup
+
+
+no
+boolean	
+Enable automatic hang-up for users?
+
+
+
+enable_max_silence_duration_hangup	
+no	boolean	
+Enable maximum duration silent hang-up
+
+
+
+enable_llm_call_evaluation	
+no	
+Enable Successful evaluation prompt
+
+
+llm_call_evaluation_configuration	
+
+
+
+
+
+
+
+call_success_evaluation	
+no	object	
+
+
+
+
+
+criteria	no	string	
+Call success evaluation criteria. Required when enable_llm_call_evaluation is true.
+
+
+
+custom_evaluations	
+
+object[]	
+
+
+
+
+variable_name	Yes	
+string
+Custom variable names 
+⚠️Cannot be the same as system-built-in variable names. 
+You need to call the `/metedata/system-evaluations` api to obtain system variable names. 
+The front-end needs to validate the user-inputted custom variable names.
+
+
+
+
+type	Yes	string	
+string
+number
+boolean
+array
+
+
+
+
+criteria	Yes	
+string
+Evaluation criteria cannot be empty characters.
+
+
+
+
+options	No	
+array<string>
+Range of options for results
+
+
+sip_transfer
+
+
+
+
+
+
+
+
+
+enable_sip_transfer
+
+
+no	boolean	
+Enable SIP transfer, Required when providing sip_transfer
+
+
+
+format_e164
+
+
+no	boolean	
+Whether to use E.164 format
+
+
+
+static_target
+
+
+no	
+dict
+
+
+
+
+
+
+phone_number
+
+no	string	
+
+
+
+
+transfer_description	no	string	
+
+
+
+
+sub_number
+
+no	string	
+
+
+
+dynamic_target
+
+
+no	string	
+Dynamic routing prompts
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "id": "69316f2e21a22e872aa902f9",
+        "phone_number_id": "692eaacc5451eeaf593b39ec",
+        "cid": 115130,
+        "phone_number": "60782138",
+        "area_code": "021",
+        "agent_uuid": "a0390e4751f34bb28bd94c5d0aa4b405",
+        "inbound_config": {
+            "hangup_configuration": {
+                "max_duration_seconds": 3600,
+                "max_silence_duration_seconds": 30,
+                "max_ring_duration_seconds": 60
+            },
+            "switch_configuration": {
+                "enable_transcript": true,
+                "enable_recording": true,
+                "enable_voicemail": false,
+                "enable_user_auto_hangup": true,
+                "enable_max_silence_duration_hangup": true
+            },
+            "llm": {
+                "system_messages": [
+                    {
+                        "role": "system",
+                        "content": ""
+                    }
+                ]
+            },
+            "sip_transfer": {
+                "enable_sip_transfer": true,
+                "format_e164": true,
+                "static_target": {
+                    "phone_number": "+12345678900",
+                    "transfer_description":"",
+                    "sub_number": "123"
+                }
+            }
+        },
+        "created_at": "2025-12-04T11:23:26Z",
+        "updated_at": "2025-12-04T11:23:26Z"
+    }
+}
+DELETE /api/v1/studio/en/sip-numbers/:id/inbound-agent/:pipeline_deploy_uuid  -  unbind inbound agent
+Request:
+
+path	
+yes	int
+
+:id
+
+yes	string
+
+:pipeline_deploy_uuid
+
+yes	string
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": null
+}
+
+
+GET /api/v1/studio/en/inbound-agent/sip-numbers/:phone_number_id  -  get sip inbound config
+Request:
+
+path	
+
+
+
+phone_number_id
+
+Yes	string
+
+
+Response:
+
+code	
+
+
+
+Yes	int	
+
+
+message	
+
+
+
+Yes	string	
+data	
+
+
+
+Yes	dict	
+
+phone_number_id	
+
+
+Yes	string	
+
+cid	
+
+
+Yes	int	
+
+phone_number	
+
+
+Yes	string	
+
+area_code
+
+
+
+
+
+Yes	string	
+
+agent_uuid
+
+
+
+
+Yes	string	Agent UUID， 
+The pipeline_id corresponding to the Convo AI call interface
+
+agent_name	
+
+
+Yes	string	Agent name, global only.
+
+inbound_config	
+
+
+
+object	
+
+
+hangup_configuration
+
+
+
+Yes	
+
+
+
+
+max_duration_seconds
+
+
+Yes	int	
+Maximum call duration , Unit: seconds 
+
+
+
+max_silence_duration_seconds
+
+
+Yes	int	
+The agent will automatically disconnect after a period of inactivity (in seconds).
+
+
+
+max_ring_duration_seconds
+
+
+Yes	int	
+Maximum ringing duration , Unit: seconds
+
+
+switch_configuration
+
+
+
+Yes	
+
+
+
+
+enable_transcript
+
+
+No
+boolean	
+Whether to enable subtitles
+
+
+
+enable_recording
+
+
+No
+boolean	
+Enable call recording?
+
+
+
+enable_user_auto_hangup
+
+
+No
+boolean	
+Enable automatic hang-up for users?
+
+
+
+enable_max_silence_duration_hangup	
+No	boolean	
+Enable maximum duration silent hang-up?
+
+
+
+enable_llm_call_evaluation	
+No	boolean	Enable Successful evaluation prompt
+
+
+llm_call_evaluation_configuration	
+
+
+
+
+
+
+
+call_success_evaluation	
+No	object	
+
+
+
+
+criteria	No	string	
+Call success evaluation criteria. Required when enable_llm_call_evaluation is true.
+
+
+
+custom_evaluations	
+No	object[]	
+
+
+
+
+variable_name	Yes	string	
+Custom variable names ⚠️Cannot be the same as system-built-in variable names.
+You need to call the `/metedata` interface to obtain system variable names. 
+The front-end needs to validate the user-inputted custom variable names.
+
+
+
+
+type	Yes	string	
+string
+number
+boolean
+array
+
+
+
+
+criteria	Yes	string	
+Evaluation criteria cannot be empty characters.
+
+
+
+
+options	No	array<string>	
+Range of options for results
+
+
+sip_transfer
+
+
+
+
+
+
+
+
+
+enable_sip_transfer
+
+
+No	boolean	
+Enable SIP transfer, Required when providing sip_transfer
+
+
+
+format_e164
+
+
+No	boolean	
+Whether to use E.164 format
+
+
+
+static_target
+
+
+No	
+dict
+
+
+
+
+
+
+phone_number
+
+No	string	
+
+
+
+
+sub_number
+
+No	string	
+
+
+
+dynamic_target
+
+
+No	string	
+Dynamic routing prompts
+
+created_at	
+
+
+
+
+
+
+updated_at	
+
+
+
+
+
+
+
+GET /api/v1/studio/en/sip-numbers/call-history/:call_id  -  get call detail
+Request:
+
+
+
+path	
+
+
+
+
+callId	yes	string	call id, get from call-history item's call_id field
+
+
+Response:
+
+code	
+
+
+
+
+
+message	
+
+
+
+
+
+data	
+
+
+
+
+
+
+call_id	
+
+Yes	string	
+
+call_info	
+
+Yes	obejct	
+
+
+agent_name
+
+
+Yes	string	
+
+
+agent_id	
+Yes	string	
+
+
+agent_uuid
+
+
+Yes	string	
+
+
+pipeline_id	
+Yes	number	
+
+
+campaign_name	
+Yes	string	
+
+
+campaign_id	
+Yes	string	
+
+
+call_category	
+Yes	string	deprecated
+
+
+call_category_v2	
+Yes	string	
+
+
+from_number	
+Yes	string	
+calling party
+
+
+to_number	
+Yes	string	
+called party
+
+
+transcript	
+Yes	
+[]map
+
+subtitle
+
+
+transfered_number	
+Yes	string	deprecated
+
+
+transferred_number	
+Yes	string	
+
+
+duration_seconds	
+Yes	int	
+Call duration
+
+
+record_file_url
+
+
+Yes	string	
+Audio download URL
+
+
+call_ts
+
+
+Yes	int	
+Call dialing time
+
+
+hangup_reason	
+Yes	string	
+Reason for ending the call
+voicemail_hangup： 语音信箱挂断----AI 挂断
+
+context_aware_hangup： 大模型根据上下文判断用户要求挂断----AI 挂断
+
+silence_hangup：静默挂断----AI 挂断
+
+user_hangup----用户挂断
+
+
+
+llm_call_evaluation_status	
+
+string	
+disabled：未开启评估；
+failed： 评估异常；
+scheduled： 待评估；
+evaluating： 正在评估中；
+completed： 评估完成；
+
+
+llm_call_evaluation_failed_reason	
+
+string	
+If the success evaluation status is marked as failure/abnormal, the following reasons for the abnormality are currently displayed:
+
+transcript_disabled: Transcription is not enabled
+success_evaluation_prompt_missing: Evaluation prompt is empty
+system_prompt_missing: System prompt is empty
+llm_vendor_missing: LLM vendor not configured
+transcript_empty: Transcription event received but content is empty
+transcript_missing: Transcription missing, no transcription event received within timeout
+llm_service_error: LLM error
+llm_max_retries_exceeded: Maximum number of retries exceeded
+call_failed
+
+
+llm_call_evaluation_result	
+
+object	
+
+
+
+call_success_evaluation_result	Yes	bool	
+Call evaluation results
+It may be null. Null indicates that the LLM cannot determine the result, 
+and in this case, the front end needs to treat it as false.
+
+
+
+raw_evaluation_results	Yes	map	
+The original evaluation result key-value pairs include system variables and user-defined variables. 
+For example: { "call_success": false, "age":24 }
+
+
+
+raw_system_evaluation_results	Yes	map	
+The original evaluation result key-value pairs only contain system variables. 
+For example: { "call_success": false }
+
+
+
+raw_custom_evaluation_results	Yes	map	
+The original evaluation results are key-value pairs, containing only user-defined variables. 
+For example: { "age":24 }
+
+
+
+
+
+
+
+
+status	
+
+
+string	
+
+call_type	
+
+
+string	
+inbound
+outbound
+
+created_at	
+
+
+string	RFC3339
+
+updated_at	
+
+
+string	RFC3339
+
+
+GET /api/v1/studio/en/sip-numbers/all/call-history - Get Call History
+Request Params:
+
+
+
+query	
+
+
+
+
+page	否	int	default 1
+
+page_size	否	int	default 10 [0,100]
+
+call_category	否	string	
+Deprecated:
+
+outbound:
+
+failed
+no_answer
+voicemail
+human_answered
+outbound_transferred_success
+outbound_transferred_failed
+inbound：
+
+ai_answered(接通)
+ai_no_answer(未接通)
+transfered_success(转接成功)
+transfered_failed(转接失败)
+transferred_success(转接成功)🆕
+transferred_failed(转接失败)🆕
+
+
+call_category_v2	否	string	
+outbound:
+
+failed
+no_answer
+voicemail
+human_answered
+outbound_transferred_success
+outbound_transferred_failed
+inbound：
+
+ai_answered(接通)
+ai_no_answer(未接通)
+transfered_success(转接成功)
+transfered_failed(转接失败)
+transferred_success(转接成功)🆕
+transferred_failed(转接失败)🆕
+
+campaign_ids	否	string	
+multiple IDs can be separated by commas.
+
+agent_uuids	否	string	
+multiple IDs can be separated by commas.
+
+call_type	否	'inbound' | 'outbound'	histroy type: 'all' | 'inbound' | 'outbound'
+
+from_time	否	number	unix timestamp start ts
+
+to_time	否	number	unix timestamp end ts
+
+from_number	否	string	
+Outbound calls: The mobile phone number is the recipient's number. 
+Inbound calls: The mobile phone number is the caller's number.
+
+to_number	否	string	agent phone number
+
+agent_id	否	string	agent id
+
+agent_name	否	string	agent name
+
+campaign_name	否	string	campaign name
+
+sort_by	否	string	
+duration（j接通时长）
+call_start_time（拨打开始时间）
+call_type
+call_category
+llm_call_evaluation_status
+Default：call_start_time
+
+
+sort_order	否	'asc' | 'desc'	order type
+
+page	否	int	default 1
+
+page_size	否	int	default 10 [0,100]
+
+search_keyword	否	string	
+
+search_fields	否	string	
+Query range, multiple ranges are allowed, separated by commas. 
+Currently supported ranges: 
+from_number 
+to_number 
+agent_name 
+campaign_name
+
+call_duration	否	int	
+Call duration, in seconds
+
+call_duration_operator	否	string	
+gt greater than 
+gte greater than or equal to 
+lt less than 
+lte less than or equal to 
+eq equal to 
+ne not equal to
+
+
+
+
+Response:
+
+code	
+
+
+
+Yes	int	
+
+
+message	
+
+
+
+Yes	string	
+data	
+
+
+
+Yes	[ ]dict	
+
+count	
+
+
+
+
+
+
+total	
+
+
+
+
+
+
+list	
+
+
+
+
+
+
+
+page	
+
+Yes	string	Phone Number
+
+
+page_size	
+
+Yes	dict	Agent Info
+
+
+
+call_id	
+Yes	string	call ID
+
+
+
+agent_id	
+Yes	string	Agent ID
+
+
+
+agent_uuid	
+Yes	string	deployment_uuid
+
+
+
+pipeline_id	
+Yes	number	pipeline_id
+
+
+
+agent_name	
+Yes	string	agent name
+
+
+
+from_number	
+Yes	string	
+Call number
+
+
+
+to_number	
+Yes	string	
+Called number
+
+
+
+campaign_name	
+Yes	string	
+Outbound call campaign name 
+Inbound call fields are empty strings 
+Non-campaign fields are empty strings
+
+
+
+campaign_id	
+Yes	string	
+Outbound call campaign ID 
+Inbound call fields are empty strings 
+Non-campaign fields are empty strings
+
+
+
+call_type	
+Yes	string	call type
+
+
+
+campaign_exists	
+Yes	bool	
+
+
+
+hangup_reason	
+Yes	string	
+Reason for ending the call
+user_hangup （用户挂断）
+ai_hangup（AI 挂断）
+
+
+
+call_category	
+Yes	string	
+oubound：
+
+failed(呼叫失败)
+no_answer(未接通)
+voicemail(语音信箱)
+human_answered(真人接听)
+inbound：
+
+ai_answered(接通)
+ai_no_answer(未接通)
+transfered_success(转接成功)
+transfered_failed(转接失败)
+
+
+
+call_category_v2	
+Yes	string	
+outbound:
+
+failed
+no_answer
+voicemail
+human_answered
+outbound_transferred_success
+outbound_transferred_failed
+inbound：
+
+ai_answered(接通)
+ai_no_answer(未接通)
+transfered_success(转接成功)
+transfered_failed(转接失败)
+transferred_success(转接成功)🆕
+transferred_failed(转接失败)🆕
+
+
+
+transfer_phone_number	
+Yes	string	
+Call forwarding party
+
+
+
+duration_seconds
+
+Yes	int64	
+Call duration in seconds
+
+
+
+answered_ts	
+Yes	int64	
+Call start time
+
+
+
+call_ts	
+Yes	int64	
+Dial time
+
+
+
+state	
+No	string	
+call Current status: Call status
+
+。 "START", "CALLING", "RINGING", "ANSWERED", "HANGUP"
+
+
+
+
+llm_call_evaluation_status	
+No	string	
+disabled：未开启评估；
+failed： 评估异常；
+scheduled： 待评估；
+evaluating： 正在评估中；
+completed： 评估完成；
+
+
+
+llm_call_evaluation_failed_reason	
+No	string	
+If the success evaluation status is marked as failure/abnormal, the following reasons for the abnormality are currently displayed:
+
+transcript_disabled: Transcription is not enabled
+success_evaluation_prompt_missing: Evaluation prompt is empty
+system_prompt_missing: System prompt is empty
+llm_vendor_missing: LLM vendor not configured
+transcript_empty: Transcription event received but content is empty
+transcript_missing: Transcription missing, no transcription event received within timeout
+llm_service_error: LLM error
+llm_max_retries_exceeded: Maximum number of retries exceeded
+call_failed
+
+
+
+llm_call_evaluation_result	
+
+
+
+
+
+
+
+
+call_success_evaluation_result	Yes	boolean	
+Call evaluation results
+It may be null. Null indicates that the LLM cannot determine the result, 
+and in this case, the front end needs to treat it as false.
+
+
+
+
+raw_evaluation_results	Yes	map	
+The original evaluation result key-value pairs include system variables and user-defined variables. 
+For example: { "call_success": false, "age":24 }
+
+
+
+
+raw_system_evaluation_results	Yes	map	
+The original evaluation result key-value pairs only contain system variables. 
+For example: { "call_success": false }
+
+
+
+
+raw_custom_evaluation_results	Yes	map	
+The original evaluation results are key-value pairs, containing only user-defined variables. 
+For example: { "age":24 }
+
+
+GET /api/v1/studio/en/sip-numbers/all/call-history/export - Get Call History download export
+Request:
+
+query	
+
+
+
+
+page	否	int	default 1
+
+page_size	否	int	default 10 [0,100]
+
+call_category
+
+
+
+call_history_v2
+
+否	string	
+outbound:
+
+failed
+no_answer
+voicemail
+human_answered
+outbound_transferred_success
+outbound_transferred_failed
+inbound：
+
+ai_answered(接通)
+ai_no_answer(未接通)
+transfered_success(转接成功)
+transfered_failed(转接失败)
+transferred_success
+transferred_failed
+
+call_type	否	'inbound' | 'outbound'	histroy type: 'all' | 'inbound' | 'outbound'
+
+from_time	否	number	unix timestamp start ts
+
+to_time	否	number	unix timestamp end ts
+
+from_number	否	string	
+Outbound calls: The mobile phone number is the recipient's number. 
+Inbound calls: The mobile phone number is the caller's number.
+
+to_number	否	string	agent phone number
+
+agent_id	否	string	agent id
+
+agent_name	否	string	agent name
+
+campaign_name	否	string	campaign name
+
+sort_by	否	string	
+duration（j接通时长）
+call_start_time（拨打开始时间）
+call_type
+call_category
+llm_call_evaluation_status
+Default：call_start_time
+
+
+sort_order	否	'asc' | 'desc'	order type
+
+page	否	int	default 1
+
+page_size	否	int	default 10 [0,100]
+
+search_keyword	否	string	
+support search campaign_name, phone_number
+
+
+search_fields	否	string	
+Query range, multiple ranges are allowed, separated by commas. 
+Currently supported ranges: 
+from_number 
+to_number 
+agent_name 
+campaign_name
+
+call_duration	否	int	
+Call duration, in seconds
+
+call_duration_operator	否	string	
+gt greater than 
+gte greater than or equal to 
+lt less than 
+lte less than or equal to 
+eq equal to 
+ne not equal to
+Response:
+
+file response:
+      ctx.set('Access-Control-Expose-Headers', 'content-disposition')
+      ctx.set(
+        'Content-disposition',
+        'attachment;filename=a.csv'
+      )
+
+
+GET /api/v1/studio/en/sip-numbers/all/call-history/filter-options - Get Call History filter options
+Request:
+
+Query	
+
+
+
+
+
+
+from_time
+int	No	
+End range timestamp, seconds
+
+to_time	int	No	
+End range timestamp, seconds
+Response:
+
+code	
+
+
+
+
+message	
+
+
+
+
+data	
+
+
+
+
+
+agents	
+array<object>
+
+
+
+agent 数组
+
+
+agent_uuid	
+string	
+
+
+name	
+string	
+
+campaigns
+
+array<object>	
+
+campaign 数组
+
+
+campaign_id	
+string	
+
+
+name
+
+
+string	
+
+
+
+
+GET /api/v1/studio/en/sip-numbers/all/call-history/overview - Get Overview
+Query	
+
+
+
+
+
+
+from_time
+int	No	
+End range timestamp, seconds
+
+to_time	int	No	
+End range timestamp, seconds
+
+campaign_ids
+
+string	No	Support multiple selections, separated by commas
+
+agent_uuids	string	No	Support multiple selections, separated by commas
+
+call_type	string	Yes	inbound | outbound
+
+time_granularity
+
+string	Yes	
+day
+
+timezone	string	No	
+Daylight Saving Time format.
+
+e.g. Asia/Shanghai
+
+Response:
+
+code	
+
+
+
+
+message	
+
+
+
+
+data	
+
+
+
+
+
+total_calls
+
+
+Yes	int	
+Both inbound and outbound calls are included. 
+Total number of calls
+
+total_duration_seconds
+
+
+Yes	int	
+Both inbound and outbound calls are included.
+Total connection time
+
+
+total_answered
+
+
+Yes	int	
+Both inbound and outbound calls are included.
+Total number of calls
+
+total_answer_rate
+
+
+否	float	
+only outbound
+
+Overall connection rate
+
+total_calls_trend
+
+
+
+array<object>
+
+Both inbound and outbound calls are included.
+Distribution of total call count
+
+
+date	Yes	string	Format：2025-11-30
+
+
+value	Yes	int	count
+
+total_duration_trend
+
+
+
+array<object>	
+
+
+date	Yes	string	format：2025-11-30
+
+
+value	Yes	int	second
+
+
+
+
+
+
+
+total_answered_trend
+
+
+
+array<object>	
+Connection distribution
+
+
+date	Yes	string	format：2025-11-30
+
+
+value	Yes	int	second
+
+
+
+
+
+
+
+total_answer_rate_trend
+
+
+
+array<object>	
+Connection rate distribution
+only outbound
+
+
+
+date	Yes	string	format：2025-11-30
+
+
+value	Yes	float	second
+
+total_transfered_trend	
+
+
+
+
+
+date	Yes	string	format：2025-11-30
+
+
+value	Yes	float	second
+
+total_transfered	
+No	int	inbound only
+request_id	
+
+
+
+
+ts	
+
+
+
+
+
+
+
+GET /api/v1/studio/en/sip-numbers/all/call-history/analysis - Get Analysis
+Request:
+
+Query	
+
+
+
+
+
+
+from_time
+int	No	
+End range timestamp, seconds
+
+to_time	int	No	
+End range timestamp, seconds
+
+campaign_ids
+
+string	No	Support multiple selections, separated by commas
+
+agent_uuids	string	No	Support multiple selections, separated by commas
+
+call_type	string	Yes	inbound | outbound
+
+time_granularity
+
+string	Yes	
+day
+
+timezone	string	No	Daylight Saving Time format.
+e.g. Asia/Shanghai
+Response:
+
+code	
+
+
+
+
+
+message	
+
+
+
+
+
+data	
+
+
+
+
+
+
+inbound_analysis
+
+
+
+
+
+
+
+
+avg_answered_duration
+
+
+
+array<object>	
+
+
+
+
+
+
+Average connection time
+
+
+
+date	Yes	string	format：2025-11-30
+
+
+
+value	Yes	float	second
+
+
+status_distribution(deprecated)
+
+status_distribution_v2
+
+
+
+
+
+
+
+
+status	Yes	string	
+ai_no_answer
+
+
+
+ai_answered
+
+
+
+
+
+transfered_success
+
+
+
+
+
+transfered_failed
+
+
+
+
+
+
+value	Yes	float	second
+
+
+total_answer_rate_trend	
+
+
+
+
+
+
+date	Yes	string	2025-11-30
+
+
+
+value	Yes	float	0.xx
+
+
+transfer_rate(deprecated)
+
+transferred_rate_trend
+
+
+
+
+
+
+
+
+date	Yes	string	format：2025-11-30
+
+
+
+value	Yes	float	0.xx
+
+
+call_success_evaluation_result_rate_trend	
+
+
+
+
+
+
+date	Yes	string	format：2025-11-30
+
+
+
+value	Yes	float	0.xxx
+
+outbound_analysis
+
+
+
+
+
+
+
+
+avg_answered_duration
+
+
+
+array<object>	
+
+
+
+
+
+
+Average connection time
+
+
+
+date	Yes	string	format：2025-11-30
+
+
+
+value	Yes	float	second
+
+
+status_distribution
+
+
+
+
+
+
+
+
+status	Yes	string	
+human_answered
+
+no_answer
+
+voicemail
+
+failed
+
+
+
+
+
+total_answer_rate_trend	
+
+
+
+
+
+
+date	Yes	string	2025-11-30
+
+
+
+value	Yes	float	0.xxx
+
+
+call_success_evaluation_result_rate_trend	date	Yes	string	2025-11-30
+
+
+
+value	Yes	float	0.xxx
+
+
+transferred_rate_trend	
+
+
+
+
+
+
+date	Yes	string	format：2025-11-30
+
+
+
+value	Yes	float	0.xx
+request_id	
+
+
+
+
+
+ts	
+
+
+
+GET /api/v1/studio/en/sip-numbers/all/edit-status - Check SIP Number edit status
+when sip number used in a campaign, then the sip number cannot be edit anymore.
+
+
+
+Request:
+
+phone_number_ids
+string[]	是	
+['1', '5']
+
+Request curl:
+
+curl --location 'https://console-staging.agora.io/api/v1/studio/en/sip-numbers/all/edit-status?phone_number_ids=338' \
+--header 'Accept: application/json' \
+--header 'Cookie: agora-dashboard-staging=xxxxxx'
+Response:
+
+using editable to determine if sip number can be modified(update, delete), using hasInbound, hasOutbound field to get which bound cause the sip uneditable.
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+{
+    "code": 0,
+    "message": "success",
+    "data": [
+        {
+            "id": "692eaacc5451eeaf593b39ec",
+            "editable": true,
+            "hasInbound": false,
+            "hasOutbound": false
+        }
+    ]
+}
+
+
+Campaign
+Please refer to the Campaign Service link for the Campaign API document parameters.
+
+POST /api/v1/studio/en/campaigns - Create Campaign
+Request params：
+
+body	
+
+
+
+
+
+
+agent_uuid
+
+
+Yes	string	pipeline_deploy_uuid， which is the uuid of a deploy pipeline
+
+campaign_name
+
+
+Yes	string	Batch name/Campaign name
+
+is_send_immediately	
+
+Yes	bool	
+Whether to send immediately.
+
+If true, scheduled_start_time is set by the backend to the time of successful Convo AI SIP configuration sync call plus 1 minute (to account for Convo AI's internal sync processing time).
+
+
+phone_number_id
+
+
+Yes	int64	
+Phone Number ID
+
+recipients_file_url
+
+
+
+Yes	string	
+Recipients CSV file path
+
+Update the total_calls field based on the number of CSV rows
+
+
+
+
+scheduled_start_time
+
+
+No	string	
+Scheduled start time, format like "2025-11-03 15:00:00
+
+The backend needs to handle 3 fields: scheduled_start_time_input, scheduled_start_time, scheduled_start_time_ts."
+
+
+
+
+scheduled_time_ranges_config	
+
+No	object[]	time range config
+
+
+time_ranges	
+Yes	object[]	
+
+
+
+start	Yes	string	start time， format like "09:00"
+
+
+
+end	Yes	string	end time, format like "12:00"
+
+
+weekday	
+Yes	int32	weekday, sunday=0, monday=1... saturday=6
+
+timezone	
+
+否	string	IANA timezone identifier, such as "America/New_York".
+
+hangup_configuration	
+
+Yes
+
+
+
+
+max_duration_seconds
+
+
+Yes	int	
+longest talking time:
+
+max_duration_seconds:[30,10800]
+
+
+max_silence_duration_seconds
+
+
+Yes	int	
+hangup when meet max silence seconds
+
+max_silence_duration_seconds:[30,1800] 
+This will be checked if silent hang-up is enabled; otherwise, it will not be checked
+
+
+max_ring_duration_seconds
+
+
+Yes	int	
+Maximum ringing time.
+
+
+
+max_ring_duration_seconds:[10,90]
+This range will be checked if this field is provided; otherwise, it will not be checked
+
+switch_configuration	
+
+
+
+
+
+
+enable_transcript	
+No	bool	Whether turn on transcript collection, default false.
+
+
+enable_recording	
+No
+bool	Whether turn on recording collection.
+
+
+enable_voicemail	
+No
+bool	Whether turn on voicemail
+
+
+enable_user_auto_hangup	
+No
+bool	Whether auto hangup
+
+
+enable_max_silence_duration_hangup	
+No
+bool	Whether to enable automatic hanging up for the longest silent time
+
+
+enable_llm_call_evaluation	
+No
+bool	Whether turn on Successful evaluation prompt
+
+llm_call_evaluation_configuration	
+
+
+
+
+
+
+call_success_evaluation	
+No
+object	
+
+
+
+
+criteria	No	string	
+Call success evaluation criteria. Required when enable_llm_call_evaluation is true.
+
+
+custom_evaluations	
+
+object[]	
+
+
+
+variable_name	Yes	string	
+Custom variable names 
+⚠️Cannot be the same as system-built-in variable names. 
+You need to call the `/metedata/system-evaluations` api to obtain system variable names. 
+The front-end needs to validate the user-inputted custom variable names.
+
+
+
+type	Yes	string	
+string
+number
+boolean
+array
+
+
+
+criteria	Yes	string	
+Evaluation criteria cannot be empty characters.
+
+
+
+options	No	array<string>	
+Range of options for results
+
+agent_advanced_configuration	
+
+No	map	
+
+agent_config	
+
+
+
+
+
+
+llm	
+No	map<string,any>	
+{ "llm": { "system_messages": [ { "role": "system", "content": "You are a helpful chatbot." } ] } }
+
+It is necessary once successful evaluation is enabled
+
+sip_transfer	
+
+
+
+
+
+
+enable_sip_transfer	
+No	boolean	
+Whether to enable SIP forwarding, the default is false.
+
+
+format_e164	
+No	boolean	
+Whether to use E.164 format
+
+
+static_target	
+No	dict	
+
+
+
+phone_number	No	
+forwarding number
+
+
+
+transfer_description	No	
+Forward description
+
+concurrency_max_limit	
+
+Yes	number	
+
+call_interval_ms	
+
+No	int	
+Call interval (ms) Limitations: 
+Minimum 50ms, Maximum 10000ms 
+Default 200ms for cn calls, 1000ms for overseas calls
+
+as_draft	
+
+
+boolean	
+Request curl:
+
+curl --location 'https://console-staging.agora.io/api/v1/studio/en/campaigns' \
+--header 'Cookie: agora-dashboard-staging=xxxxxxxxx' \
+--header 'Content-Type: application/json' \
+--data '  {
+    "agent_uuid": "8406cac2c50b429ab5bebf918385f38d",
+    "campaign_name": "zhaorentest",
+    "is_send_immediately": false,
+    "phone_number_id": "6936b2a6fcb517ef16458f8f",
+    "recipients_file_url": "https://convoai-callcenter-test.oss-cn-beijing.aliyuncs.com/campaigns/recipients/20251202/6A19A013DD0446878EF4C33CC9647AC5.csv",
+    "scheduled_start_time": "2025-12-09 12:02:00",
+    "timezone": "Asia/Shanghai",
+    "scheduled_time_ranges_config": [
+        {
+            "time_ranges": [
+                {
+                    "start": "09:00",
+                    "end": "14:00"
+                },
+                {
+                    "start": "15:00",
+                    "end": "18:00"
+                }
+            ],
+            "weekday": 0
+        },
+        {
+            "time_ranges": [
+                {
+                    "start": "09:00",
+                    "end": "14:00"
+                },
+                {
+                    "start": "15:00",
+                    "end": "18:00"
+                }
+            ],
+            "weekday": 1
+        },
+        {
+            "time_ranges": [
+                {
+                    "start": "09:00",
+                    "end": "14:00"
+                },
+                {
+                    "start": "15:00",
+                    "end": "18:00"
+                }
+            ],
+            "weekday": 2
+        },
+        {
+            "time_ranges": [
+                {
+                    "start": "09:00",
+                    "end": "14:00"
+                },
+                {
+                    "start": "15:00",
+                    "end": "18:00"
+                }
+            ],
+            "weekday": 3
+        },
+        {
+            "time_ranges": [
+                {
+                    "start": "09:00",
+                    "end": "14:00"
+                },
+                {
+                    "start": "15:00",
+                    "end": "18:00"
+                }
+            ],
+            "weekday": 4
+        },
+        {
+            "time_ranges": [
+                {
+                    "start": "09:00",
+                    "end": "14:00"
+                },
+                {
+                    "start": "15:00",
+                    "end": "18:00"
+                }
+            ],
+            "weekday": 5
+        },
+        {
+            "time_ranges": [
+                {
+                    "start": "09:00",
+                    "end": "14:00"
+                },
+                {
+                    "start": "15:00",
+                    "end": "18:00"
+                }
+            ],
+            "weekday": 6
+        }
+    ],
+    "hangup_configuration": {
+        "max_duration_seconds": 43200,
+        "max_silence_duration_seconds": 811,
+        "max_ring_duration_seconds": 63
+    },
+    "switch_configuration": {
+        "enable_transcript": true,
+        "enable_recording": true,
+        "enable_voicemail": true,
+        "enable_user_auto_hangup": true,
+        "enable_max_silence_duration_hangup": true
+    }
+  }
+'
+
+
+Response:
+
+code	是	int	
+refer: link
+
+message	是	string	message
+data	是	dict	data
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "campaign_id": "6936c539fcb517ef16458f90",
+        "campaign_name": "zhaorentest"
+    },
+    "request_id": "a1f794bb83044d11b8a1b7736f5c77c9",
+    "ts": 1765197113
+}
+PUT /api/v1/studio/en/campaigns/:compaign_id - Update Campaign
+Request params:
+
+params	
+
+
+
+
+
+
+campaign_id
+
+
+Yes	string	campaigns._id
+body	
+
+
+
+
+
+
+
+
+
+
+
+
+
+campaign_name
+
+
+Yes	string	Batch name/Campaign name
+
+phone_number_id
+
+
+Yes	int64	
+Phone Number ID
+
+agent_uuid
+
+
+Yes	string	pipeline_deploy_uuid， which is the uuid of a deploy pipeline
+
+recipients_file_url
+
+
+
+Yes	string	
+Recipients CSV file path
+
+Update the total_calls field based on the number of CSV rows
+
+
+is_send_immediately	
+
+Yes	bool	
+Whether to send immediately.
+
+If true, scheduled_start_time is set by the backend to the time of successful Convo AI SIP configuration sync call plus 1 minute (to account for Convo AI's internal sync processing time).
+
+
+scheduled_start_time
+
+
+No	string	
+Scheduled start time, format like "2025-11-03 15:00:00
+
+The backend needs to handle 3 fields: scheduled_start_time_input, scheduled_start_time, scheduled_start_time_ts."
+
+
+scheduled_time_ranges_config	
+
+No	object[]	time range config
+
+
+time_ranges	
+Yes	object[]	
+
+
+
+start	Yes
+string	start time， format like "09:00"
+
+
+
+end	Yes
+string	end time, format like "12:00"
+
+
+weekday	
+Yes
+int32	weekday, sunday=0, monday=1... saturday=6
+
+timezone
+
+
+Yes	string	IANA timezone identifier, such as "America/New_York"
+
+hangup_configuration
+
+
+
+Yes	dict	hangup config
+
+
+max_duration_seconds
+
+
+Yes	bool	
+longest talking time:
+
+max_duration_seconds:[30,10800]
+
+
+max_silence_duration_seconds
+
+
+Yes	bool	
+hangup when meet max silence seconds
+
+max_silence_duration_seconds:[30,1800] 
+This will be checked if silent hang-up is enabled; otherwise, it will not be checked
+
+
+max_ring_duration_seconds
+
+
+Yes	int32	
+Maximum ringing time.
+
+max_ring_duration_seconds:[10,90]
+This range will be checked if this field is provided; otherwise, it will not be checked
+
+switch_configuration	
+
+No	
+
+
+
+enable_transcript	
+No	bool	Whether turn on transcript collection, default false.
+
+
+enable_recording	
+No
+bool	Whether turn on recording collection.
+
+
+enable_voicemail	
+No
+bool	Whether turn on voicemail
+
+
+enable_user_auto_hangup	
+No
+bool	Whether auto hangup
+
+
+enable_max_silence_duration_hangup	
+No
+bool	Whether to enable automatic hanging up for the longest silent time
+
+
+enable_llm_call_evaluation	
+No
+bool	Whether turn on Successful evaluation prompt
+
+llm_call_evaluation_configuration	
+
+
+
+
+
+
+call_success_evaluation	
+No
+object	
+
+
+
+
+criteria	
+
+Call success evaluation criteria. Required when enable_llm_call_evaluation is true.
+
+
+custom_evaluations	
+
+object[]	
+
+
+
+variable_name	Yes	string	
+Custom variable names 
+⚠️Cannot be the same as system-built-in variable names. 
+You need to call the `/metedata/system-evaluations` api to obtain system variable names. 
+The front-end needs to validate the user-inputted custom variable names.
+
+
+
+type	Yes	string	
+string
+number
+boolean
+array
+
+
+
+criteria	Yes	string	
+Evaluation criteria cannot be empty characters.
+
+
+
+options	No	array<string>	
+Range of options for results
+
+agent_advanced_configuration	
+
+No	map	
+
+agent_config	
+
+
+
+
+
+
+llm	
+No	map<string,any>	
+{ "llm": { "system_messages": [ { "role": "system", "content": "You are a helpful chatbot." } ] } }
+
+It is necessary once successful evaluation is enabled
+
+sip_transfer	
+
+
+
+
+
+
+enable_sip_transfer	
+No	boolean	
+Whether to enable SIP forwarding, the default is false.
+
+
+format_e164	
+No	boolean	
+Whether to use E.164 format
+
+
+static_target	
+No	dict	
+
+
+
+phone_number	No	
+forwarding number
+
+
+
+transfer_description	No	
+Forward description
+
+call_interval_ms	
+
+No	int	
+Call interval (ms)
+
+Limitations: Minimum 50ms, Maximum 10000ms
+
+Default 200ms for domestic calls, 1000ms for overseas calls
+
+
+concurrency_max_limit	
+
+Yes	
+
+Reponse:
+
+code	是	int	
+refer: link
+
+data	是	dict	data
+message	是	string	message
+Request curl:
+
+
+
+curl --location --request PUT 'https://console-staging.agora.io/api/v1/studio/en/campaigns/6915a5e4f8c43c6edb564e3c' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Cookie: agora-dashboard-staging=xxxxxx' \
+--data '{
+  "campaign_name": "Campaign test1 -- update",
+  "phone_number_id": "338",
+  "agent_uuid": "8406cac2c50b429ab5bebf918385f38d",
+  "recipients_file_url": "https://fullapp.oss-cn-beijing.aliyuncs.com/campaigns/recipients/20251110/73DDB70C9CB44488824BBCBE4E307A28.csv",
+  "is_send_immediately": false,
+  "timezone": "Asia/Shanghai",
+  "scheduled_start_time": "2025-11-14 15:00:00",
+  "hangup_configuration": {
+    "call_max_duration_second": 100,
+    "enable_end_of_conversation": true,
+    "enable_voicemail": true
+  }
+}'
+Response:
+
+
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+{
+    "code": 0,
+    "message": "success",
+    "data": null,
+    "request_id": "138f5aa37acc43b88fce4bfc54c069eb",
+    "ts": 1763026647
+}
+
+
+POST /api/v1/studio/en/campaigns/:campaign_id/drafts/publish - Publish campaign draft
+Request:
+params	
+
+
+
+
+
+
+campaign_id
+
+
+Yes	string	campaigns._id
+body	
+
+
+
+
+
+
+
+
+
+
+
+
+
+campaign_name
+
+
+Yes	string	Batch name/Campaign name
+
+phone_number_id
+
+
+Yes	int64	
+Phone Number ID
+
+agent_uuid
+
+
+Yes	string	pipeline_deploy_uuid， which is the uuid of a deploy pipeline
+
+recipients_file_url
+
+
+
+Yes	string	
+Recipients CSV file path
+
+Update the total_calls field based on the number of CSV rows
+
+
+is_send_immediately	
+
+Yes	bool	
+Whether to send immediately.
+
+If true, scheduled_start_time is set by the backend to the time of successful Convo AI SIP configuration sync call plus 1 minute (to account for Convo AI's internal sync processing time).
+
+
+scheduled_start_time
+
+
+No	string	
+Scheduled start time, format like "2025-11-03 15:00:00
+
+The backend needs to handle 3 fields: scheduled_start_time_input, scheduled_start_time, scheduled_start_time_ts."
+
+
+scheduled_time_ranges_config	
+
+No	object[]	time range config
+
+
+time_ranges	
+Yes	object[]	
+
+
+
+start	Yes	string	start time， format like "09:00"
+
+
+
+end	Yes	string	end time, format like "12:00"
+
+
+weekday	
+Yes	int32	weekday, sunday=0, monday=1... saturday=6
+
+timezone
+
+
+Yes	string	IANA timezone identifier, such as "America/New_York"
+
+hangup_configuration
+
+
+
+Yes	dict	hangup config
+
+
+max_duration_seconds
+
+
+Yes	bool	
+longest talking time:
+
+max_duration_seconds:[30,10800]
+
+
+max_silence_duration_seconds
+
+
+Yes	bool	
+hangup when meet max silence seconds
+
+max_silence_duration_seconds:[30,1800] 
+This will be checked if silent hang-up is enabled; otherwise, it will not be checked
+
+
+max_ring_duration_seconds
+
+
+Yes	int32	
+Maximum ringing time.
+
+max_ring_duration_seconds:[10,90]
+This range will be checked if this field is provided; otherwise, it will not be checked
+
+switch_configuration	
+
+No	
+
+
+
+enable_transcript	
+No	bool	Whether turn on transcript collection, default false.
+
+
+enable_recording	
+No	bool	Whether turn on recording collection.
+
+
+enable_voicemail	
+No	bool	Whether turn on voicemail
+
+
+enable_user_auto_hangup	
+No	bool	Whether auto hangup
+
+
+enable_max_silence_duration_hangup	
+No	bool	Whether to enable automatic hanging up for the longest silent time
+
+
+enable_llm_call_evaluation	
+No	bool	Whether turn on Successful evaluation prompt
+
+llm_call_evaluation_configuration	
+
+
+
+
+
+
+call_success_evaluation	
+No	object	
+
+
+
+
+criteria	
+
+Call success evaluation criteria. Required when enable_llm_call_evaluation is true.
+
+
+custom_evaluations	
+
+object[]	
+
+
+
+variable_name	Yes	string	
+Custom variable names 
+⚠️Cannot be the same as system-built-in variable names. 
+You need to call the `/metedata/system-evaluations` api to obtain system variable names. 
+The front-end needs to validate the user-inputted custom variable names.
+
+
+
+type	Yes	string	
+string
+number
+boolean
+array
+
+
+
+criteria	Yes	string	
+Evaluation criteria cannot be empty characters.
+
+
+
+options	No	array<string>	
+Range of options for results
+
+agent_advanced_configuration	
+
+No	map	
+
+agent_config	
+
+
+
+
+
+
+llm	
+No	map<string,any>	
+{ "llm": { "system_messages": [ { "role": "system", "content": "You are a helpful chatbot." } ] } }
+
+It is necessary once successful evaluation is enabled
+
+sip_transfer	
+
+
+
+
+
+
+enable_sip_transfer	
+No	boolean	
+Whether to enable SIP forwarding, the default is false.
+
+
+format_e164	
+No	boolean	
+Whether to use E.164 format
+
+
+static_target	
+No	dict	
+
+
+
+phone_number	No	
+forwarding number
+
+
+
+transfer_description	No	
+Forward description
+
+call_interval_ms	
+
+No	int	
+Call interval (ms)
+
+Limitations: Minimum 50ms, Maximum 10000ms
+
+Default 200ms for domestic calls, 1000ms for overseas calls
+
+
+concurrency_max_limit	
+
+Yes	
+
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+{
+    "code": 0,
+    "message": "success",
+    "data": {...}
+}
+
+
+GET /api/v1/studio/en/campaigns - Get Campaign List
+Request params:
+
+query	
+
+
+
+
+page_size	No	int	Number per page, defaults to 10. Maximum limit is 100.
+
+page	No	int	page index, start from 1, default 1
+
+search_keyword	No	string	keyword like
+campaign_name
+phone number
+
+search_fields	No	string	
+campaign_name
+phone_number
+agent_name
+using comma join, like campaign_name,phone_number
+
+
+sort_by	No	
+desc
+asc
+default: desc
+
+
+sort_order	No	
+scheduled_start_time
+status
+default: created_at
+
+
+campaign_ids
+No
+int	campaign ids list, each ID separated by commas. If the current parameter specifies the id to be queried, the phone numbers, page size, and page parameters are ignored
+
+phone_number_ids	No
+int	
+List of phone number ids, with each ID separated by commas.
+
+
+agent_uuids	No
+int	The list of agent uuids, with each ID separated by commas, represents the outbound call associated with the agent uuid
+
+status	No	string	
+scheduled
+running
+interrupted
+completed
+as_draft
+Multiple selection is supported; use commas to separate selections.
+
+variable_name	No	string	collect field name, used to match precisely.
+Response:
+
+code	
+
+
+
+是	int	
+refer: link
+
+message	
+
+
+
+是	string	message
+data	
+
+
+
+是	dict	data
+
+page_size	
+
+
+是	int32	number per page
+
+page	
+
+
+是	int32	page index
+
+count	
+
+
+是	int64	count
+
+total	
+
+
+是	int64	总total count
+
+list	
+
+
+是	[ ]list	list
+
+
+campaign_id
+
+
+是	string	
+campaign ID
+
+
+
+campaign_name
+
+
+是	string	
+Campaign Name
+
+
+
+agent_name
+
+
+是	string	
+Agent Name
+
+
+agent_uuid	
+
+是	string	pipeline_deploy_uuid， which is the uuid of a deploy pipeline
+
+
+pipeline_id	
+
+是	number	pipeline id
+
+
+phone_number
+
+
+是	int64	
+Phone Numbers
+
+
+scheduled_start_time
+
+
+是	string	
+Scheduled Time，UTC timezone
+
+
+
+recipients_phone_number_count
+
+
+是	int64	 Phone Number Count， outbound_campaigns.total_calls
+
+
+scheduled_time_ranges_config	
+
+是	object[]	time ranges.
+
+
+
+time_ranges	
+是	object[]	
+
+
+
+
+start	是	string	Start time, in the format like "09:00"
+
+
+
+
+end	是	string	
+End time, in the format like "12:00"
+
+
+
+
+weekday	
+是	int32	The corresponding days of the week for this time period: 0= Sunday, 1= Monday, 2= Tuesday, 3= Wednesday, 4= Thursday, 5= Friday, 6= Saturday
+
+
+status	
+
+是	string	outbound_campaigns.status: 'interrupted', 'scheduled', 'running', 'completed', 'as_draft'
+
+
+created_at
+
+
+是	string	
+
+
+updated_at
+
+
+是	string	
+Request curl:
+
+curl --location 'https://console-staging.agora.io/api/v1/studio/en/campaigns?page=1&page_size=20' \
+--header 'Accept: application/json' \
+--header 'Cookie: agora-dashboard-staging=xxxxxx'
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "page": 1,
+        "page_size": 20,
+        "count": 2,
+        "total": 2,
+        "list": [
+            {
+                "campaign_id": "6915a5677111d9d4fce3515c",
+                "campaign_name": "Campaign test1",
+                "agent_uuid": "8406cac2c50b429ab5bebf918385f38d",
+                "recipients_phone_number_count": 3,
+                "phone_number_id": "338",
+                "scheduled_start_time": "2025-11-13T09:32:19Z",
+                "status": "running",
+                "created_at": "2025-11-13T09:31:19Z",
+                "updated_at": "2025-11-13T09:32:30Z",
+                "agent_name": ""
+            },
+            {
+                "campaign_id": "6915a5e4f8c43c6edb564e3c",
+                "campaign_name": "Campaign test1",
+                "agent_uuid": "8406cac2c50b429ab5bebf918385f38d",
+                "recipients_phone_number_count": 3,
+                "phone_number_id": "338",
+                "scheduled_start_time": "2025-11-13T10:00:00Z",
+                "status": "scheduled",
+                "created_at": "2025-11-13T09:33:24Z",
+                "updated_at": "2025-11-13T09:33:25Z",
+                "agent_name": ""
+            }
+        ]
+    },
+    "request_id": "252f2a9748054d27a71e0a4e9ffbd5ae",
+    "ts": 1763026444
+}
+
+
+POST /api/v1/studio/en/campaigns/:campaign_id/interrupt  - Interrupt Campaign
+Request params:
+
+path	
+
+
+
+
+campaign_id
+yes	string	campaign ID
+Response：
+
+code	yes	int	
+refer: link
+
+
+
+data	yes	dict	data	
+message	yes	string	message	
+Request curl:
+
+curl --location --request POST 'https://console-staging.agora.io/api/v1/studio/en/campaigns/6915a5677111d9d4fce3515c/interrupt' \
+--header 'Accept: application/json' \
+--header 'Cookie: agora-dashboard-staging=xxxxxx'
+Response:
+
+
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+{
+    "code": 0,
+    "message": "success",
+    "data": null,
+    "request_id": "652b6a07c95e4920aa27eb93015d319a",
+    "ts": 1763026515
+}
+
+
+DELETE /api/v1/studio/en/campaigns/:campaign_id - Delete Campaign
+Request params:
+
+path	
+
+
+
+
+campaign_id
+是	string	campaign ID
+Response:
+
+code	是	int	
+refer: link
+
+data	是	dict	data
+message	是	string	message
+Request curl:
+
+curl --location --request DELETE 'https://console-staging.agora.io/api/v1/studio/en/campaigns/6915a5677111d9d4fce3515c' \
+--header 'Accept: application/json' \
+--header 'Cookie: agora-dashboard-staging=xxxxxx'
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+{
+    "code": 0,
+    "message": "success",
+    "data": null,
+    "request_id": "9f3eb2cef1d14c69be312a838a5a893b",
+    "ts": 1763026739
+}
+
+
+GET /api/v1/studio/en/campaigns/:campaign_id - Get Campaign Details
+Request params:
+
+path	
+
+
+
+
+campaign_id
+是	string	campaign IDs
+Response：
+
+code	
+
+
+Yes	int	
+refer: link
+
+message	
+
+
+Yes	string	message
+data	
+
+
+Yes	[ ]dict	data
+
+cid	
+
+Yes
+int64	Agora Company ID
+
+campaign_id
+
+
+Yes	string	outbound_campaigns._id
+
+campaign_name	
+
+Yes	string	Campaign Name
+
+phone_number_id	
+
+Yes	string	Phone Number UUID
+
+phone_number	
+
+Yes	string	Phone Number
+
+agent_uuid	
+
+Yes	string	pipeline_deploy_uuid， which is the uuid of a deploy pipeline
+
+recipients_file_url	
+
+Yes	string	
+Recipients CSV file path
+
+Update the total_calls field based on the number of CSV rows
+
+
+timezone	
+
+Yes	string	IANA timezone identifier, such as "America/New_York".
+
+scheduled_start_time	
+
+Yes	int64	
+Scheduled start time, format like "2025-11-03 15:00:00
+
+The backend needs to handle 3 fields: scheduled_start_time_input, scheduled_start_time, scheduled_start_time_ts."
+
+
+is_send_immediately	
+
+Yes	bool	是否立即开始
+
+scheduled_time_ranges_config	
+
+No	[ ]dict	
+ time range config
+
+
+
+time_ranges	
+Yes	[ ]dict	
+
+
+
+
+
+
+start	Yes	string	start time， format like "09:00"
+
+
+
+
+end	Yes	string	end time, format like "12:00"
+
+
+weekday	
+Yes	int32	
+weekday, sunday=0, monday=1... saturday=6
+
+
+
+
+
+
+
+
+
+hangup_configuration
+
+
+
+Yes	dict	
+
+
+max_duration_seconds
+
+
+Yes	int	
+longest talking time:
+
+max_duration_seconds:[30,10800]
+
+
+max_silence_duration_seconds
+
+
+Yes	int	
+hangup when meet max silence seconds
+
+max_silence_duration_seconds:[30,1800] 
+This will be checked if silent hang-up is enabled; otherwise, it will not be checked
+
+
+max_ring_duration_seconds
+
+
+Yes	int	
+Maximum ringing time.
+
+max_ring_duration_seconds:[10,90]
+This range will be checked if this field is provided; otherwise, it will not be checked
+
+switch_configuration	
+
+No	
+ 
+
+
+enable_transcript	
+No	bool	Whether turn on transcript collection, default false.
+
+
+enable_recording	
+No	bool	Whether turn on recording collection.
+
+
+enable_voicemail	
+No	bool	Whether turn on voicemail
+
+
+enable_user_auto_hangup	
+No	bool	Whether auto hangup
+
+
+enable_max_silence_duration_hangup	
+No	bool	Whether to enable automatic hanging up for the longest silent time
+
+
+enable_llm_call_evaluation	
+No
+bool	Whether turn on Successful evaluation prompt
+
+llm_call_evaluation_configuration	
+
+
+
+
+
+
+call_success_evaluation	
+No
+object	
+
+
+
+criteria	No
+string	
+Call success evaluation criteria. Required when enable_llm_call_evaluation is true.
+
+
+custom_evaluations	
+
+object[]	
+
+
+
+variable_name	Yes	string	
+Custom variable names 
+⚠️Cannot be the same as system-built-in variable names. 
+You need to call the `/metedata/system-evaluations` api to obtain system variable names. 
+The front-end needs to validate the user-inputted custom variable names.
+
+
+
+type	Yes	string	
+string
+number
+boolean
+array
+
+
+
+criteria	Yes	string	
+Evaluation criteria cannot be empty characters.
+
+
+
+options	No	array<string>	
+Range of options for results
+
+agent_advanced_configuration	
+
+No	map	
+
+sip_transfer	
+
+
+
+
+
+
+enable_sip_transfer	
+No	
+Whether to enable SIP forwarding, the default is false.
+
+
+format_e164	
+No	
+Whether to use E.164 format
+
+
+static_target	
+No	
+
+
+
+
+phone_number	No	
+forwarding number
+
+
+
+transfer_description	No	
+Forward description
+
+status	
+
+Yes	string	status: 'interrupted', 'scheduled', 'running', 'completed','as_draft'
+
+call_interval_ms	
+
+No	int	
+Call interval (ms)
+
+Limitations: Minimum 50ms, Maximum 10000ms
+
+Default 200ms for domestic calls, 1000ms for overseas calls
+
+
+concurrency_max_limit	
+
+Yes	number	
+
+created_at	
+
+Yes	string	create time
+
+updated_at	
+
+Yes	string	update time
+Request curl:
+
+curl --location 'https://console-staging.agora.io/api/v1/studio/en/campaigns/6915a5e4f8c43c6edb564e3c' \
+--header 'Accept: application/json' \
+--header 'Cookie: agora-dashboard-staging=xxxxxx'
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "cid": 884208,
+        "campaign_id": "693962922745bbc6ae50ca34",
+        "campaign_name": "OutboundCH",
+        "phone_number_id": "692eaacc5451eeaf593b3aa1",
+        "phone_number": "+16059888882",
+        "agent_uuid": "20cc0a332c224d578b91d5955482ed5e",
+        "agent_name": "NEWPIPETEST",
+        "recipients_phone_number_count": 9,
+        "recipients_file_url": "https://test-convai-call-center.s3.us-east-1.amazonaws.com/campaigns/recipients/20251210/09B93FBA7FA947A79E7EC175C461F38B.csv",
+        "scheduled_start_time_input": "",
+        "scheduled_time_ranges_config": [],
+        "is_send_immediately": true,
+        "timezone": "Asia/Kolkata",
+        "scheduled_start_time": "2025-12-10T12:08:45Z",
+        "hangup_configuration": {
+            "max_duration_seconds": 300,
+            "max_silence_duration_seconds": 15,
+            "max_ring_duration_seconds": 0
+        },
+        "switch_configuration": {
+            "enable_transcript": true,
+            "enable_recording": true,
+            "enable_voicemail": false,
+            "enable_user_auto_hangup": false,
+            "enable_max_silence_duration_hangup": false
+        },
+        "status": "completed",
+        "created_at": "2025-12-10T12:07:46Z",
+        "updated_at": "2025-12-10T12:13:45Z"
+    },
+    "request_id": "d8a3f7ac56334174ab7b4b7fbf8e0386",
+    "ts": 1765705810
+}
+GET /api/v1/studio/en/campaigns/:campaign_id/summary - Get Campaign Call summary
+Request params:
+
+params	
+
+
+
+
+campaign_id
+是	string	campaign ID
+Response:
+
+
+
+code	
+
+Yes	int	
+refer: link
+
+message	
+
+Yes	string	message
+data	
+
+Yes	dict	data
+
+total_calls
+
+
+Yes	int64	total calls
+
+no_answer_calls
+
+
+Yes
+int64	not answered calls
+
+scheduled_calls
+
+Yes	int64	undialed calls
+
+human_answered_calls
+
+
+Yes	int64	answered calls
+
+voicemail_calls
+
+
+Yes	int64	voicemail calls
+
+successful_calls
+
+
+Yes	int64	successed calls
+
+success_rate
+
+
+Yes	float32	success rate
+
+human_answered_duration_seconds	
+Yes	int64	Actual Call Duration (seconds)
+
+voicemail_duration_seconds	
+Yes	int64	Voicemail Call Duration (seconds)
+
+running_calls	
+Yes
+array<object>	
+Ongoing calls are sorted in descending order by start_ts, with a maximum of three returned.
+
+Note: If there are no ongoing calls, an empty array will be returned.
+
+
+
+start_ts	Yes	int64	start_ts
+
+
+phone_number	Yes	string	phone_number
+
+failed_calls	
+Yes	int	
+Number of failed calls
+
+failed_rate	
+Yes	float	
+Call failure rate, rounded to 3 decimal places.
+
+avg_answered_duration	
+Yes	float	
+Average connection time per call, rounded to 3 decimal places.
+
+transferred_success_calls
+
+
+Yes	int64	
+
+transferred_failed_calls	
+Yes	int64	
+Request curl:
+
+curl --location 'https://console-staging.agora.io/api/v1/studio/en/campaigns/6915a95ef8c43c6edb564e44/summary' \
+--header 'Accept: application/json' \
+--header 'Cookie: agora-dashboard-staging=xxxxxx'
+
+
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "total_calls": 4,
+    "no_answer_calls": 4,
+    "scheduled_calls": 0,
+    "human_answered_calls": 0,
+    "voicemail_calls": 0,
+    "successful_calls": 0,
+    "success_rate": 0,
+    "total_duration_seconds": 0,
+    "answered_duration_seconds": 0,
+    "no_answer_duration_seconds": 489,
+    "human_answered_duration_seconds": 0,
+    "voicemail_duration_seconds": 0,
+    "running_calls": [
+        {
+            "start_ts": 1763184592568,
+            "phone_number": "17621652168"
+        },
+        {
+            "start_ts": 1763184589620,
+            "phone_number": "15067454997"
+        }
+    ]
+  },
+  "request_id": "d1198a2598f6499184d633389a15f79b",
+  "ts": 1763186748
+}
+
+
+POST /api/v1/studio/en/campaigns/recipients/upload - Upload Recipients CSV File
+Request params:
+
+form	
+
+
+
+
+file
+是	string	
+CSV file。 limit: 25MB， maximum 50,000 rows
+
+
+
+csv format
+
+columns:
+
+phone_number、name、another_var
+
+Response:
+
+code	
+是	int	
+refer: link
+
+data	
+是	dict	data
+
+file_url	是	string	file url
+message	
+是	string	message
+Request curl:
+
+curl --location 'https://console-staging.agora.io/api/v1/studio/en/campaigns/recipients/upload' \
+--header 'Content-Type: multipart/form-data' \
+--header 'Accept: application/json' \
+--header 'Cookie: agora-dashboard-staging=xxxxxx' \
+--form 'file=@"/Users/wangzhaoren/Desktop/uploadtest.csv"'
+
+
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "file_url": "https://test-convai-call-center.s3.us-east-1.amazonaws.com/campaigns/recipients/20251113/139263BA37D544409ED70BADC257A6DD.csv"
+    },
+    "request_id": "12f9547fcc3f42118b766d7e8526dda2",
+    "ts": 1763028144
+}
+
+
+GET /api/v1/studio/en/campaigns/:campaign_id/summary/export - Download Campaign Results
+Request params:
+
+params	
+
+
+
+
+campaign_id
+是	string	campaign ID
+Response:
+
+code	是	int	
+refer: link
+
+data	是	dict	data, note: The field details need to be defined by the campaign service.
+message	是	string	message
+Request curl:
+
+curl --location 'https://console-staging.agora.io/api/v1/studio/en/campaigns/6915a5e4f8c43c6edb564e3c/summary/export' \
+--header 'Accept: application/json' \
+--header 'Cookie: agora-dashboard-staging=xxxxxx'
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+{
+    "code": 0,
+    "message": "success",
+    "data": "Campaign ID,Phone Number,Agent ID,Transcript,Status,Created At\n"
+}
+GET /api/v1/studio/en/campaigns/:campaign_id/redial/export  - Download Redial List csv
+Request params:
+
+path	
+campaign_id
+是	string	campaign ID
+query	call_category	是	string[]	
+no_answer
+voicemail
+human_answered
+failed
+undialed
+outbound_transferred_success
+outbound_transferred_failed
+
+can be multiple
+
+
+
+Response:
+
+code	是	int	
+refer: link
+
+data	是	dict	data
+message	是	string	message
+Request curl:
+
+curl --location 'https://console-staging.agora.io/api/v1/studio/en/campaigns/6915a5e4f8c43c6edb564e3c/redial/export?call_category=no_answer%2Cvoicemail' \
+--header 'Accept: application/json' \
+--header 'Cookie: agora-dashboard-staging=xxxxxx'
+
+
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+file response:
+      ctx.set('Access-Control-Expose-Headers', 'content-disposition')
+      ctx.set(
+        'Content-disposition',
+        'attachment;filename=a.csv'
+      )
+GET /api/v1/studio/en/campaigns/:campaign_id/redial/category-distribution  - Get redial category-distribution
+Request:
+
+path	
+campaign_id
+是	string	campaign ID
+
+
+Response:
+code	
+
+
+
+
+message	
+
+
+
+
+data	
+
+
+
+
+
+campaign_id
+
+
+是	string	
+
+total_calls
+
+
+是	int	
+
+distribution
+
+
+是	array<object>	
+
+
+call_category
+
+
+string	
+no_answer
+
+voicemail
+
+human_answered
+
+failed
+
+undialed
+
+outbound_transferred_success
+outbound_transferred_failed
+
+
+count	
+int	count
+request_id	
+
+
+
+
+ts	
+
+
+
+
+
+
+GET /api/v1/studio/en/campaigns/template/export  - Download Template
+Request curl:
+
+curl --location 'https://console-staging.agora.io/api/v1/studio/en/campaigns/template/export' \
+--header 'Cookie: agora-dashboard-staging=xxxxxx'
+
+
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+{
+    "code": 0,
+    "message": "success",
+    "data": "phone_number,name,another_var\n1234567890,John Doe,1234567890\n\n"
+}
+
+
+GET /api/v1/studio/en/campaigns/:campaign_id/calls/agents/:agent_id - Get Call Detail 
+Request params:
+
+params	
+
+
+
+
+campaign_id
+是	string	campaign ID
+
+agent_id	是	string	agent ID
+
+
+Response:
+
+code	
+
+是	int	
+code
+
+message	
+
+是	string	message
+data	
+
+是	[ ]dict	data
+
+cid	
+是	int64	Agora Company ID
+
+campaign_id
+
+是	string	outbound_campaigns._id
+
+phone_number	
+是	string	Phone Number
+
+agent_info	
+是	dict	Agent Info
+
+
+agent_id	是	string	Agent ID
+
+
+agent_uuid	是	string	deployment uuid
+
+
+pipeline_id	是	Yes	pipeline id
+
+
+state	是	string	"CALLING", "RINGING", "ANSWERED", "HANGUP"
+
+
+transcript	是	[ ]dict	transcript
+
+
+duration_seconds
+是	int64	
+duration_seconds
+
+status	
+是	string	
+call status。 'failed', 'interrupted', 'scheduled', 'running', 'completed'
+
+created_at
+
+是	string	
+created_at
+
+updated_at
+
+是	string	
+updated_at
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-CampaignUpstreamServerCode
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "cid": 12345,
+        "campaign_id": "6913343b29f9b0736dcaeebc",
+        "phone_number": "01086483440",
+        "agent_info": {
+            "agent_id": "A42AM33FV38HR64EA89FV54TR46TV64P",
+            "state": "HANGUP",
+            "transcript": [
+                {
+                    "content": "您好，有什么可以帮您？",
+                    "role": "assistant"
+                },
+                {
+                    "content": "用中文礼貌的问用户是否还在通话中",
+                    "role": "user"
+                },
+                {
+                    "content": "您好，请问您现在还在通话中吗？如果方便的话，可以稍等片刻再继续咨询吗？",
+                    "role": "assistant"
+                },
+                {
+                    "content": "用中文礼貌的问用户是否还在通话中",
+                    "role": "user"
+                },
+                {
+                    "content": "您好，请问您现在还在通话中吗？如果方便的话，可以稍等片刻再继续咨询吗？",
+                    "role": "assistant"
+                },
+                {
+                    "content": "用中文礼貌的问用户是否还在通话中",
+                    "role": "user"
+                },
+                {
+                    "content": "您好，请问您现在还在通话中吗？如果方便的话，可以稍等片刻再继续咨询吗？",
+                    "role": "assistant"
+                }
+            ],
+            "duration_seconds": 37
+        },
+        "status": "completed",
+        "created_at": "2025-11-11T13:03:55Z",
+        "updated_at": "2025-11-11T13:46:07Z"
+    },
+    "request_id": "967b78a38f4d44d0a19e31974044cd47",
+    "ts": 1762929271
+}
+
+
+
+
+GET /api/v1/studio/en/campaigns/:campaign_id/call-history  - Get Campaign Call History
+Request:
+
+params	
+
+
+
+
+campaign_id
+是	string	campaign ID
+query	
+
+
+
+
+page	否	int	default 1
+
+page_size	否	int	default 10 [0,100]
+
+call_category	否	string	
+Deprecated
+
+outbound:
+
+failed
+no_answer
+voicemail
+human_answered
+outbound_transferred_success（转接成功）
+outbound_transferred_failed(转接失败)
+
+call_category_v2	否	string	
+outbound:
+
+failed
+no_answer
+voicemail
+human_answered
+outbound_transferred_success（转接成功）
+outbound_transferred_failed(转接失败)
+
+call_type	否	'inbound' | 'outbound'	histroy type: 'all' | 'inbound' | 'outbound'
+
+sort_by	否	string	
+duration（j接通时长）
+call_start_time（拨打开始时间）
+call_type
+call_category
+llm_call_evaluation_status
+Default：call_start_time
+
+
+sort_order	否	'asc' | 'desc'	order type
+
+page	否	int	default 1
+
+page_size	否	int	default 10 [0,100]
+
+search_keyword	否	string	
+
+search_fields	否	string	
+Query range, multiple ranges are allowed, separated by commas. 
+Currently supported ranges: 
+from_number 
+to_number 
+agent_name 
+campaign_name
+Response:
+
+
+
+code	
+
+
+
+Yes	int	
+
+
+message	
+
+
+
+Yes	string	
+data	
+
+
+
+Yes	[ ]dict	
+
+count	
+
+
+
+
+
+
+total	
+
+
+
+
+
+
+list	
+
+
+
+
+
+
+
+page	
+
+Yes	string	Phone Number
+
+
+page_size	
+
+Yes	dict	Agent Info
+
+
+
+call_id	
+Yes	string	call ID
+
+
+
+agent_id	
+Yes	string	Agent ID
+
+
+
+agent_uuid	
+Yes	string	deployment uuid
+
+
+
+pipeline_id	
+Yes	number	pipeline id
+
+
+
+agent_name	
+Yes	string	agent name
+
+
+
+from_number	
+Yes	string	
+Call number
+
+
+
+to_number	
+Yes	string	
+Called number
+
+
+
+campaign_name	
+Yes	string	
+Outbound call campaign name 
+Inbound call fields are empty strings 
+Non-campaign fields are empty strings
+
+
+
+campaign_id	
+Yes	string	
+Outbound call campaign ID 
+Inbound call fields are empty strings 
+Non-campaign fields are empty strings
+
+
+
+campaign_exists	
+Yes	boolean	
+
+
+
+call_type	
+Yes	string	call type
+
+
+
+hangup_reason	
+Yes	string	
+Reason for ending the call
+user_hangup （用户挂断）
+ai_hangup（AI 挂断）
+
+
+
+call_category	
+Yes	string	
+oubound：
+
+failed(呼叫失败)
+no_answer(未接通)
+voicemail(语音信箱)
+human_answered(真人接听)
+inbound：
+
+ai_answered(接通)
+ai_no_answer(未接通)
+transfered_success(转接成功)
+transfered_failed(转接失败)
+
+
+
+transfer_phone_number	
+Yes	string	
+Call forwarding party
+
+
+
+duration_seconds
+
+Yes	int64	
+Call duration in seconds
+
+
+
+answered_ts	
+Yes	int64	
+Call start time
+
+
+
+call_ts	
+Yes	int64	
+Dial time
+
+
+
+state	
+No	string	
+call Current status: Call status
+
+。 "START", "CALLING", "RINGING", "ANSWERED", "HANGUP"
+
+
+
+
+llm_call_evaluation_status	
+No	string	
+disabled：未开启评估；
+failed： 评估异常；
+scheduled： 待评估；
+evaluating： 正在评估中；
+completed： 评估完成；
+
+
+
+llm_call_evaluation_failed_reason	
+No	string	
+If the success evaluation status is marked as failure/abnormal, the following reasons for the abnormality are currently displayed:
+
+transcript_disabled: Transcription is not enabled
+success_evaluation_prompt_missing: Evaluation prompt is empty
+system_prompt_missing: System prompt is empty
+llm_vendor_missing: LLM vendor not configured
+transcript_empty: Transcription event received but content is empty
+transcript_missing: Transcription missing, no transcription event received within timeout
+llm_service_error: LLM error
+llm_max_retries_exceeded: Maximum number of retries exceeded
+
+
+
+llm_call_evaluation_result	
+
+
+
+
+
+
+
+
+call_success_evaluation_result	Yes	bool	
+Call evaluation results
+It may be null. Null indicates that the LLM cannot determine the result, 
+and in this case, the front end needs to treat it as false.
+
+
+
+
+raw_evaluation_results	Yes	map	
+The original evaluation result key-value pairs include system variables and user-defined variables. 
+For example: { "call_success": false, "age":24 }
+
+
+
+
+raw_system_evaluation_results	Yes	map	
+The original evaluation result key-value pairs only contain system variables. 
+For example: { "call_success": false }
+
+
+
+
+raw_custom_evaluation_results	Yes	map	
+The original evaluation results are key-value pairs, containing only user-defined variables. 
+For example: { "age":24 }
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-Call-historyUpstreamServerCode
+ 
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "page": 1,
+        "page_size": 10,
+        "count": 3,
+        "total": 3,
+        "list": [
+            {
+                "call_id": "6942963ce22c120e64005cd8",
+                "agent_id": "A42AN97VD23KE45KE39AC94PP47LP32A",
+                "agent_name": "LatestPipelineCampaign",
+                "from_number": "+16059888882",
+                "to_number": "+18774449899",
+                "campaign_id": "6942963ce22c120e64005cd2",
+                "campaign_name": "NKCampaignQATest",
+                "campaign_exists": true,
+                "call_type": "outbound",
+                "hangup_reason": "user_hangup",
+                "call_category": "no_answer",
+                "transfer_phone_number": "",
+                "duration_seconds": 0,
+                "answered_ts": 0,
+                "state": "HANGUP",
+                "call_failed_reason": "",
+                "call_ts": 1765971582,
+                "channel": "87ba12f9-7e3c-45ad-abf8-16d3852d58cb",
+                "agent_uuid": "d66758d354c04289b24fc118ab8dda5f",
+                "llm_call_evaluation_status": "",
+                "llm_call_evaluation_failed_reason": "",
+                "llm_call_evaluation_result": {
+                    "call_success_evaluation_result": null
+                }
+            },
+            {
+                "call_id": "6942963ce22c120e64005cd7",
+                "agent_id": "A42AM29HD99VW76DV76KT24VR26WW62M",
+                "agent_name": "LatestPipelineCampaign",
+                "from_number": "+16059888882",
+                "to_number": "+14158511858",
+                "campaign_id": "6942963ce22c120e64005cd2",
+                "campaign_name": "NKCampaignQATest",
+                "campaign_exists": true,
+                "call_type": "outbound",
+                "hangup_reason": "user_hangup",
+                "call_category": "no_answer",
+                "transfer_phone_number": "",
+                "duration_seconds": 0,
+                "answered_ts": 0,
+                "state": "HANGUP",
+                "call_failed_reason": "",
+                "call_ts": 1765971579,
+                "channel": "4bcde957-f095-48f8-aa12-800a39441836",
+                "agent_uuid": "d66758d354c04289b24fc118ab8dda5f",
+                "llm_call_evaluation_status": "",
+                "llm_call_evaluation_failed_reason": "",
+                "llm_call_evaluation_result": {
+                    "call_success_evaluation_result": null
+                }
+            },
+            {
+                "call_id": "6942963ce22c120e64005cd6",
+                "agent_id": "A42AK99WW97FJ86JM55CE84PC36HA94X",
+                "agent_name": "LatestPipelineCampaign",
+                "from_number": "+16059888882",
+                "to_number": "+14084385352",
+                "campaign_id": "6942963ce22c120e64005cd2",
+                "campaign_name": "NKCampaignQATest",
+                "campaign_exists": true,
+                "call_type": "outbound",
+                "hangup_reason": "user_hangup",
+                "call_category": "no_answer",
+                "transfer_phone_number": "",
+                "duration_seconds": 0,
+                "answered_ts": 0,
+                "state": "HANGUP",
+                "call_failed_reason": "",
+                "call_ts": 1765971576,
+                "channel": "eb0c5f95-8e8c-4c41-800f-c70af2424df4",
+                "agent_uuid": "d66758d354c04289b24fc118ab8dda5f",
+                "llm_call_evaluation_status": "",
+                "llm_call_evaluation_failed_reason": "",
+                "llm_call_evaluation_result": {
+                    "call_success_evaluation_result": null
+                }
+            }
+        ]
+    }
+}
+GET /api/v1/studio/en/campaigns/:campaign_id/call-history/export  - Get Campaign Call History download export
+Request:
+
+params	
+
+
+
+
+campaign_id
+是	string	campaign ID
+query	
+
+
+
+
+page	否	int	default 1
+
+page_size	否	int	default 10 [0,100]
+
+call_category	否	string	
+outbound:
+
+failed
+no_answer
+voicemail
+human_answered
+outbound_transferred_success
+outbound_transferred_failed
+
+call_type	否	'inbound' | 'outbound'	histroy type: 'all' | 'inbound' | 'outbound'
+
+sort_by	否	string	
+duration（j接通时长）
+call_start_time（拨打开始时间）
+call_type
+call_category
+Default：call_start_time
+
+
+sort_order	否	'asc' | 'desc'	order type
+
+page	否	int	default 1
+
+page_size	否	int	default 10 [0,100]
+
+search_keyword	否	string	
+
+search_fields	否	string	
+Query range, multiple ranges are allowed, separated by commas. 
+Currently supported ranges: 
+from_number 
+to_number 
+agent_name 
+campaign_name
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+file response:
+       ctx.set('Access-Control-Expose-Headers', 'content-disposition')
+      ctx.set(
+        'Content-disposition',
+        'attachment;filename=a.csv'
+      )
+
+
+GET /api/v1/studio/en/metadata/system-evaluations - Get system evaluation metadata
+Request:
+
+query	
+
+
+
+
+page	No	int	default 1
+
+page_size	No	int	default 10 [0,100]
+
+call_category	No	string	
+outbound:
+
+failed
+no_answer
+voicemail
+human_answered
+
+call_type	No
+'inbound' | 'outbound'	histroy type: 'all' | 'inbound' | 'outbound'
+
+sort_by	No	string	
+duration
+call_start_time
+call_type
+call_category
+Default：call_start_time
+
+
+sort_order	No	'asc' | 'desc'	order type
+
+page	No	int	default 1
+
+page_size	No	int	default 10 [0,100]
+
+search_keyword	No	string	
+
+search_fields	No
+string	
+Query range, multiple ranges are allowed, separated by commas. 
+Currently supported ranges: 
+from_number 
+to_number 
+agent_name 
+campaign_name
+Response:
+
+code	
+Yes	int	
+
+
+message	
+Yes	string	
+data	
+Yes	array<object>	
+
+variable_name
+
+Yes	string	
+
+type
+
+Yes	string	
+request_id	
+Yes	string	
+ts	
+Yes	int	
+
+GET /api/v1/studio/en/metadata/variable-names/:variable-name/association-counts - Get evaluation metadata
+Request:
+path	
+
+
+
+
+variable-name
+
+Yes	string	
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "campaign_count": 1,
+        "inbound_agent_count": 0
+    }
+}
+
+POST /api/v1/studio/en/metadata/variable-names/association-counts - Get batch evaluation metadata
+Request:
+body	
+
+
+
+
+variable_names
+
+Yes	string[]	
+Response:
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "list": [
+            {
+                "variable_name": "金额",
+                "campaign_count": 0,
+                "inbound_agent_count": 0
+            },
+            {
+                "variable_name": "地点",
+                "campaign_count": 0,
+                "inbound_agent_count": 0
+            },
+            {
+                "variable_name": "call_success",
+                "campaign_count": 142,
+                "inbound_agent_count": 10
+            }
+        ]
+    }
+}
+GET /api/v1/studio/en/metadata/variable-names/:variable-name/inbound-agents - Get evaluation metadata associated inbound-agents
+Request:
+
+path	
+
+
+
+
+variable-name
+
+Yes	string	
+query	
+
+
+
+
+page_size	No	int	default 10, max 100
+
+page	No	int	start from 1, default 1
+
+search_keyword	No	string	
+
+search_fields	No	string	phone_number
+
+
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "page": 1,
+        "page_size": 10,
+        "count": 10,
+        "total": 10,
+        "list": [
+            {
+                "phone_number_id": "69a95b247a828c94029bcc3a",
+                "phone_number": "A6KwHAeirxKasaLvwYN8",
+                "area_code": "",
+                "agent_uuid": "1c1f8dae280142cf9ee4a094b38e8f58",
+                "source": "domestic",
+                "agent_name": ""
+            },
+            {
+                "phone_number_id": "69708bfa5c344ffdaccf90b7",
+                "phone_number": "+112345678905",
+                "area_code": "",
+                "agent_uuid": "e0182b3200784ceeac6d8b190a0e6f8c",
+                "source": "twilio",
+                "agent_name": ""
+            },
+            {
+                "phone_number_id": "69a54a2bfb153cac269092e7",
+                "phone_number": "86778284",
+                "area_code": "0311",
+                "agent_uuid": "7bd9945373f6417a80c0a95b4af24e2b",
+                "source": "domestic",
+                "agent_name": ""
+            },
+            {
+                "phone_number_id": "6972ed7a69a7562cf237d102",
+                "phone_number": "42353453",
+                "area_code": "010",
+                "agent_uuid": "e0182b3200784ceeac6d8b190a0e6f8c",
+                "source": "domestic",
+                "agent_name": ""
+            },
+            {
+                "phone_number_id": "6973472469a7562cf237d14c",
+                "phone_number": "12345678",
+                "area_code": "086",
+                "agent_uuid": "c4e0f6b8caf24b018bc0b38d297af806",
+                "source": "domestic",
+                "agent_name": ""
+            },
+            {
+                "phone_number_id": "697708dd62305d5eac81ac0b",
+                "phone_number": "31265458",
+                "area_code": "021",
+                "agent_uuid": "c4e0f6b8caf24b018bc0b38d297af806",
+                "source": "domestic",
+                "agent_name": ""
+            },
+            {
+                "phone_number_id": "69854ad3a2a67e701311f13a",
+                "phone_number": "15268127990",
+                "area_code": "+86",
+                "agent_uuid": "c4e0f6b8caf24b018bc0b38d297af806",
+                "source": "domestic",
+                "agent_name": ""
+            },
+            {
+                "phone_number_id": "69770cb862305d5eac81ac15",
+                "phone_number": "88228833",
+                "area_code": "0518",
+                "agent_uuid": "c4e0f6b8caf24b018bc0b38d297af806",
+                "source": "domestic",
+                "agent_name": ""
+            },
+            {
+                "phone_number_id": "696f3923890a45db90d4815b",
+                "phone_number": "+112345678904",
+                "area_code": "",
+                "agent_uuid": "4c68c907a8564332900de96218f2872b",
+                "source": "twilio",
+                "agent_name": "测试1"
+            },
+            {
+                "phone_number_id": "69353bbb86f81337b9f98991",
+                "phone_number": "212121323",
+                "area_code": "11212",
+                "agent_uuid": "e0182b3200784ceeac6d8b190a0e6f8c",
+                "source": "aliyun",
+                "agent_name": ""
+            }
+        ]
+    },
+    "request_id": "0714c345-1306-4b8d-9f8a-f5a8cf88d659",
+    "ts": 1773317180
+}
+
+
+GET /api/v1/studio/en/studio/allowed-entries- check if the company is allowed to visit studio （whitelist cid）
+for cn: /api/v1/studio/call-center/allowed-entries
+
+Response:
+
+// error code refers to
+// https://confluence.agoralab.co/display/DPE/Studio+Console+API#StudioConsoleAPI-BusinessCode
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "isAllowedStudioEntry": false
+    }
+}
+
+
+MCP
+POST /api/v1/studio/en/mcp - create mcp
+Request:
+
+body	
+
+
+
+
+
+name	
+yes	string	
+
+description	
+no	string	
+
+icon_url	
+no	
+
+
+config	
+yes	object	
+
+
+endpoint	ye	string	
+
+
+transport	yes	string	'streamable_http' | 'http' | 'sse'
+
+
+timeout_ms	yes	number	
+
+
+headers	no	object	
+e.g. {‘x-api-key’: 'xxxxxx'}
+
+
+
+queries	no	object	
+e.g. {'key': 'value1'}
+
+
+created_at
+
+
+
+created time,TIMESTAMP
+
+updated_at
+
+
+
+updated time,TIMESTAMP
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "uuid": "0bbc0ddf3e1d4058bd46baebb06412ad",
+        "cid": "115130",
+        "name": "test mcp tools 1",
+        "description": "test",
+        "status": "available",
+        "config": {
+            "endpoint": "https://mcp.context7.com/mcp",
+            "transport": "SHTTP",
+            "headers": {
+                "CONTEXT7_API_KEY": "ctx7sk-42c995df-6d83-4c75-8af7-ad50ae95da50"
+            }
+        },
+        "creator": "j2k793wm@linshiyouxiang.net",
+        "last_detected_time": null,
+        "icon_url": "https://www.shengwang.cn/wp-content/uploads/2025/02/logo_blue.svg",
+        "id": "2",
+        "createTime": "2025-11-28T07:26:23.000Z",
+        "updateTime": "2025-11-28T07:26:24.000Z"
+    }
+}
+
+
+Get /api/v1/studio/en/mcps -get mcp list
+Request:
+
+query	
+
+
+
+
+search	no	string	search MCP name
+
+page	no	number	
+
+page_size	no	number	
+
+status	no	string	
+available | unavailable
+
+
+
+
+sort_field	no	string	
+sort_field=status,last_detected_time, default: create_time
+
+
+sort_order	no	string	sort_order=ASC,DESC, default desc
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "list": [
+            {
+                "id": "2",
+                "uuid": "0bbc0ddf3e1d4058bd46baebb06412ad",
+                "cid": "115130",
+                "name": "test mcp tools 1",
+                "description": "test",
+                "icon_url": "https://www.shengwang.cn/wp-content/uploads/2025/02/logo_blue.svg",
+                "status": "available",
+                "last_detected_time": null,
+                "config": {
+                    "headers": {
+                        "CONTEXT7_API_KEY": "ctx7sk-42c995df-6d83-4c75-8af7-ad50ae95da50"
+                    },
+                    "endpoint": "https://mcp.context7.com/mcp",
+                    "transport": "SHTTP"
+                },
+                "creator": "j2k793wm@linshiyouxiang.net",
+                "createTime": "2025-11-28T07:26:23.000Z",
+                "updateTime": "2025-11-28T07:26:24.000Z"
+            },
+            {
+                "id": "1",
+                "uuid": "4c44854a2ab14c00af6102f556eacd0e",
+                "cid": "115130",
+                "name": "test mcp tools 112",
+                "description": "test",
+                "icon_url": "https://www.shengwang.cn/wp-content/uploads/2025/02/logo_blue.svg",
+                "status": "available",
+                "last_detected_time": "2025-11-27T11:05:27.000Z",
+                "config": {
+                    "headers": {
+                        "CONTEXT7_API_KEY": "ctx7sk-42c995df-6d83-4c75-8af7-ad50ae95da50"
+                    },
+                    "queries": {
+                        "key1": "v1",
+                        "key2": "v2"
+                    },
+                    "endpoint": "https://mcp.context7.com/mcp",
+                    "transport": "SHTTP"
+                },
+                "creator": "j2k793wm@linshiyouxiang.net",
+                "createTime": "2025-11-27T11:02:14.000Z",
+                "updateTime": "2025-11-27T11:05:26.000Z"
+            }
+        ],
+        "total": 2,
+        "page": 1,
+        "page_size": 20
+    }
+}
+PUT /api/v1/studio/en/mcp/:uuid -update mcp
+Request:
+
+path	
+
+
+
+
+
+uuid	
+yes	string	uuid
+body	
+
+
+
+
+
+name	
+yes	string	
+
+description	
+no	string	
+
+icon_url	
+no	
+
+
+config	
+yes	object	
+
+
+endpoint	ye	string	
+
+
+transport	yes	string	'streamable_http' | 'http' | 'sse'
+
+
+timeout_ms	yes	number	
+
+
+headers	no	object	
+e.g. {‘x-api-key’: 'xxxxxx'}
+
+
+
+queries	no	object	
+e.g. {'key': 'value1'}
+
+
+created_at
+
+
+
+created time,TIMESTAMP
+
+updated_at
+
+
+
+updated time,TIMESTAMP
+
+
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "id": "2",
+        "uuid": "0bbc0ddf3e1d4058bd46baebb06412ad",
+        "name": "test mcp tools 112111111",
+        "description": "test",
+        "status": "available",
+        "last_detected_time": null,
+        "config": {
+            "endpoint": "https://mcp.context7.com/mcp",
+            "transport": "SHTTP",
+            "headers": {
+                "CONTEXT7_API_KEY": "ctx7sk-42c995df-6d83-4c75-8af7-ad50ae95da50"
+            },
+            "queries": {
+                "key1": "v1",
+                "key2": "v2"
+            }
+        },
+        "creator": "j2k793wm@linshiyouxiang.net",
+        "create_time": "2025-11-28T07:26:23.000Z",
+        "update_time": "2025-11-28T07:51:12.000Z"
+    }
+}
+DELETE /api/v1/studio/en/mcp/:uuid -delete mcp
+Request:
+
+
+
+path	
+
+
+
+
+uuid	yes	string	uuid
+Response:
+
+
+
+{
+    "code": 0,
+    "message": "success",
+    "data": null
+}
+
+
+
+
+
+
+GET /api/v1/studio/en/mcp/:uuid -get mcp details
+Request:
+
+
+
+path	
+
+
+
+
+uuid	yes	string	uuid
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "id": "2",
+        "uuid": "0bbc0ddf3e1d4058bd46baebb06412ad",
+        "cid": "115130",
+        "name": "test mcp tools 112111111",
+        "description": "test",
+        "icon_url": "https://www.shengwang.cn/wp-content/uploads/2025/02/logo_blue.svg",
+        "status": "available",
+        "last_detected_time": null,
+        "config": {
+            "headers": {
+                "CONTEXT7_API_KEY": "ctx7sk-42c995df-6d83-4c75-8af7-ad50ae95da50"
+            },
+            "queries": {
+                "key1": "v1",
+                "key2": "v2"
+            },
+            "endpoint": "https://mcp.context7.com/mcp",
+            "transport": "SHTTP"
+        },
+        "creator": "j2k793wm@linshiyouxiang.net",
+        "createTime": "2025-11-28T07:26:23.000Z",
+        "updateTime": "2025-11-28T07:51:12.000Z"
+    }
+}
+
+
+GET /api/v1/studio/en/mcp/:uuid/status -get mcp status
+Request:
+
+path	
+
+
+
+
+uuid	yes	string	uuid
+Response:
+
+export enum McpStatus {
+  PENDING_DETECTION = 'pending_detection',
+  UNDER_DETECTION = 'under_detection',
+  AVAILABLE = 'available',
+  UNAVAILABLE = 'unavailable',
+}
+ 
+ 
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "status": "available",
+        "mcp": {
+            "id": "2",
+            "uuid": "0bbc0ddf3e1d4058bd46baebb06412ad",
+            "cid": "115130",
+            "name": "test mcp tools 112111111",
+            "description": "test",
+            "icon_url": "https://www.shengwang.cn/wp-content/uploads/2025/02/logo_blue.svg",
+            "status": "available",
+            "last_detected_time": "2025-11-28T07:56:13.054Z",
+            "config": {
+                "headers": {
+                    "CONTEXT7_API_KEY": "ctx7sk-42c995df-6d83-4c75-8af7-ad50ae95da50"
+                },
+                "queries": {
+                    "key1": "v1",
+                    "key2": "v2"
+                },
+                "endpoint": "https://mcp.context7.com/mcp",
+                "transport": "SHTTP"
+            },
+            "creator": "j2k793wm@linshiyouxiang.net",
+            "createTime": "2025-11-28T07:26:23.000Z",
+            "updateTime": "2025-11-28T07:56:13.000Z"
+        },
+        "connectivity_test": {
+            "success": true,
+            "data": {
+                "result": {
+                    "protocolVersion": "2025-03-26",
+                    "capabilities": {
+                        "tools": {
+                            "listChanged": true
+                        }
+                    },
+                    "serverInfo": {
+                        "name": "Context7",
+                        "version": "1.0.13"
+                    },
+                    "instructions": "Use this server to retrieve up-to-date documentation and code examples for any library."
+                },
+                "jsonrpc": "2.0",
+                "id": 1
+            }
+        }
+    }
+}
+
+
+GET /api/v1/studio/en/mcp/:uuid/tools -get mcp tools
+Request:
+
+path	
+
+
+
+
+uuid	yes	string	uuid
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "tools": [
+            {
+                "name": "before_run",
+                "description": "请在执行 RESTful API 文档生成工作前运行此工具，以确保正确的工作流程",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "command": {
+                                    "description": "要执行的命令",
+                                    "type": "string"
+                                },
+                                "args": {
+                                    "description": "命令参数",
+                                    "type": "array",
+                                    "items": {}
+                                },
+                                "isBeforeRun": {
+                                    "type": "boolean",
+                                    "const": true
+                                }
+                            },
+                            "required": [
+                                "command",
+                                "isBeforeRun"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "schema"
+                    ],
+                    "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+            },
+            {
+                "name": "get_confluence_content",
+                "description": "Get content of a specific page.\n\n        Args:\n            page_id: The ID of the page to retrieve\n\n        Returns:\n            ConfluencePage content",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "page_id": {
+                            "description": "The ID of the page to retrieve",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "page_id"
+                    ],
+                    "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+            },
+            {
+                "name": "get_restful_api_rules",
+                "description": "获取定义RESTful API生成规则的Confluence页面内容。\n\n    参数:\n        rule_page_id: 包含API生成规则的Confluence页面ID\n\n    返回:\n        YAML规则内容",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "rule_page_id": {
+                            "description": "包含API生成规则的Confluence页面ID",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "rule_page_id"
+                    ],
+                    "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+            },
+            {
+                "name": "get_restful_api_source",
+                "description": "获取包含RESTful API源定义的Confluence页面内容。\n\n    参数:\n        source_page_id: 包含API源定义的Confluence页面ID\n\n    返回:\n        API源文档内容",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "source_page_id": {
+                            "description": "包含API源定义的Confluence页面ID",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "source_page_id"
+                    ],
+                    "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+            },
+            {
+                "name": "get_restful_api_data",
+                "description": "获取生成RESTful API所需的规则和源文档。\n\n    参数:\n        rule_page_id: 包含API生成规则的Confluence页面ID，默认为1730445887\n        source_page_id: 包含API源定义的Confluence页面ID\n\n    返回:\n        规则内容和源文档内容",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "rule_page_id": {
+                            "description": "包含API生成规则的Confluence页面ID",
+                            "type": "string"
+                        },
+                        "source_page_id": {
+                            "description": "包含API源定义的Confluence页面ID",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "rule_page_id",
+                        "source_page_id"
+                    ],
+                    "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+            },
+            {
+                "name": "list_readable_pages",
+                "description": "列出当前可访问的Confluence页面。\n\n    返回:\n        可访问页面的ID列表",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {},
+                    "$schema": "http://json-schema.org/draft-07/schema#"
+                }
+            }
+        ]
+    }
+}
+Knowledage Base
+rules:
+
+KB only have 3 status: Processing | Active | Partial_Failure which decided by:
+If any docs under KB are still Uploading, Processing, then KB is Processing
+If every docs are not Uploading. Processing,
+
+then if any files are Upload_failed, Processing_Failed, then KB is Partial_Failure.
+then if every files are Processed, then KB is Active
+
+For docs, if doc is Upload_Failed, then there's no way to recover it. If doc is Process_Failed first time, it has a chance to process again, and if processing succeed, then doc would be update to Processed , otherwise the status doesn't change. (The doc processing final status is decided by RAG service)
+
+
+
+POST /api/v1/studio/en/knowledge-bases - create knowledge
+Request:
+
+form	
+
+
+
+
+name	Yes	string	
+
+description	No	string	
+
+files	
+File[]	
+Response:
+
+data	
+
+
+
+
+status	
+
+Active | Processing | Partial_Failure
+
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "uuid": "4d4f50d6f2c54af783a5a93c93a48338",
+        "cid": "115130",
+        "name": "test-20251217",
+        "description": "test-20251217",
+        "createdBy": "j2k793wm@linshiyouxiang.net",
+        "updatedBy": "j2k793wm@linshiyouxiang.net",
+        "id": "21",
+        "status": "Active",
+        "totalDocuments": 1,
+        "totalSize": 22375024,
+        "processingDocuments": 0,
+        "failedDocuments": 0,
+        "createdAt": "2025-12-17T06:11:29.000Z",
+        "updatedAt": "2025-12-17T06:11:29.000Z"
+    }
+}
+
+
+
+
+GET /api/v1/studio/en/knowledge-bases - get knowledge list
+Request:
+query	
+
+
+
+
+
+page	
+No	number	default: 1
+
+page_size	
+No	number	default: 10
+
+search	
+No	string	search keyword
+
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "list": [
+            {
+                "id": "21",
+                "uuid": "4d4f50d6f2c54af783a5a93c93a48338",
+                "cid": 115130,
+                "name": "test-20251217",
+                "description": "test-20251217",
+                "status": "ACTIVE",
+                "totalDocuments": 1,
+                "totalSize": 22375024,
+                "processingDocuments": 0,
+                "failedDocuments": 0,
+                "createdAt": "2025-12-17T06:11:29.000Z",
+                "updatedAt": "2025-12-17T06:11:29.000Z",
+                "createdBy": "j2k793wm@linshiyouxiang.net",
+                "updatedBy": "j2k793wm@linshiyouxiang.net"
+            },
+            {
+                "id": "20",
+                "uuid": "bcf9c42db74143f6af5ff0ae3619407c",
+                "cid": 115130,
+                "name": "test-10-new",
+                "description": "test-10-new",
+                "status": "ACTIVE",
+                "totalDocuments": 5,
+                "totalSize": 80048372,
+                "processingDocuments": 0,
+                "failedDocuments": 0,
+                "createdAt": "2025-12-15T07:59:11.000Z",
+                "updatedAt": "2025-12-16T11:23:31.000Z",
+                "createdBy": "j2k793wm@linshiyouxiang.net",
+                "updatedBy": "j2k793wm@linshiyouxiang.net"
+            }
+        ],
+        "total": 13,
+        "page": 1,
+        "page_size": 2
+    }
+}
+PUT /api/v1/studio/en/knowledge-bases/:id - update KB
+Request:
+path	
+
+
+
+
+uuid	Yes	string	
+form	
+
+
+
+
+name	Yes	string	
+
+description	No	string	
+
+files	No	File[]	
+
+Response:
+
+data	
+
+
+
+
+status	
+
+Active | Processing | Partial_Failure
+
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "id": "21",
+        "uuid": "4d4f50d6f2c54af783a5a93c93a48338",
+        "cid": 115130,
+        "name": "test-20251217-new",
+        "description": "test-20251217-new",
+        "status": "ACTIVE",
+        "totalDocuments": 1,
+        "totalSize": 22375024,
+        "processingDocuments": 0,
+        "failedDocuments": 0,
+        "createdAt": "2025-12-17T06:11:29.000Z",
+        "updatedAt": "2025-12-17T06:15:29.000Z",
+        "createdBy": "j2k793wm@linshiyouxiang.net",
+        "updatedBy": "j2k793wm@linshiyouxiang.net"
+    }
+}
+DELETE /api/v1/studio/en/knowledge-bases/:id - delete KB
+Request:
+
+path	
+
+
+
+
+kb_uuid	Yes	string	
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": null
+}
+
+
+GET /api/v1/studio/en/knowledge-bases/:uuid - get KB detail
+Request:
+
+path	
+
+
+
+
+uuid	Yes	string	
+Response:
+
+data	
+
+
+
+
+status	
+
+Active | Processing | Partial_Failure
+
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "id": "21",
+        "uuid": "4d4f50d6f2c54af783a5a93c93a48338",
+        "cid": 115130,
+        "name": "test-10",
+        "description": "test-10",
+        "status": "ACTIVE",
+        "totalDocuments": 1,
+        "totalSize": 22375024,
+        "processingDocuments": 0,
+        "failedDocuments": 0,
+        "createdAt": "2025-12-17T06:11:29.000Z",
+        "updatedAt": "2025-12-17T06:18:09.000Z",
+        "createdBy": "j2k793wm@linshiyouxiang.net",
+        "updatedBy": "j2k793wm@linshiyouxiang.net"
+    }
+}
+
+DELETE /api/v1/studio/en/knowledge-bases/:kb_uuid/documents/:doc_uuid - delete document
+Request:
+
+path	
+
+
+
+
+kb_uuid	Yes	string	
+
+doc_uuid	Yes	string	
+
+POST /api/v1/studio/en/knowledge-bases/:kb_uuid/documents - upload documents
+Request:
+path	
+
+
+
+
+kb_uuid	Yes	string	
+form	
+
+
+
+
+files	Yes	File[]	
+Response:
+
+data	
+
+
+
+
+status	
+
+Uploading | Upload_Failed | Processing | Processed | Process_Failed
+
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "documents": [
+            {
+                "uuid": "ec62be7a621949eab6af787e79e06152",
+                "knowledgeBaseId": "20",
+                "cid": "115130",
+                "name": "zhaoren-test-sample.jpg",
+                "fileType": "image/jpeg",
+                "fileSize": 2504642,
+                "fileUrl": "",
+                "createdBy": "j2k793wm@linshiyouxiang.net",
+                "id": "40",
+                "status": "Uploading",
+                "createdAt": "2025-12-18T08:00:29.000Z",
+                "updatedAt": "2025-12-18T08:00:29.000Z"
+            },
+            {
+                "uuid": "510fcca1ad8d4d5c9349e111e6e49c8c",
+                "knowledgeBaseId": "20",
+                "cid": "115130",
+                "name": "zhaoren-test-sample.png",
+                "fileType": "image/png",
+                "fileSize": 2964729,
+                "fileUrl": "",
+                "createdBy": "j2k793wm@linshiyouxiang.net",
+                "id": "41",
+                "status": "Uploading",
+                "createdAt": "2025-12-18T08:00:29.000Z",
+                "updatedAt": "2025-12-18T08:00:29.000Z"
+            }
+        ],
+        "count": 2
+    }
+}
+GET  /api/v1/studio/en/knowledge-bases/:kb_uuid/documents/:doc_uuid/export - get KB document
+Request:
+
+
+
+path	
+
+
+
+
+kb_uuid	Yes	string	
+
+doc_uuid
+
+Yes	string	
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "download_url": 'xxxxxx'
+    }
+}
+GET /api/v1/studio/en/knowledge-bases/:kb_uuid/documents - get KB documents
+Request:
+
+path	
+
+
+
+
+kb_uuid	Yes	string	
+query	
+
+
+
+
+page	No	number	
+
+page_size	No	number	
+
+name	No	string	search file name
+
+file_type	No	string	search by file_type(file extension)
+Response:
+
+data	
+
+
+
+
+status	
+
+Uploading | Upload_Failed | Processing | Processed | Process_Failed
+
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "list": [
+            {
+                "id": "28",
+                "uuid": "23a0c9e884a1434aad97d4cbe32b1995",
+                "knowledgeBaseId": 21,
+                "cid": 115130,
+                "name": "alibaba-20f.md",
+                "fileType": "text/markdown",
+                "fileSize": 22375024,
+                "fileUrl": "",
+                "status": "UPLOADING",
+                "createdAt": "2025-12-17T06:22:33.000Z",
+                "updatedAt": "2025-12-17T06:22:37.000Z",
+                "createdBy": "j2k793wm@linshiyouxiang.net"
+            },
+            {
+                "id": "27",
+                "uuid": "ff88c1784151494bba195b334a196f15",
+                "knowledgeBaseId": 21,
+                "cid": 115130,
+                "name": "alibaba-20f.md",
+                "fileType": "text/markdown",
+                "fileSize": 22375024,
+                "fileUrl": "",
+                "status": "UPLOADING",
+                "createdAt": "2025-12-17T06:11:29.000Z",
+                "updatedAt": "2025-12-17T06:11:29.000Z",
+                "createdBy": "j2k793wm@linshiyouxiang.net"
+            }
+        ],
+        "total": 2,
+        "page": 1,
+        "page_size": 2
+    }
+}
+
+
+GET /api/v1/studio/en/knowledge-bases/:kb_uuid/deployments - get KB deployments
+Request:
+
+path	
+
+
+
+
+kb_uuid	Yes	string	
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "deployments": [
+            {
+                "id": "3",
+                "pipeline_deploy_uuid": "a0390e4751f34bb28bd94c5d0aa4b405",
+                "pipeline_id": "3",
+                "pipeline_uuid": "064cefb970a14c2591fd0594484bf132",
+                "pipeline_name": "IOT1",
+                "agent_name": "IOT1",
+                "app_id": "40764883ddf74c1b990d1317fd2ccefc",
+                "app_name": "项目_zf_01",
+                "status": 2,
+                "created_at": "2025-08-13T07:44:05.000Z",
+                "updated_at": "2025-11-25T09:04:55.000Z"
+            }
+        ],
+        "total": 1
+    }
+}
+
+
+Voice Library
+GET /api/v1/studio/en/vendors - get voice library vendors
+Request:
+
+query	
+
+
+
+
+type	No	string	tts | llm | asr
+
+search_keyword	No	string	search name keyword
+
+page	No	number	start from 1, default: 1
+
+page_size	No	number	default: 20
+
+sort_by	No	string	name | type | created_at | updated_at, default: created_at
+
+sort_direction	No	string	asc | desc, default desc
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "list": [
+            {
+                "id": 3,
+                "uuid": "0b058efa-1216-11f1-8e6b-b05496f1f909",
+                "name": "openai",
+                "type": "TTS",
+                "createdAt": "2026-02-25T06:48:50.000Z",
+                "updatedAt": "2026-02-25T06:48:50.000Z"
+            },
+            {
+                "id": 2,
+                "uuid": "0b058cc0-1216-11f1-8e6b-b05496f1f909",
+                "name": "minimax",
+                "type": "TTS",
+                "createdAt": "2026-02-25T06:48:50.000Z",
+                "updatedAt": "2026-02-25T06:48:50.000Z"
+            },
+            {
+                "id": 1,
+                "uuid": "0b056272-1216-11f1-8e6b-b05496f1f909",
+                "name": "elevenlabs",
+                "type": "TTS",
+                "createdAt": "2026-02-25T06:48:50.000Z",
+                "updatedAt": "2026-02-25T06:48:50.000Z"
+            }
+        ],
+        "total": 3,
+        "page": 1,
+        "page_size": 20
+    }
+}
+GET /api/v1/studio/en/vendors/:uuid/voice-library - get voice library by vendor uuid
+Request:
+
+path	
+
+
+
+
+uuid	Yes	string	vendor uuid
+query	
+
+
+
+
+search_keyword	No	string	search keyword
+
+search_fields	No	string	original_id | voice_name | tags
+Multiple search using comma to seperate. e.g. voice_name,tags
+
+page	No	number	start from 1, default: 1
+
+page_size	No	number	default: 20
+
+gender	No	string	Male | Female | Neutral
+
+accent	No	string	American | British | General
+
+sort_by	No	string	voice_name | voice_id | created_at. default: created_at
+
+sort_direction	No	string	asc | desc, default desc
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "list": [
+            {
+                "id": 1,
+                "vendorId": 1,
+                "internalVoiceId": "11lab_hpp4J3VqNfWAUOO0d1Us",
+                "externalName": "Bella - Professional, Bright, Warm",
+                "gender": "Female",
+                "language": "English",
+                "originalId": "hpp4J3VqNfWAUOO0d1Us",
+                "sampleUrl": "https://storage.googleapis.com/eleven-public-prod/premade/voices/hpp4J3VqNfWAUOO0d1Us/dab0f5ba-3aa4-48a8-9fad-f138fea1126d.mp3",
+                "accent": "British",
+                "tags": [
+                    "Female",
+                    "English",
+                    "Adult",
+                    "Warm",
+                    "Bright",
+                    "Smooth",
+                    "Professional"
+                ],
+                "createdAt": "2026-02-25T06:53:27.000Z",
+                "updatedAt": "2026-02-25T06:53:27.000Z",
+                "vendor": {
+                    "id": 1,
+                    "uuid": "0b056272-1216-11f1-8e6b-b05496f1f909",
+                    "name": "elevenlabs",
+                    "type": "TTS",
+                    "createdAt": "2026-02-25T06:48:50.000Z",
+                    "updatedAt": "2026-02-25T06:48:50.000Z"
+                }
+            },
+            {
+                "id": 2,
+                "vendorId": 1,
+                "internalVoiceId": "11lab_21m00Tcm4TlvDq8ikWAM",
+                "externalName": "Rachel",
+                "gender": "Female",
+                "language": "English",
+                "originalId": "21m00Tcm4TlvDq8ikWAM",
+                "sampleUrl": "https://storage.googleapis.com/eleven-public-prod/premade/voices/21m00Tcm4TlvDq8ikWAM/b4928a68-c03b-411f-8533-3d5c299fd451.mp3",
+                "accent": "British",
+                "tags": [
+                    "Female",
+                    "English",
+                    "Casual"
+                ],
+                "createdAt": "2026-02-25T06:53:27.000Z",
+                "updatedAt": "2026-02-25T06:53:27.000Z",
+                "vendor": {
+                    "id": 1,
+                    "uuid": "0b056272-1216-11f1-8e6b-b05496f1f909",
+                    "name": "elevenlabs",
+                    "type": "TTS",
+                    "createdAt": "2026-02-25T06:48:50.000Z",
+                    "updatedAt": "2026-02-25T06:48:50.000Z"
+                }
+            }
+        ],
+        "total": 17,
+        "page": 1,
+        "page_size": 2
+    }
+}
+POST /api/v1/studio/en/vendors/:uuid/voice-library/bookmarks - create voice bookmark
+Request:
+
+path	
+
+
+
+
+uuid	Yes	string	vendor uuid
+body	
+
+
+
+
+source_type	Yes	string	enum: public. now we only have 'public' type.
+
+voice_library_id	Yes	int	
+voice_library id
+
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "source_type": "public",
+        "voice_library_id": 2,
+        "isBookmarked": true
+    }
+}
+DELETE /api/v1/studio/en/vendors/:uuid/voice-library/bookmarks - delete voice bookmark
+Request:
+
+path	
+
+
+
+
+uuid	Yes	string	vendor uuid
+query	
+
+
+
+
+source_type	Yes	string	enum: public. now we only have 'public' type.
+
+voice_library_id	Yes	int	
+voice_library id
+
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "source_type": "public",
+        "voice_library_id": 2,
+        "isBookmarked": false
+    }
+}
+
+
+POST /api/v1/studio/en/voice/minimax/t2a - create audio from text (cn only)
+Request:
+
+body	
+
+
+
+
+resource_id	Yes	string	resource_id, only marketplace resource works.
+...	
+
+
+more parameters see:
+https://platform.minimax.io/docs/api-reference/speech-t2a-http（en）
+
+https://platform.minimaxi.com/docs/api-reference/speech-t2a-http （cn）
+
+Request example:
+
+{
+  "resource_id":"xxxxxx",
+  "model": "speech-2.8-hd",
+  "text": "您好，我是声网的客服，有什么可以帮助您",
+  "stream": false,
+  "voice_setting": {
+    "voice_id": "kefu_female_ai_mix_1",
+    "speed": 1,
+    "vol": 1,
+    "pitch": 0
+  },
+  "audio_setting": {
+    "sample_rate": 32000,
+    "bitrate": 128000,
+    "format": "mp3",
+    "channel": 1
+  },
+  "pronunciation_dict": {
+    "tone": [
+      "Omg/Oh my god"
+    ]
+  },
+  "language_boost": "auto",
+  "voice_modify": {
+    "pitch": 0,
+    "intensity": 0,
+    "timbre": 0
+    // "sound_effects": "spacious_echo"
+  },
+  "output_format": "hex"
+}
+
+
+Response:
+
+{
+    "data": {
+        "audio": "49443304000000000954545353450000000f0000034c61766635382e37...",
+        "status": 2,
+        "ced": ""
+    },
+    "extra_info": {
+        "audio_length": 3600,
+        "audio_sample_rate": 32000,
+        "audio_size": 59422,
+        "bitrate": 128000,
+        "word_count": 19,
+        "invisible_character_ratio": 0,
+        "usage_characters": 36,
+        "audio_format": "mp3",
+        "audio_channel": 1
+    },
+    "trace_id": "0600312f2f794f8f8e2337f98765c88e",
+    "base_resp": {
+        "status_code": 0,
+        "status_msg": "success"
+    }
+}
+
+
+Evaluations
+GET /api/v1/studio/en/metadata/all-evaluations - get all evaluations list
+Request:
+
+query	
+
+
+
+
+search_keyword	No	string	search keyword
+
+search_fields	No	string	variable_name | criteria | remark, multiple search using comma to seperate. e.g. variable_name, crieria, remark
+
+page	No	number	start from 1, default: 1
+
+page_size	No	number	default: 20
+Response:
+
+when system field not change default criteria and remark, the id will be null, 
+
+{
+    "code": 0,
+    "message": "success",
+    "data": [
+        {
+            "id": null,
+            "cid": 115130,
+            "record_type": "system_override",
+            "template_code": "call_success",
+            "variable_name": "call_success",
+            "type": "boolean",
+            "criteria": "请基于通话内容判断客户意向并给出评估结论。",
+            "options": null,
+            "remark": "",
+            "creator": "",
+            "updater": "",
+            "deleted_at": 0,
+            "created_at": null,
+            "updated_at": null,
+            "source": "system"
+        },
+        {
+            "id": "1",
+            "cid": "115130",
+            "record_type": "custom",
+            "template_code": null,
+            "uuid": "9fc5112428b7429e96f17ea5babf6890",
+            "variable_name": "金额",
+            "type": "text",
+            "criteria": "更新此字段",
+            "options": null,
+            "remark": "",
+            "creator": "j2k793wm@linshiyouxiang.net",
+            "updater": "j2k793wm@linshiyouxiang.net",
+            "deleted_at": 0,
+            "created_at": "2026-03-10T11:18:52.000Z",
+            "updated_at": "2026-03-10T11:20:25.000Z",
+            "source": "custom"
+        }
+    ],
+    "meta": {
+        "total": 2,
+        "page": 1,
+        "page_size": 10,
+        "system_count": 1,
+        "custom_total": 1
+    }
+}
+
+
+POST /api/v1/studio/en/metadata/custom-evaluations - create custom evaluations
+Request:
+
+body	
+
+
+
+
+variable_name	Yes	string	search keyword
+
+type	Yes	string	variable type, support text | number | array | boolean
+
+options	No	array<string>	result options
+
+criteria	Yes	string	evaluation standard which llm used
+
+remark	No	string	descriptions
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "id": "1",
+        "cid": 115130,
+        "record_type": "custom",
+        "template_code": null,
+        "uuid": "0025d6f3875548cf846fd8727e99a79f",
+        "variable_name": "金额",
+        "type": "text",
+        "criteria": "请从通话中提取客户说的金额",
+        "options": null,
+        "remark": "",
+        "creator": "j2k793wm@linshiyouxiang.net",
+        "updater": "j2k793wm@linshiyouxiang.net",
+        "deleted_at": 0,
+        "created_at": "2026-03-11T03:20:41.000Z",
+        "updated_at": "2026-03-11T03:20:41.000Z"
+    }
+}
+
+
+PUT /api/v1/studio/en/metadata/custom-evaluations/:uuid -update custom evaluations
+Request:
+
+path	
+
+
+
+
+uuid	Yes	string	collect field uuid
+body	
+
+
+
+
+variable_name	No	string	search keyword
+
+type	No	string	variable type, support text | number | array | boolean
+
+options	No	array<string>	result options
+
+criteria	No	string	evaluation standard which llm used
+
+remark	No	string	descriptions
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "id": "1",
+        "cid": "115130",
+        "record_type": "custom",
+        "template_code": null,
+        "uuid": "0025d6f3875548cf846fd8727e99a79f",
+        "variable_name": "金额",
+        "type": "text",
+        "criteria": "更新此字段",
+        "options": null,
+        "remark": "",
+        "creator": "j2k793wm@linshiyouxiang.net",
+        "updater": "j2k793wm@linshiyouxiang.net",
+        "deleted_at": 0,
+        "created_at": "2026-03-11T03:20:41.000Z",
+        "updated_at": "2026-03-11T03:25:45.000Z"
+    }
+}
+
+
+DELETE /api/v1/studio/en/metadata/custom-evaluations/:uuid -delete custom evaluations
+path	
+
+
+
+
+uuid	Yes	string	collect field uuid
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": null
+}
+PUT /api/v1/studio/en/metadata/system-evaluations/:template_code -update system evaluations
+Request:
+
+body	
+
+
+
+
+criteria	No	string	evaluation standard which llm used
+
+remark	No	string	descriptions
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "id": "2",
+        "cid": 115130,
+        "record_type": "system_override",
+        "template_code": "call_success",
+        "uuid": "d08d87da00834801a91779ef1b14dbc4",
+        "variable_name": "call_success",
+        "type": "boolean",
+        "criteria": "请基于通话内容判断客户意向并给出评估结论2222",
+        "options": null,
+        "remark": "string",
+        "creator": "j2k793wm@linshiyouxiang.net",
+        "updater": "j2k793wm@linshiyouxiang.net",
+        "deleted_at": 0,
+        "created_at": "2026-03-11T04:04:45.000Z",
+        "updated_at": "2026-03-11T04:04:45.000Z"
+    }
+}
+
+
+Debugging Tools
+GET /api/v1/studio/en/debugging/tasks - get debugging list
+Request:
+
+query	
+
+
+
+
+start_time	Yes	string	UTC time, e.g. 2026-03-26T00:01:00.000Z
+
+end_time	Yes	string	UTC time, e.g. 2026-03-26T00:01:00.000Z
+
+task_id	No	string	specific task_id
+
+page	No	int	default: 1
+
+page_size	No	int	default: 20
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "list": [
+            {
+                "task_id": "A42AF25LH29WN42NT27PH64VC36LF49L",
+                "start_ts": "1774512614683",
+                "end_ts": null,
+                "duration": null
+            },
+            {
+                "task_id": "A42AM45CC95TH48KT76LA54PE36TV84L",
+                "start_ts": "1774512613839",
+                "end_ts": null,
+                "duration": null
+            }
+        ],
+        "total": 15136,
+        "page": 1,
+        "page_size": 2
+    }
+}
+GET /api/v1/studio/en/debugging/tasks/:task_id/detail - get debugging task by ID
+Request:
+
+path	
+
+
+
+
+task_id	Yes	string	specific task_id
+query	
+
+
+
+
+start_time	Yes	string	UTC time, e.g. 2026-03-26T00:01:00.000Z
+
+end_time	No	string	UTC time, e.g. 2026-03-26T00:01:00.000Z
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "session": {
+            "task_id": "A42AF25LH29WN42NT27PH64VC36LF49L",
+            "start_ts": "1774512614683",
+            "end_ts": "1774512912920",
+            "duration": "298237",
+            "events_count": 77
+        },
+        "turn_latency_list": [],
+        "turn_latency_avg": {
+            "e2e_latency_ms_avg": null,
+            "asr_ttlw_avg": null,
+            "llm_ttft_avg": null,
+            "tts_ttfb_avg": null
+        }
+    }
+}
+GET /api/v1/studio/en/debugging/tasks/:task_id/events - get debugging task events by ID
+Request:
+
+path	
+
+
+
+
+task_id	Yes	string	specific task_id
+query	
+
+
+
+
+start_time	Yes	string	UTC time, e.g. 2026-03-26T00:01:00.000Z
+
+end_time	No	string	UTC time, e.g. 2026-03-26T00:01:00.000Z
+
+module	Yes	string	enum, now we support: 'asr' | 'llm' | 'tts' | 'all'
+
+level	Yes	string	enum, now we support: 'error' | 'all'
+
+page	No	int	default: 1
+
+page_size	No	int	default: 20
+Response:
+
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "list": [
+            {
+                "task_id": "A42AF25LH29WN42NT27PH64VC36LF49L",
+                "service_name": "agent",
+                "module_name": "asr",
+                "event_type": "asr_error",
+                "lts": "1774512612474",
+                "message": "server rejected WebSocket connection: HTTP 401"
+            }
+        ],
+        "total": 77,
+        "page": 1,
+        "page_size": 1
+    }
+}
+
+
+
+
+
+
+
+
+Error Code Page
+Console Error Code
+Server Codes
+200	success
+400	Parameter error (message contains error details)
+401	
+Unauthorized (Client needs redirection)
+
+{
+  redirect_url: "https://console-staging.agora.io/api/v2/authorize?xxx"
+}
+403	no permission
+404	resource not found
+500	Server error
+502	server upstream error or timeout
+503	server upstream error or timeout
+
+
+Business Code
+0	Success
+6107
+
+Project not found
+
+6008
+
+PARAMETER_ERROR
+
+15000
+
+FAILED_GET_RESTFUL_KEYS
+
+25000
+
+FAILED_GET_PIPELINE
+
+25001
+
+FAILED_GET_RESOURCES
+
+25002
+
+FAILED_CREATE_RESOURCE
+
+25003
+
+ALREADY_PURCHASED
+
+25004
+
+RESOURCE_NOT_ENOUGH
+
+25005
+
+RESOURCE_USED
+
+25100
+
+STUDIO_MISSING_REQUIRED_FIELDS
+
+25101
+
+STUDIO_INTERNAL_ERROR
+
+25102
+
+STUDIO_MISSING_SIP_NUMBER_CONFIG_REQUIRED_FIELDS
+
+25103
+
+STUDIO_FAILED_CREATE_SIP_NUMBER
+
+25104
+
+STUDIO_SIP_NUMBER_INVALID_FORMAT
+
+25105
+
+STUDIO_SIP_NUMBER_DUPLICATE
+
+25106
+
+STUDIO_SIP_NUMBER_NOT_FOUND
+
+25107
+
+STUDIO_SIP_NUMBER_UPDATE_FAILED
+
+25108
+
+STUDIO_SIP_INVALID_ID
+
+Campaign Upstream Server Code
+CallCenter-呼叫中心-HLD文档-一期 V0.1#%E5%91%BC%E5%8F%AB%E4%B8%AD%E5%BF%83-HLD%E6%96%87%E6%A1%A3-%E4%B8%80%E6%9C%9FV0.1-4.2.1.%E8%BF%94%E5%9B%9E%E7%A0%81
+
+Call-history Upstream Server Code
+200	success
+400	Parameter error (message contains error details)
+403	
+Forbidden error
+
+502	Bad Gateway error
+503	Error Response error
+504	Timeout error
+
+
+Notes
+All timestamps are in ISO 8601 format (e.g., "2025-08-11T08:43:01.000Z")
+
+Sensitive fields like API keys are masked in responses
+
+Resource configurations vary by vendor type
+
+Authentication uses session cookies consistent with Console
