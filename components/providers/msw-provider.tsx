@@ -2,8 +2,9 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 
-const IS_MOCK_ENABLED =
-  process.env.NEXT_PUBLIC_MOCK_ENABLED === "true";
+import { IS_MOCK_MODE_ENABLED } from "@/lib/mock-api-bases";
+
+const IS_MOCK_ENABLED = IS_MOCK_MODE_ENABLED;
 
 export function MSWProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(!IS_MOCK_ENABLED);

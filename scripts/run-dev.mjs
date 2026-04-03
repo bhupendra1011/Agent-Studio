@@ -1,44 +1,21 @@
 #!/usr/bin/env node
 /**
- * Reads APP_MODE from .env.local (or env): DESIGN → mock + port 3000, CODE → plain dev.
+ * Runs Next.js dev (`pnpm exec next dev`).
+ * Mock/MSW: set NEXT_PUBLIC_MOCK_ENABLED=true in .env.local — same env var as Vercel (no separate APP_MODE).
+ * Optional: PORT (e.g. PORT=3000) to pass `-p` to next dev.
  */
-import { readFileSync, existsSync } from "node:fs";
 import { spawn } from "node:child_process";
 import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
-const envLocal = resolve(root, ".env.local");
+const port = process.env.PORT;
+const args = ["next", "dev", ...(port ? ["-p", String(port)] : [])];
 
-let mode = process.env.APP_MODE;
-if (!mode && existsSync(envLocal)) {
-  const raw = readFileSync(envLocal, "utf8");
-  const m = raw.match(/^APP_MODE\s*=\s*['"]?(\w+)/m);
-  if (m) mode = m[1];
-}
-
-const isDesign = (mode || "").trim().toUpperCase() === "DESIGN";
-
-const env = {
-  ...process.env,
-  ...(isDesign
-    ? {
-        NEXT_PUBLIC_MOCK_ENABLED: "true",
-        PORT: process.env.PORT || "3000",
-      }
-    : {}),
-};
-
-const args = isDesign
-  ? ["next", "dev", "-p", env.PORT || "3000"]
-  : ["next", "dev"];
-
-console.log(
-  `APP_MODE=${mode || "CODE (default)"} → pnpm exec ${args.join(" ")}`
-);
+console.log(`→ pnpm exec ${args.join(" ")}`);
 
 const child = spawn("pnpm", ["exec", ...args], {
   cwd: root,
-  env,
+  env: process.env,
   stdio: "inherit",
   shell: true,
 });

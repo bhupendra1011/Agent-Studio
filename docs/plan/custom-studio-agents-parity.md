@@ -9,7 +9,7 @@
 ## Context (locked decisions)
 
 - **MergedAgent**: Full parity with convo-ai-studio `hooks/use-agents.ts` expansion rules (draft = no deployments; live/paused = per `deployments[]` or `deploy_app_ids` / `deploy_uuids` / `deploy_vids` fallback).
-- **Create flow**: Real `POST /agent-pipeline` through the client (MSW in DESIGN/mock mode), not local-only fake state.
+- **Create flow**: Real `POST /agent-pipeline` through the client (MSW when `NEXT_PUBLIC_MOCK_ENABLED=true`), not local-only fake state.
 - **Contracts**: Reuse vid/project concepts; API surface matches `docs/api.text` (agent-pipeline, agent-templates, agent-deploy-pipeline).
 - **Standalone**: Copy/port types, services, hook logic, mock handlers, and fixture data into custom-studio-app—no symlink or workspace dependency on convo-ai-studio.
 - **Identifying prefix**: Express as part of the **Studio EN API base URL** (path segment under your gateway), not scattered per-route strings. Relative paths from services stay `/agent-pipeline`, `/agent-templates`, etc., as in convo.
@@ -31,7 +31,7 @@ custom-studio-app should implement **two-mode** `getStudioAxiosBases()`: when mo
 - Port handler patterns from convo-ai-studio mocks: `agent-pipeline`, `templates`, `project`, `auth` (`allowed-entries`).
 - Replace hardcoded `*/api/v1/studio/en/...` with **one constant** aligned with axios `baseURL` (e.g. `*${STUDIO_EN_PATH}/agent-pipeline`).
 - **Service worker:** Prefer `/mockServiceWorker.js` at app root (no `/studio` basePath unless you add one); set `Service-Worker-Allowed: /` in `next.config` if needed for scope.
-- **APP_MODE:** Optional dev script—`DESIGN` runs with `NEXT_PUBLIC_MOCK_ENABLED=true`, `CODE` without mocks (see convo-ai-studio `scripts/run-dev.js`). Runtime switching is env-driven, not an in-app toggle.
+- **Dev script:** `scripts/run-dev.mjs` only runs `next dev`; mock is **only** `NEXT_PUBLIC_MOCK_ENABLED=true` in `.env.local` (same as Vercel). No separate `APP_MODE`.
 
 ---
 
@@ -76,14 +76,13 @@ custom-studio-app should implement **two-mode** `getStudioAxiosBases()`: when mo
 | `NEXT_PUBLIC_API_STUDIO_BASE_URL` | Production: full axios base for relative `/agent-pipeline` paths |
 | `NEXT_PUBLIC_STUDIO_EN_PATH` or derive from base | Path for MSW wildcards + mock base (must match) |
 | `MOCK_SSR_ORIGIN` | SSR origin in mock mode |
-| `APP_MODE` | Optional: dev script only (`DESIGN` / `CODE`) |
 
 ---
 
 ## Verification
 
-- **DESIGN:** List, search, pagination, expanded rows, Create Agent + refetch.
-- **CODE:** Same UI against real/wrapper base (cookies/CORS as needed).
+- **Mock on:** List, search, pagination, expanded rows, Create Agent + refetch.
+- **Mock off:** Same UI against real/wrapper base (cookies/CORS as needed).
 
 ---
 

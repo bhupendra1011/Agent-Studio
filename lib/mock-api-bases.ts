@@ -1,5 +1,6 @@
 import { getStudioEnPath } from "@/lib/studio-en-path";
 
+/** MSW + same-origin Studio/Console API bases. Set NEXT_PUBLIC_MOCK_ENABLED=true (local + Vercel). */
 export const IS_MOCK_MODE_ENABLED =
   process.env.NEXT_PUBLIC_MOCK_ENABLED === "true";
 
