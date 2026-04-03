@@ -1,8 +1,12 @@
 import { ThemeSwitchPanel } from "@/components/theme-switch-panel";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { auth } from "@/auth";
+import { initialsFromName } from "@/lib/initials-from-name";
 
 export default async function DashboardProfilePage() {
   const session = await auth();
+  const name = session?.user?.name ?? "User";
+  const image = session?.user?.image;
 
   return (
     <div className="mx-auto max-w-3xl space-y-8">
@@ -18,7 +22,20 @@ export default async function DashboardProfilePage() {
         <h2 className="font-heading text-lg font-semibold text-[var(--studio-ink)]">
           Account
         </h2>
-        <dl className="mt-4 space-y-3 text-sm">
+        <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:items-start">
+          <Avatar className="size-20 ring-2 ring-[var(--studio-border)] ring-offset-4 ring-offset-[var(--studio-surface)]">
+            {image ? (
+              <AvatarImage
+                src={image}
+                alt=""
+              />
+            ) : null}
+            <AvatarFallback className="bg-[var(--studio-teal-dim)] text-lg font-medium text-[var(--studio-ink)]">
+              {initialsFromName(name)}
+            </AvatarFallback>
+          </Avatar>
+        </div>
+        <dl className="mt-6 space-y-3 text-sm">
           <div>
             <dt className="text-[var(--studio-ink-muted)]">Display name</dt>
             <dd className="font-medium text-[var(--studio-ink)]">
@@ -26,9 +43,15 @@ export default async function DashboardProfilePage() {
             </dd>
           </div>
           <div>
+            <dt className="text-[var(--studio-ink-muted)]">Email</dt>
+            <dd className="font-medium text-[var(--studio-ink)]">
+              {session?.user?.email ?? "—"}
+            </dd>
+          </div>
+          <div>
             <dt className="text-[var(--studio-ink-muted)]">User id</dt>
             <dd className="font-medium text-[var(--studio-ink)]">
-              {session?.user?.id ?? session?.user?.email ?? "—"}
+              {session?.user?.id ?? "—"}
             </dd>
           </div>
         </dl>

@@ -21,7 +21,10 @@ export default async function LoginPage({ searchParams }: Props) {
       <div className="absolute right-4 top-4 sm:right-6 sm:top-6">
         <ThemeSwitchPanel />
       </div>
-      <SignInForm credentialsError={error === "credentials"} />
+      <SignInForm
+        credentialsError={error === "credentials"}
+        oauthError={error === "oauth"}
+      />
     </div>
   );
 }

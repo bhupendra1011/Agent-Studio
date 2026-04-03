@@ -1,5 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import GitHub from "next-auth/providers/github";
+import Google from "next-auth/providers/google";
 
 import { getExpectedCredentials } from "@/lib/auth-credentials";
 import { credentialsSchema } from "@/lib/credentials-schema";
@@ -15,8 +17,44 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (pathname.startsWith("/dashboard")) return !!auth?.user;
       return true;
     },
+    jwt({ token, user }) {
+      if (user) {
+        if (user.image) {
+          token.picture = user.image;
+        } else {
+          delete token.picture;
+        }
+        if (user.email) {
+          token.email = user.email;
+        } else {
+          delete token.email;
+        }
+      }
+      return token;
+    },
+    session({ session, token }) {
+      if (session.user) {
+        if (token.picture) {
+          session.user.image = token.picture as string;
+        } else {
+          session.user.image = null;
+        }
+        if (token.email) {
+          session.user.email = token.email as string;
+        }
+      }
+      return session;
+    },
   },
   providers: [
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID ?? "",
+      clientSecret: process.env.AUTH_GOOGLE_SECRET ?? "",
+    }),
+    GitHub({
+      clientId: process.env.AUTH_GITHUB_ID ?? "",
+      clientSecret: process.env.AUTH_GITHUB_SECRET ?? "",
+    }),
     Credentials({
       credentials: {
         username: {
