@@ -1,0 +1,12 @@
+---
+description: Repo root — stack, docs, commands, path aliases
+alwaysApply: true
+---
+
+# custom-studio-app — project conventions
+
+- **Root of the Next app**: this directory (`custom-studio-app/`). Run `npm run dev`, `npm run build`, `npm run lint` from here.
+- **Design system (full detail)**: `docs/DESIGN_SYSTEM.md` — fonts, `--studio-*` vs semantic tokens, motion, file placement.
+- **Next.js 16**: prefer official in-repo docs when behavior is unclear; breaking changes vs older Next are noted in `AGENTS.md`.
+- **Imports**: use `@/` aliases from `components.json` (`@/components`, `@/components/ui`, `@/lib`, `@/hooks`).
+- **Scope**: keep changes focused on the task; match existing patterns in neighboring files (naming, `cn()`, token usage).

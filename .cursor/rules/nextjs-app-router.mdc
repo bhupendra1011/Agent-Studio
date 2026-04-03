@@ -1,0 +1,14 @@
+---
+description: Next.js 16 App Router — RSC, app/, metadata
+globs: "app/**/*"
+alwaysApply: false
+---
+
+# Next.js App Router
+
+- **Default to Server Components** — no `"use client"` unless you need hooks, event handlers in the component tree, browser APIs, or client-only modules.
+- **Colocate** route segments: `page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx` as needed per route.
+- **Metadata**: export `metadata` / `generateMetadata` from layouts or pages where appropriate.
+- **Data and actions**: prefer Server Actions or server-side data fetching in Server Components; keep sensitive logic on the server.
+- **Navigation**: `next/link` for internal routes; pass `Link` into primitives via `render` prop where the UI is a `Button` (see `components/marketing-header.tsx`).
+- For performance patterns (bundles, memoization, fetching), follow React/Next best practices for the version in `package.json`.

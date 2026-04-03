@@ -1,0 +1,14 @@
+---
+description: components/ — feature vs ui/, shadcn CLI, Button + Base UI
+globs: "components/**/*"
+alwaysApply: false
+---
+
+# Components and shadcn
+
+- **`components/ui/`**: shadcn primitives only (from `npx shadcn@latest add <name>`). Config: `components.json` (style **base-nova**, RSC, Tailwind v4, CSS variables). Primitives may use **@base-ui/react** (e.g. `button.tsx`).
+- **`components/*.tsx`**: product/feature components (marketing, dashboard, auth). Compose `components/ui` here; do not duplicate primitive behavior unless necessary.
+- **Not shadcn-only**: the app mixes bespoke components with a small set of shadcn primitives — add new primitives to `ui/` when they are shared and generic.
+- **Button + Link**: `Button` with `nativeButton={false}` and `render={<Link href="..." />}` for link-styled navigation.
+- **Styling**: extend via `className` + `cn()`; prefer `--studio-*` for branded chrome and semantic tokens for neutral shells (see `docs/DESIGN_SYSTEM.md`).
+- **Icons**: `lucide-react`; keep sizes consistent (`size-*` or `h-* w-*`).

@@ -1,0 +1,15 @@
+---
+description: Typography, colors, theming, motion — Agent Studio tokens
+globs: "**/*.tsx,**/globals.css"
+alwaysApply: false
+---
+
+# Design system (UI)
+
+- **Fonts**: body = default sans (**Outfit**); headings = `font-heading` (**Syne**); mono = `font-mono` (**Geist Mono**). See `app/layout.tsx` for font variables.
+- **Theming**: `next-themes` + `.dark` class. Semantic colors: `bg-background`, `text-foreground`, `border-border`, `text-muted-foreground`, etc.
+- **Brand (marketing / branded UI)**: CSS vars `--studio-teal`, `--studio-teal-dim`, `--studio-mauve`, `--studio-mauve-dim`, `--studio-ink`, `--studio-ink-muted`, `--studio-surface`, `--studio-surface-muted`, `--studio-border` — use as `text-[var(--studio-ink)]`, etc. They are defined for `:root` and `.dark` in `app/globals.css`.
+- **Do not** hardcode hex for surfaces/text when a token exists.
+- **Motion**: prefer `studio-reveal` / `studio-section-reveal` (+ delay classes) and existing `studio-*` keyframe classes; they respect `prefers-reduced-motion` in `globals.css`.
+- **Merging classes**: `import { cn } from "@/lib/utils"`.
+- **Full reference**: `docs/DESIGN_SYSTEM.md`.
