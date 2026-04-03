@@ -145,6 +145,8 @@
   }
   html {
     @apply font-sans;
+    /* Avoid layout jump when body scrollbar appears/disappears (hero + ticker height tweaks). */
+    scrollbar-gutter: stable;
   }
   .font-heading {
     font-family: var(--font-heading);
