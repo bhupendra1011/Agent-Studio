@@ -29,6 +29,8 @@ CSS variables: `background`, `foreground`, `primary`, `secondary`, `muted`, `acc
 
 **In Tailwind:** e.g. `bg-background`, `text-foreground`, `border-border`, `text-muted-foreground`.
 
+**Semantic primary and focus ring** (`--primary`, `--primary-foreground`, `--ring` in `app/globals.css`) use the same **teal hue** as `--studio-teal` so default shadcn controls (buttons, inputs, menus) feel on-brand in light and dark.
+
 ### 2. Brand tokens — Agent Studio
 
 Defined in `:root` and `.dark` in `app/globals.css`:
@@ -59,11 +61,29 @@ Defined in `:root` and `.dark` in `app/globals.css`:
 
 `@media (prefers-reduced-motion: reduce)` in `globals.css` disables these — prefer these classes over ad-hoc infinite animations when possible.
 
+## `components/ui/` inventory
+
+Install new primitives with **`npx shadcn@latest add <name>`** from the app root (see `components.json`). Current files:
+
+| File | Notes |
+|------|--------|
+| `avatar.tsx` | Base UI avatar; `AvatarFallback`, `AvatarImage`, `AvatarGroup`, … |
+| `badge.tsx` | Variants via CVA |
+| `button.tsx` | Base UI button; `render` + `nativeButton={false}` for `Link` |
+| `card.tsx` | `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`, `CardAction` |
+| `dialog.tsx` | Modal dialogs |
+| `dropdown-menu.tsx` | Menus, radio groups (e.g. theme switcher) |
+| `input.tsx` | Text inputs |
+| `label.tsx` | Client label primitive |
+| `scroll-area.tsx` | Scrollable regions |
+| `separator.tsx` | Horizontal / vertical rules |
+| `sheet.tsx` | Slide-over panels |
+
 ## File placement
 
 | Location | Purpose |
 |----------|---------|
-| `components/ui/` | Shared primitives added via **shadcn CLI** (`npx shadcn@latest add …`). Today includes `button.tsx`. |
+| `components/ui/` | Shared primitives from the shadcn CLI only — see inventory above. |
 | `components/*.tsx` | Feature and domain components (marketing, dashboard, auth helpers). |
 | `app/` | Routes, layouts, loading/error UI — compose components here; avoid huge inline JSX when a component is reusable. |
 

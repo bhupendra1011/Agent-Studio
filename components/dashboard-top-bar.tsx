@@ -1,8 +1,19 @@
 import Link from "next/link";
 
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SignOutButton } from "@/components/sign-out-button";
 import { ThemeSwitchPanel } from "@/components/theme-switch-panel";
+
+function initialsFromName(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "?";
+  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase();
+  return (
+    parts[0]![0]! + parts[parts.length - 1]![0]!
+  ).toUpperCase();
+}
 
 export function DashboardTopBar({ userName }: { userName: string }) {
   return (
@@ -29,18 +40,30 @@ export function DashboardTopBar({ userName }: { userName: string }) {
       </nav>
       <div className="flex items-center gap-2 sm:gap-4">
         <ThemeSwitchPanel />
-        <span
-          className="hidden items-center gap-1.5 text-sm text-[var(--studio-ink-muted)] sm:flex"
+        <div
+          className="hidden items-center gap-2 sm:flex"
           title="Session active"
         >
-          <span
-            className="h-2 w-2 shrink-0 rounded-full bg-emerald-500"
-            aria-hidden
-          />
-          <span className="max-w-[10rem] truncate text-[var(--studio-ink)]">
-            {userName}
-          </span>
-        </span>
+          <Avatar
+            size="sm"
+            className="ring-2 ring-[var(--studio-border)] ring-offset-2 ring-offset-[var(--studio-surface)]"
+          >
+            <AvatarFallback className="bg-[var(--studio-teal-dim)] text-xs font-medium text-[var(--studio-ink)]">
+              {initialsFromName(userName)}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex min-w-0 flex-col gap-0.5">
+            <span className="max-w-[10rem] truncate text-sm font-medium text-[var(--studio-ink)]">
+              {userName}
+            </span>
+            <Badge
+              variant="outline"
+              className="h-5 w-fit border-[var(--studio-border)] text-[10px] text-[var(--studio-teal)]"
+            >
+              Session active
+            </Badge>
+          </div>
+        </div>
         <SignOutButton
           variant="outline"
           size="sm"

@@ -38,13 +38,16 @@ export function LiveConversationTicker() {
     const typingDelay = 800 + Math.random() * 600;
     const showDelay = typingDelay + 400;
 
-    setTyping(true);
+    const typingTimer = setTimeout(() => setTyping(true), 0);
     const showTimer = setTimeout(() => {
       setTyping(false);
       setVisibleCount((c) => c + 1);
     }, showDelay);
 
-    return () => clearTimeout(showTimer);
+    return () => {
+      clearTimeout(typingTimer);
+      clearTimeout(showTimer);
+    };
   }, [visibleCount]);
 
   useLayoutEffect(() => {

@@ -1,14 +1,49 @@
 ---
-description: components/ — feature vs ui/, shadcn CLI, Button + Base UI
+description: components/ — add & modify UI, shadcn CLI, Base UI, feature vs ui/
 globs: "components/**/*"
 alwaysApply: false
 ---
 
 # Components and shadcn
 
-- **`components/ui/`**: shadcn primitives only (from `npx shadcn@latest add <name>`). Config: `components.json` (style **base-nova**, RSC, Tailwind v4, CSS variables). Primitives may use **@base-ui/react** (e.g. `button.tsx`).
-- **`components/*.tsx`**: product/feature components (marketing, dashboard, auth). Compose `components/ui` here; do not duplicate primitive behavior unless necessary.
-- **Not shadcn-only**: the app mixes bespoke components with a small set of shadcn primitives — add new primitives to `ui/` when they are shared and generic.
-- **Button + Link**: `Button` with `nativeButton={false}` and `render={<Link href="..." />}` for link-styled navigation.
-- **Styling**: extend via `className` + `cn()`; prefer `--studio-*` for branded chrome and semantic tokens for neutral shells (see `docs/DESIGN_SYSTEM.md`).
-- **Icons**: `lucide-react`; keep sizes consistent (`size-*` or `h-* w-*`).
+## Where things live
+
+- **`components/ui/`** — Registry primitives only (shadcn CLI). Uses **base-nova** + **@base-ui/react** where the template does. Config: `components.json`.
+- **`components/*.tsx`** — Product/feature UI (marketing, dashboard, auth). Import from `@/components/ui/*` and compose; put **one-off or domain-specific** UI here, not in `ui/`.
+- **Inventory** — Table in `docs/DESIGN_SYSTEM.md`; after adding a primitive, **append that file** so the team stays in sync.
+
+## Adding a new shared primitive
+
+1. `cd` to the Next app root (folder that contains `components.json`).
+2. Run **`npx shadcn@latest add <name>`** (see [shadcn components](https://ui.shadcn.com/docs/components)). Example: `npx shadcn@latest add tooltip`.
+3. Accept CLI dependency prompts when offered.
+4. Import in feature code: `@/components/ui/<name>` (aliases from `components.json`).
+5. Run **`npm run lint`** and **`npm run build`**; fix imports/types.
+6. Update **`docs/DESIGN_SYSTEM.md`** UI inventory table with the new file.
+
+**Do not** paste `components/ui` source from random repos or older shadcn versions — styles and Base UI APIs drift. Prefer the CLI for this project’s registry.
+
+## Modifying components
+
+| Goal | Approach |
+|------|-----------|
+| One screen needs different look | Pass **`className`** (and `cn()`) on the primitive from the **feature** component; keep `ui/` default for everyone else. |
+| Same tweak everywhere | Edit **`components/ui/<name>.tsx`** in a **minimal** way: keep **`data-slot`** attributes and Base UI structure so behavior and animations stay consistent. |
+| New variant (e.g. button size) | Extend **CVA `variants`** in that `ui/` file if it must be reusable; otherwise use `className` from the caller. |
+| Upstream template changed | Re-run **`npx shadcn@latest add <name> --overwrite`** only when you intend to **replace** the file; diff first — you may lose local edits. |
+
+**Avoid** putting business logic, data fetching, or routes inside `components/ui/*`. **Avoid** duplicating a whole primitive in `components/` when `shadcn add` can add it once.
+
+## Styling and tokens
+
+- Primitives default to **semantic** tokens (`bg-card`, `text-foreground`, `ring`, `primary`). Marketing/branding can still use **`var(--studio-*)`** via `className` on primitives or on wrappers.
+- Merge classes with **`cn()`** from `@/lib/utils`.
+
+## Patterns
+
+- **Button + `Link`**: `nativeButton={false}` and `render={<Link href="..." />}` (see `marketing-header.tsx`).
+- **Icons**: `lucide-react`; consistent `size-*` / `h-* w-*`.
+
+## Reference
+
+- Full tokens and checklists: **`docs/DESIGN_SYSTEM.md`**.

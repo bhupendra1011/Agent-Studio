@@ -9,4 +9,5 @@ alwaysApply: true
 - **Design system (full detail)**: `docs/DESIGN_SYSTEM.md` — fonts, `--studio-*` vs semantic tokens, motion, file placement.
 - **Next.js 16**: prefer official in-repo docs when behavior is unclear; breaking changes vs older Next are noted in `AGENTS.md`.
 - **Imports**: use `@/` aliases from `components.json` (`@/components`, `@/components/ui`, `@/lib`, `@/hooks`).
+- **New or changed UI primitives**: run **`npx shadcn@latest add <name>`** from this directory; see **`.cursor/rules/components-shadcn.mdc`** for add vs modify workflows and when to use `components/ui/` vs `components/`.
 - **Scope**: keep changes focused on the task; match existing patterns in neighboring files (naming, `cn()`, token usage).
