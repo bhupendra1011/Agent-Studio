@@ -5,6 +5,10 @@ import type {
   AgentPipelineListResponse,
   CreateAgentPipelineRequest,
   CreateAgentPipelineResponse,
+  DeployAgentPipelineRequest,
+  DeployAgentPipelineResponse,
+  PipelineEditStatus,
+  StartAgentPreviewResponse,
   UpdateAgentPipelineRequest,
 } from "@/lib/types/api";
 import { axiosStudio } from "@/lib/api/clients";
@@ -74,6 +78,55 @@ export async function duplicatePipelineWithData(pipeline: {
     vid: pipeline.vid,
     graph_data: pipeline.graph_data,
   });
+}
+
+export async function getAgentPipeline(
+  pipelineId: string
+): Promise<AgentPipeline> {
+  const response = await axiosStudio.get<AgentPipeline>(
+    `/agent-pipeline/${pipelineId}`
+  );
+  return response.data;
+}
+
+export async function deployAgentPipeline(
+  pipelineId: string,
+  data: DeployAgentPipelineRequest
+): Promise<DeployAgentPipelineResponse> {
+  const response = await axiosStudio.post<DeployAgentPipelineResponse>(
+    `/agent-pipeline/${pipelineId}/deploy`,
+    data
+  );
+  return response.data;
+}
+
+export async function startAgentPreview(
+  projectId: string,
+  data: Record<string, unknown>
+): Promise<StartAgentPreviewResponse> {
+  const response = await axiosStudio.post<StartAgentPreviewResponse>(
+    `/agent-pipeline/${projectId}/start`,
+    data
+  );
+  return response.data;
+}
+
+export async function stopAgentPreview(
+  projectId: string,
+  agentId: string
+): Promise<void> {
+  await axiosStudio.delete(
+    `/agent-pipeline/${projectId}/${agentId}/stop`
+  );
+}
+
+export async function getPipelineEditStatus(
+  pipelineId: string
+): Promise<PipelineEditStatus> {
+  const response = await axiosStudio.get<{ data: PipelineEditStatus }>(
+    `/agent-pipeline/${pipelineId}/edit-status`
+  );
+  return response.data.data ?? response.data as unknown as PipelineEditStatus;
 }
 
 export function convertAgentPipelineToLocal(

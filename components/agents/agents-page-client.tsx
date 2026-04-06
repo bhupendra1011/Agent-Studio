@@ -22,7 +22,8 @@ import type { MergedAgent } from "@/hooks/use-agents";
 import { useAgents } from "@/hooks/use-agents";
 import { maskAppId } from "@/lib/format-app-id";
 import { initialsFromName } from "@/lib/initials-from-name";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, Pencil } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 function formatDt(iso: string | undefined) {
@@ -38,6 +39,7 @@ function formatDt(iso: string | undefined) {
 }
 
 export function AgentsPageClient() {
+  const router = useRouter();
   const [listParams, setListParams] = useState({
     page: 1,
     page_size: 10,
@@ -184,7 +186,12 @@ export function AgentsPageClient() {
                 agents.map((a) => (
                   <tr
                     key={a.id}
-                    className="border-b border-[var(--studio-border)] last:border-0"
+                    className="cursor-pointer border-b border-[var(--studio-border)] transition-colors hover:bg-[var(--studio-teal-dim)]/20 last:border-0"
+                    onClick={() =>
+                      router.push(
+                        `/dashboard/agents/${a.pipeline_id}/edit`
+                      )
+                    }
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
@@ -228,7 +235,7 @@ export function AgentsPageClient() {
                         {a.status}
                       </Badge>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                       <DropdownMenu>
                         <DropdownMenuTrigger
                           className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-[var(--studio-ink)] hover:bg-[var(--studio-surface-muted)] focus-visible:ring-2 focus-visible:ring-[var(--studio-teal)] focus-visible:outline-none"
@@ -237,6 +244,18 @@ export function AgentsPageClient() {
                           <MoreHorizontal className="h-4 w-4" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="rounded-xl">
+                          <DropdownMenuItem
+                            className="rounded-lg"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              router.push(
+                                `/dashboard/agents/${a.pipeline_id}/edit`
+                              );
+                            }}
+                          >
+                            <Pencil className="mr-2 h-3.5 w-3.5" />
+                            Edit
+                          </DropdownMenuItem>
                           <DropdownMenuItem
                             className="rounded-lg"
                             onClick={() => openRename(a)}

@@ -1,0 +1,23 @@
+---
+description: Save feature plans under docs/plan and keep README index updated
+alwaysApply: true
+---
+
+# Plans live in `docs/plan`
+
+For **custom-studio-app**, treat **`docs/plan/`** as the canonical place for design and implementation plans.
+
+## When to write or update
+
+- **Before** repeating, refining, or “v2”-ing a multi-step plan in conversation, **write or edit** the matching Markdown file under `docs/plan/` (e.g. `docs/plan/my-feature.md`).
+- When adding a new plan file, **add a row** to the index in [`docs/plan/README.md`](docs/plan/README.md).
+- Prefer **one feature or epic per file**; link to Agora or internal docs when relevant.
+
+## File naming
+
+- Use **kebab-case** names: `agent-editor-page.md`, `integration-tab.md`.
+- Keep each plan **self-contained** (context, decisions, file map, optional checklist).
+
+## Do not
+
+- Do not store plans only in Cursor’s ephemeral plan UI if the user wants a **repo doc repo** — mirror the substance here.

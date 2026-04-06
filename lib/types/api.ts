@@ -19,28 +19,140 @@ export interface APIResponse<T = unknown> {
   code?: number;
 }
 
-export interface GraphData {
-  asr?: {
-    vendor: string;
-    params: { key: string; language: string; region: string };
-  };
-  llm?: {
-    vendor?: string;
+export interface GraphDataAsr {
+  vendor: string;
+  language?: string;
+  params: {
+    key?: string;
+    language?: string;
+    region?: string;
     url?: string;
-    params?: { model?: string; [key: string]: unknown };
-    max_history?: number;
-    greeting_message?: string;
-    failure_message?: string;
-    system_messages?: Array<{ content: string; role: string }>;
-    api_key?: string;
+    resource_id?: string;
+    engine_model_type?: string;
+    [key: string]: unknown;
   };
-  tts?: {
-    vendor: string;
-    params: { key: string; language: string; region: string };
+}
+
+export interface GraphDataMcpServer {
+  name: string;
+  _uuid: string;
+  endpoint: string;
+  transport: string;
+  timeout_ms?: number;
+  headers?: Record<string, string>;
+  queries?: Record<string, string>;
+  allowed_tools?: string[];
+}
+
+export interface GraphDataLlm {
+  vendor?: string;
+  url?: string;
+  api_key?: string;
+  resource_id?: string;
+  params?: { model?: string; max_tokens?: number; [key: string]: unknown };
+  max_history?: number;
+  greeting_message?: string;
+  failure_message?: string;
+  system_messages?: Array<{ content: string; role: string }>;
+  mcp_servers?: GraphDataMcpServer[];
+  rag_config?: {
+    search_config?: { kb_id?: string };
   };
+}
+
+export interface GraphDataTts {
+  vendor: string;
+  params: {
+    key?: string;
+    language?: string;
+    region?: string;
+    voice_name?: string;
+    voice_type?: string;
+    speed?: number;
+    speed_ratio?: number;
+    volume?: number;
+    volume_ratio?: number;
+    pitch_ratio?: number;
+    emotion?: string;
+    sample_rate?: number;
+    resource_id?: string;
+    [key: string]: unknown;
+  };
+}
+
+export interface GraphDataVad {
+  threshold?: number;
+  silence_duration_ms?: number;
+  interrupt_duration_ms?: number;
+  prefix_padding_ms?: number;
+}
+
+export interface GraphDataTurnDetection {
+  threshold?: number;
+  interrupt_mode?: "interrupt" | "keep";
+  prefix_padding_ms?: number;
+  silence_duration_ms?: number;
+}
+
+export interface GraphDataParameters {
+  silence_config?: {
+    action?: string;
+    content?: string;
+    timeout_ms?: number;
+  };
+  transcript?: {
+    enable?: boolean;
+    protocol_version?: string;
+    enable_words?: boolean;
+    redundant?: boolean;
+  };
+  enable_metrics?: boolean;
+  audio_scenario?: string;
+  enable_flexible?: boolean;
+  enable_dump?: boolean;
+  enable_error_message?: boolean;
+}
+
+export interface GraphDataAdvancedFeatures {
+  enable_sal?: boolean;
+  enable_aivad?: boolean;
+}
+
+export interface GraphData {
+  asr?: GraphDataAsr;
+  llm?: GraphDataLlm;
+  tts?: GraphDataTts;
+  vad?: GraphDataVad;
+  parameters?: GraphDataParameters;
   idle_timeout?: number;
-  advanced_features?: Record<string, unknown>;
+  turn_detection?: GraphDataTurnDetection;
+  advanced_features?: GraphDataAdvancedFeatures;
+  avatar?: {
+    enable?: boolean;
+    vendor?: string;
+    params?: Record<string, unknown>;
+  };
+  custom_settings?: {
+    llm?: Partial<GraphDataLlm>;
+  };
   [key: string]: unknown;
+}
+
+export interface StructuredSection {
+  id: string;
+  title: string;
+  content: string;
+  order?: number;
+}
+
+export interface GraphDataParamsConfig {
+  llm?: {
+    system_messages?: {
+      active_mode: "structured" | "simple";
+      simple_text?: string;
+      structured_sections?: StructuredSection[];
+    };
+  };
 }
 
 export interface PipelineDeployment {
@@ -110,6 +222,50 @@ export interface UpdateAgentPipelineRequest {
   type?: string;
   icon_url?: string;
   graph_data?: GraphData;
+  graph_data_params_config?: GraphDataParamsConfig;
+}
+
+export interface DeployAgentPipelineRequest {
+  vids: string[];
+  note?: string;
+  graph_data?: GraphData;
+}
+
+export type DeployAgentPipelineResponse = AgentPipeline;
+
+export interface StartAgentPreviewRequest {
+  vid: number;
+  pipeline_id?: number;
+  graph_data: {
+    name: string;
+    properties: {
+      channel: string;
+      token: string;
+      agent_rtc_uid: string;
+      remote_rtc_uids: string[];
+      enable_string_uid?: boolean;
+      asr?: GraphDataAsr;
+    };
+    llm?: GraphDataLlm;
+    tts?: GraphDataTts;
+    vad?: GraphDataVad;
+    parameters?: GraphDataParameters;
+    idle_timeout?: number;
+    turn_detection?: GraphDataTurnDetection;
+    advanced_features?: GraphDataAdvancedFeatures;
+  };
+}
+
+export interface StartAgentPreviewResponse {
+  agent_id: string;
+  create_ts: number;
+  status: string;
+}
+
+export interface PipelineEditStatus {
+  editable: boolean;
+  hasInbound: boolean;
+  hasOutbound: boolean;
 }
 
 export interface DeployedAgentListParams extends PaginationParams {

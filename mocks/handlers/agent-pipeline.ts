@@ -110,6 +110,52 @@ export const agentPipelineHandlers = [
     return HttpResponse.json({ code: 0, message: "success" });
   }),
 
+  http.post(
+    `${MSW_STUDIO_PREFIX}/agent-pipeline/:id/deploy`,
+    async ({ params }) => {
+      const pipeline = pipelines.find((p) => p.id === params.id);
+      if (!pipeline) {
+        return HttpResponse.json(
+          { code: 1000, message: "Pipeline not found" },
+          { status: 404 }
+        );
+      }
+      pipeline.deploy_status = 1;
+      pipeline.last_deployed_time = new Date().toISOString();
+      pipeline.deploy_version_id = `deploy_${Date.now()}`;
+      return HttpResponse.json(pipeline);
+    }
+  ),
+
+  http.post(
+    `${MSW_STUDIO_PREFIX}/agent-pipeline/:projectId/start`,
+    async () => {
+      return HttpResponse.json({
+        agent_id: `AGENT_${Date.now()}`,
+        create_ts: Math.floor(Date.now() / 1000),
+        status: "RUNNING",
+      });
+    }
+  ),
+
+  http.delete(
+    `${MSW_STUDIO_PREFIX}/agent-pipeline/:projectId/:agentId/stop`,
+    () => {
+      return HttpResponse.json({ code: 0, message: "success" });
+    }
+  ),
+
+  http.get(
+    `${MSW_STUDIO_PREFIX}/agent-pipeline/:id/edit-status`,
+    () => {
+      return HttpResponse.json({
+        code: 0,
+        message: "success",
+        data: { editable: true, hasInbound: false, hasOutbound: false },
+      });
+    }
+  ),
+
   http.put(
     `${MSW_STUDIO_PREFIX}/agent-deploy-pipeline/:project_id/:deploy_id/status`,
     () => {

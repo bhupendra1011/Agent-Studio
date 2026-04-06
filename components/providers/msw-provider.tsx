@@ -17,13 +17,13 @@ export function MSWProvider({ children }: { children: ReactNode }) {
     );
   }, []);
 
-  if (!ready) {
-    return (
-      <div className="flex min-h-[40vh] items-center justify-center text-sm text-[var(--studio-ink-muted)]">
-        Loading mock API…
-      </div>
-    );
-  }
+  // if (!ready) {
+  //   return (
+  //     <div className="flex min-h-[40vh] items-center justify-center text-sm text-[var(--studio-ink-muted)]">
+  //       Loading mock API…
+  //     </div>
+  //   );
+  // }
 
   return <>{children}</>;
 }

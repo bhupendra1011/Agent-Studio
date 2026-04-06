@@ -7,6 +7,7 @@ alwaysApply: true
 
 - **Root of the Next app**: this directory (`custom-studio-app/`). Run `npm run dev`, `npm run build`, `npm run lint` from here.
 - **Design system (full detail)**: `docs/DESIGN_SYSTEM.md` — fonts, `--studio-*` vs semantic tokens, motion, file placement.
+- **Feature plans**: `docs/plan/` — add or update plans here and index them in `docs/plan/README.md` (see **`.cursor/rules/plan-documentation.mdc`**).
 - **Next.js 16**: prefer official in-repo docs when behavior is unclear; breaking changes vs older Next are noted in `AGENTS.md`.
 - **Imports**: use `@/` aliases from `components.json` (`@/components`, `@/components/ui`, `@/lib`, `@/hooks`).
 - **New or changed UI primitives**: run **`npx shadcn@latest add <name>`** from this directory; see **`.cursor/rules/components-shadcn.mdc`** for add vs modify workflows and when to use `components/ui/` vs `components/`.
