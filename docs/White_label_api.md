@@ -7,7 +7,8 @@ This document is for **backend engineers** building a **white-label / micro-SaaS
 | Document | Role |
 |----------|------|
 | [`api.text`](./api.text) | Verbose catalog of **today’s** Agora Studio EN + Console paths, curl samples, and response dumps. Use it for **example payloads** until the app ships TypeScript types for every field. |
-| [`../lib/types/api.ts`](../lib/types/api.ts) | **Canonical request/response shapes** the app uses for agents, integration, and projects. |
+| [`../lib/types/api.ts`](../lib/types/api.ts) | **Canonical request/response shapes** the app uses for agents, integration, projects, and global call history. |
+| [`../lib/types/analytics-api.ts`](../lib/types/analytics-api.ts) | Call **analytics** overview/analysis payloads for Observe → Analytics (`CallOverviewData`, `CallAnalysisData`). |
 | [`docs/plan/`](./plan/) | Feature implementation plans; this file is the **BE handoff** checklist for those features. |
 
 **White-label note:** Path prefixes (e.g. `/api/v1/studio/en/...` vs `/api/v2/...`) may change behind your gateway. JSON **field names and semantics** should stay compatible with the types above unless product agrees to break them.
@@ -170,7 +171,10 @@ The list row `id` is the **`phone_number_id`** for outbound campaign and telepho
 | PUT | `/sip-numbers/:id` | Update. Body [`UpdateSipNumberRequest`](../lib/types/api.ts): `description?`, `config?` (same outbound shape). Phone number is immutable in UI after create. | Edit sheet |
 | DELETE | `/sip-numbers/:id` | Delete number. | Delete confirmation |
 | GET | `/sip-numbers/all/edit-status` | Pre-delete guard: repeated `phone_number_ids`. Response: `{ id, editable }[]` per [`SipNumberEditStatusItem`](../lib/types/api.ts). | Before delete |
-| GET | `/sip-numbers/call-history/:call_id` | Single-call detail for transcript, evaluation blobs, recording URL. Response: [`CallDetailByCallIdResponse`](../lib/types/api.ts). | Campaign results — call row → detail modal |
+| GET | `/sip-numbers/all/call-history/overview` | Analytics KPIs and trend series for the selected period. Query: `from_time`, `to_time` (Unix seconds, recommended), `campaign_ids` (comma-separated), `agent_uuids` (comma-separated), **`call_type`** (`inbound` \| `outbound`), **`time_granularity`** (`day`), optional `timezone` (IANA). Response envelope with `data`: [`CallOverviewData`](../lib/types/analytics-api.ts). | `/dashboard/analytics` |
+| GET | `/sip-numbers/all/call-history/analysis` | Status distribution and rate trends. **Same query params** as overview. Response `data`: [`CallAnalysisData`](../lib/types/analytics-api.ts) (`inbound_analysis` and/or `outbound_analysis`). | `/dashboard/analytics` |
+| GET | `/sip-numbers/all/call-history` | Paginated **global** call log (all numbers). Query: `call_type` (`all` \| `inbound` \| `outbound`), `from_time`, `to_time`, `search_keyword`, `page`, `page_size`, `sort_by`, `sort_order`, optional filters (`agent_uuids`, `agent_name`, `campaign_ids`, `campaign_name`, `from_number`, `to_number`, repeated `call_category`, `call_duration_operator` + `call_duration`). Response: [`CallHistoryResponse`](../lib/types/api.ts). | `/dashboard/call-history` |
+| GET | `/sip-numbers/call-history/:call_id` | Single-call detail for transcript, evaluation blobs, recording URL. Response: [`CallDetailByCallIdResponse`](../lib/types/api.ts). | Campaign results & global call history — row → detail sheet |
 
 **Not used by this app (do not require for white-label parity here):** [`api.text`](./api.text) inbound SIP routes — e.g. bind/unbind inbound agent on a number, `GET /inbound-agent/sip-numbers/:phone_number_id`, `inbound_configs` / `inbound_agent_config` on create/update. A full Agora-style backend may still implement those for other clients; this UI and [`CreateSipNumberRequest`](../lib/types/api.ts) omit them.
 
@@ -217,14 +221,6 @@ Purpose: list/create/update/delete campaigns, upload recipient CSV, run metrics,
 - **Redial:** Cohort counts in UI come from **`CampaignSummary`**; export uses **`redial/export`** with selected categories.
 
 **Optional (full call-modal parity):** Events and latency tabs in Agora Studio use debugging APIs, e.g. `GET /debugging/tasks/:task_id/detail` and `GET /debugging/tasks/:task_id/events` with a time window — see [`api.text`](./api.text). custom-studio-app phase 1 uses **call-by-id** detail only.
-
----
-
-## Planned features (not in UI yet; scope for BE)
-
-### SIP — global analytics / reporting
-
-See **SIP** in [`api.text`](./api.text). Not wired in this app: global call history list, export, filter options, overview, analysis. **Inbound-number and inbound-agent APIs** are out of product scope for custom-studio-app (see §9). Per-call detail **`GET /sip-numbers/call-history/:call_id`** is **used** from campaign results.
 
 ---
 

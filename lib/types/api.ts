@@ -940,6 +940,42 @@ export interface CallDetailByCallIdResponse {
   ts: number;
 }
 
+/** Global call history (all SIP numbers) — GET /sip-numbers/all/call-history */
+export interface CallHistoryParams {
+  call_type?: "all" | "inbound" | "outbound";
+  from_time?: number;
+  to_time?: number;
+  search_keyword?: string;
+  page?: number;
+  page_size?: number;
+  sort_by?: string;
+  sort_order?: "asc" | "desc";
+  agent_uuids?: string;
+  agent_name?: string;
+  campaign_ids?: string;
+  campaign_name?: string;
+  from_number?: string;
+  to_number?: string;
+  call_category?: string[];
+  call_duration_operator?: string;
+  call_duration?: number;
+  cursor?: string;
+}
+
+export interface CallHistoryResponse {
+  code: number;
+  message: string;
+  data: {
+    page: number;
+    page_size: number;
+    count: number;
+    total: number;
+    list: CallHistoryItem[];
+  };
+  meta?: { cursor?: string; total?: number };
+  status?: "ok";
+}
+
 export interface CampaignCallHistoryParams {
   campaign_id: string;
   type?: "all" | "inbound" | "outbound";

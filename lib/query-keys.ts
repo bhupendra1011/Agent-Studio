@@ -1,5 +1,7 @@
+import type { CallAnalyticsParams } from "@/lib/types/analytics-api";
 import type {
   AgentPipelineListParams,
+  CallHistoryParams,
   CampaignListParams,
   DeployedAgentListParams,
   KnowledgeBaseListParams,
@@ -120,6 +122,14 @@ export const phoneNumberKeys = {
   list: (params: SipNumberListParams) =>
     [...phoneNumberKeys.lists(), normalizeSipNumberKeyParams(params)] as const,
   detail: (id: string) => [...phoneNumberKeys.all, "detail", id] as const,
+};
+
+export const observeKeys = {
+  all: ["observe"] as const,
+  callAnalytics: (params: CallAnalyticsParams) =>
+    [...observeKeys.all, "call-analytics", params] as const,
+  globalCallHistory: (params: CallHistoryParams) =>
+    [...observeKeys.all, "global-call-history", params] as const,
 };
 
 export const integrationKeys = {

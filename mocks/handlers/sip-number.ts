@@ -1,5 +1,6 @@
 import { http, HttpResponse } from "msw";
 import { MSW_STUDIO_PREFIX } from "@/mocks/constants";
+import { mockGlobalCallHistory } from "@/mocks/data/global-call-history";
 import { mockSipNumbersSeed } from "@/mocks/data/sip-numbers";
 import type {
   CreateSipNumberRequest,
@@ -32,6 +33,134 @@ function bodyCreateToRow(body: CreateSipNumberRequest): SipNumber {
 }
 
 export const sipNumberHandlers = [
+  http.get(`${MSW_STUDIO_PREFIX}/sip-numbers/all/call-history/overview`, () => {
+    return HttpResponse.json({
+      code: 0,
+      message: "success",
+      data: {
+        total_calls: 48,
+        total_answered: 32,
+        total_duration_seconds: 18600,
+        total_answer_rate: 0.67,
+        total_calls_trend: [
+          { date: "2026-04-01", value: 6 },
+          { date: "2026-04-02", value: 8 },
+          { date: "2026-04-03", value: 5 },
+          { date: "2026-04-04", value: 9 },
+          { date: "2026-04-05", value: 7 },
+          { date: "2026-04-06", value: 7 },
+          { date: "2026-04-07", value: 6 },
+        ],
+        total_answered_trend: [
+          { date: "2026-04-01", value: 4 },
+          { date: "2026-04-02", value: 6 },
+          { date: "2026-04-03", value: 3 },
+          { date: "2026-04-04", value: 7 },
+          { date: "2026-04-05", value: 5 },
+          { date: "2026-04-06", value: 5 },
+          { date: "2026-04-07", value: 4 },
+        ],
+        total_duration_trend: [
+          { date: "2026-04-01", value: 2400 },
+          { date: "2026-04-02", value: 3100 },
+          { date: "2026-04-03", value: 1800 },
+          { date: "2026-04-04", value: 3600 },
+          { date: "2026-04-05", value: 2900 },
+          { date: "2026-04-06", value: 3000 },
+          { date: "2026-04-07", value: 2700 },
+        ],
+        total_answer_rate_trend: [
+          { date: "2026-04-01", value: 0.55 },
+          { date: "2026-04-02", value: 0.62 },
+          { date: "2026-04-03", value: 0.5 },
+          { date: "2026-04-04", value: 0.7 },
+          { date: "2026-04-05", value: 0.65 },
+          { date: "2026-04-06", value: 0.68 },
+          { date: "2026-04-07", value: 0.67 },
+        ],
+      },
+      request_id: "mock_overview",
+      ts: Date.now(),
+    });
+  }),
+
+  http.get(`${MSW_STUDIO_PREFIX}/sip-numbers/all/call-history/analysis`, () => {
+    return HttpResponse.json({
+      code: 0,
+      message: "success",
+      data: {
+        outbound_analysis: {
+          avg_answered_duration: [
+            { date: "2026-04-01", value: 95 },
+            { date: "2026-04-02", value: 120 },
+            { date: "2026-04-03", value: 88 },
+          ],
+          status_distribution: [
+            { status: "human_answered", count: 20 },
+            { status: "no_answer", count: 12 },
+            { status: "voicemail", count: 8 },
+            { status: "failed", count: 2 },
+          ],
+          transferred_rate_trend: [
+            { date: "2026-04-01", value: 0.05 },
+            { date: "2026-04-02", value: 0.08 },
+            { date: "2026-04-03", value: 0.06 },
+          ],
+          call_success_evaluation_result_rate_trend: [
+            { date: "2026-04-01", value: 0.72 },
+            { date: "2026-04-02", value: 0.78 },
+            { date: "2026-04-03", value: 0.75 },
+          ],
+        },
+        inbound_analysis: {
+          avg_answered_duration: [{ date: "2026-04-01", value: 200 }],
+          status_distribution_v2: [
+            { status: "ai_answered", count: 10 },
+            { status: "ai_no_answer", count: 2 },
+            { status: "transfered_success", count: 3 },
+            { status: "transfered_failed", count: 1 },
+          ],
+        },
+      },
+      request_id: "mock_analysis",
+      ts: Date.now(),
+    });
+  }),
+
+  http.get(`${MSW_STUDIO_PREFIX}/sip-numbers/all/call-history`, ({ request }) => {
+    const url = new URL(request.url);
+    const page = Number(url.searchParams.get("page") || 1);
+    const pageSize = Number(url.searchParams.get("page_size") || 10);
+    const keyword = (url.searchParams.get("search_keyword") || "").toLowerCase();
+    let rows = [...mockGlobalCallHistory];
+    if (keyword) {
+      rows = rows.filter(
+        (r) =>
+          r.agent_name.toLowerCase().includes(keyword) ||
+          r.campaign_name.toLowerCase().includes(keyword) ||
+          r.from_number.includes(keyword) ||
+          r.to_number.includes(keyword)
+      );
+    }
+    const callType = url.searchParams.get("call_type");
+    if (callType && callType !== "all") {
+      rows = rows.filter((r) => r.call_type === callType);
+    }
+    const start = (page - 1) * pageSize;
+    const list = rows.slice(start, start + pageSize);
+    return HttpResponse.json({
+      code: 0,
+      message: "success",
+      data: {
+        page,
+        page_size: pageSize,
+        count: list.length,
+        total: rows.length,
+        list,
+      },
+    });
+  }),
+
   http.get(`${MSW_STUDIO_PREFIX}/sip-numbers/call-history/:callId`, ({ params }) => {
     const callId = params.callId as string;
     return HttpResponse.json({

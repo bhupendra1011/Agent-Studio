@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -17,6 +16,7 @@ import { formatDuration } from "@/lib/utils/campaign-details";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { Copy } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 type DetailTab = "transcript" | "structured_output" | "events" | "latency";
@@ -235,7 +235,16 @@ export function CampaignCallDetailSheet({
                     Campaign
                   </span>
                   <span className="min-w-0 flex-1 text-right font-medium text-[var(--studio-ink)]">
-                    {campaignLabel}
+                    {row.campaign_id ? (
+                      <Link
+                        href={`/dashboard/campaign/${row.campaign_id}`}
+                        className="text-primary underline-offset-4 hover:underline"
+                      >
+                        {campaignLabel}
+                      </Link>
+                    ) : (
+                      campaignLabel
+                    )}
                   </span>
                 </div>
               ) : null}
