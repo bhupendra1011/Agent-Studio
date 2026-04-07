@@ -1,69 +1,22 @@
-# White-label backend API contract (custom-studio-app)
+# White-label backend API contract
 
-This document is for **backend engineers** building a **white-label / micro-SaaS** API that replaces today’s coupling to Agora Console session cookies and split gateways. It lists **logical capabilities** the custom-studio-app UI needs, **why** each exists, and **payload/contract expectations** aligned with frontend types.
+This guide is for **backend engineers** exposing a **white-label / micro-SaaS** API that replaces split Console + Studio gateways. It lists **logical HTTP capabilities** the Agent Studio UI expects, aligned with [`api.text`](./api.text) and types in [`../lib/types/api.ts`](../lib/types/api.ts).
 
-## Relationship to other docs![1775548336277](image/White_label_api/1775548336277.png)
+**Response envelope:** Several routes are normalized with [`unwrapStudioData`](../lib/utils/studio-response.ts): success when `code === 0` and payload in `data`; otherwise the raw body is used (mock mode). **BE should** return `{ "code": 0, "data": <T> }` where the app expects that shape, or agree on one envelope and update unwrap once.
 
-| Document | Role |
-|----------|------|
-| [`api.text`](./api.text) | Verbose catalog of **today’s** Agora Studio EN + Console paths, curl samples, and response dumps. Use it for **example payloads** until the app ships TypeScript types for every field. |
-| [`../lib/types/api.ts`](../lib/types/api.ts) | **Canonical request/response shapes** the app uses for agents, integration, projects, and global call history. |
-| [`../lib/types/analytics-api.ts`](../lib/types/analytics-api.ts) | Call **analytics** overview/analysis payloads for Observe → Analytics (`CallOverviewData`, `CallAnalysisData`). |
-| [`docs/plan/`](./plan/) | Feature implementation plans; this file is the **BE handoff** checklist for those features. |
+## Related references
 
-**White-label note:** Path prefixes (e.g. `/api/v1/studio/en/...` vs `/api/v2/...`) may change behind your gateway. JSON **field names and semantics** should stay compatible with the types above unless product agrees to break them.
+| Source | Role |
+|--------|------|
+| [`api.text`](./api.text) | Verbose catalog of Studio EN paths, sample payloads, and **Start / Stop Agent Preview** request bodies (search `agent-pipeline`, `/start`, `/stop`). |
+| [`../lib/types/api.ts`](../lib/types/api.ts) | Canonical types, including [`StartAgentPreviewRequest`](../lib/types/api.ts) / [`StartAgentPreviewResponse`](../lib/types/api.ts). |
 
 ## Today vs white-label
 
-**Today (Agora wrapper):**
-
-- **Studio EN** — `axiosStudio` base from `NEXT_PUBLIC_API_STUDIO_BASE_URL` (see [`../lib/mock-api-bases.ts`](../lib/mock-api-bases.ts)). Relative paths like `/agent-pipeline`, `/resources`.
-- **Console v2** — `axiosConsoleV2` for `/projects` (list/create). Base from `NEXT_PUBLIC_API_CONSOLE_V2_BASE_URL` or derived from the Studio base.
-- **Auth** — Browser session (cookies), tenant implied by **company / cid** on the server side.
-
-**White-label target:**
-
-- Prefer a **single authenticated API surface** (BFF or API gateway): e.g. `Authorization: Bearer <token>` or API key, optional `X-Tenant-Id` / org claim in the token.
-- You may **merge** “Studio” and “Console project” concepts into one namespace; the UI only needs stable **operations** (list agents, create project, etc.).
-
-```mermaid
-flowchart LR
-  subgraph today [Today]
-    Browser1[Browser]
-    Console[Console_v2_cookies]
-    Studio[Studio_EN_cookies]
-    Browser1 --> Console
-    Browser1 --> Studio
-  end
-  subgraph wl [White_label]
-    Browser2[Browser]
-    BFF[WhiteLabel_BFF]
-    Store[Tenant_store]
-    Runtime[Agent_runtime]
-    Browser2 --> BFF
-    BFF --> Store
-    BFF --> Runtime
-  end
-```
+- **Today (Agora wrapper):** Studio EN base (`NEXT_PUBLIC_API_STUDIO_BASE_URL`), Console v2 for `/projects`, browser cookies for auth.
+- **White-label target:** One authenticated API surface (Bearer or API key); path prefixes may change; keep **JSON field semantics** compatible with the types above.
 
 ---
-
-## Response envelope
-
-Several integration routes are normalized with [`unwrapStudioData`](../lib/utils/studio-response.ts): success when `code === 0` and payload in `data`, otherwise the raw body is treated as the payload (mock mode).
-
-**BE should either:**
-
-1. Return `{ "code": 0, "data": <T> }` for those resources, or  
-2. Document a **single agreed envelope** and update the app’s unwrap logic once.
-
-Agent-pipeline list/detail responses are consumed as returned by axios (see services); align list shapes with `PaginatedResponse` patterns in [`api.ts`](../lib/types/api.ts).
-
----
-
-## Implemented in custom-studio-app (required for current screens)
-
-Paths below are **relative** to the Studio EN base **except** where noted as **Console v2**.
 
 ### 1. Studio access gate
 

@@ -27,7 +27,7 @@ export function MarketingHeader({ user }: { user: SessionUser | undefined }) {
             Home
           </Button>
           <a
-            href="https://docs.agora.io/en/conversational-ai/studio/overview"
+            href="/docs/white-label-api"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm font-medium text-[var(--studio-teal)] underline-offset-4 hover:underline"
