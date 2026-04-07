@@ -14,3 +14,4 @@ This folder holds **design and implementation plans** for custom-studio-app so w
 | [custom-studio-agents-parity.md](./custom-studio-agents-parity.md) | Agents tab: MergedAgent parity, MSW mock mode, env-driven Studio API base, Create Agent POST — standalone port from convo-ai-studio patterns |
 | [agent-editor-page.md](./agent-editor-page.md) | Agent editor: `/dashboard/agents/[pipelineId]/edit`, tabs (Prompt / Models / Advanced / Actions / Code), Test sheet, Deploy dialog, types and services |
 | [integration-tab.md](./integration-tab.md) | Integration hub + Credentials / Knowledge bases / MCP servers: Studio EN APIs, React Query, MSW, dashboard routes |
+| [phone-numbers.md](./phone-numbers.md) | Phone numbers (SIP): outbound-only `/dashboard/phone-numbers`, no inbound/agent column, White_label §9 |

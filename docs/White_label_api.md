@@ -2,7 +2,7 @@
 
 This document is for **backend engineers** building a **white-label / micro-SaaS** API that replaces today’s coupling to Agora Console session cookies and split gateways. It lists **logical capabilities** the custom-studio-app UI needs, **why** each exists, and **payload/contract expectations** aligned with frontend types.
 
-## Relationship to other docs
+## Relationship to other docs![1775548336277](image/White_label_api/1775548336277.png)
 
 | Document | Role |
 |----------|------|
@@ -153,6 +153,29 @@ Paths below are **relative** to the Studio EN base **except** where noted as **C
 
 ---
 
+### 9. SIP / phone numbers (outbound-only)
+
+Purpose: register E.164-style caller IDs with **outbound** SIP trunk settings. **Inbound** calling, **inbound agent binding**, and **associated agent** fields are **out of product scope** for custom-studio-app: the UI does not surface agent linkage, and requests send **`config.outbound_configs` only** (see types in [`api.ts`](../lib/types/api.ts)). Out dialing works from campaigns or APIs using this number’s id regardless of any optional agent fields a legacy API might return.
+
+The list row `id` is the **`phone_number_id`** for outbound campaign and telephony APIs (see **Campaign linkage** below).
+
+| Method | Path (today) | Purpose | UI |
+|--------|----------------|---------|-----|
+| GET | `/sip-numbers` | Paginated list. Query: `page`, `page_size`, `keyword` (optional). Response: `list`, `total`, optional `page` / `page_size`. Items: [`SipNumber`](../lib/types/api.ts). | `/dashboard/phone-numbers` |
+| GET | `/sip-numbers/:id` | Single number (detail). | [`sip-number`](../lib/services/sip-number.ts) service |
+| POST | `/sip-numbers` | Create. Body [`CreateSipNumberRequest`](../lib/types/api.ts): `number`, `source` (e.g. `twilio`), `description`, `config`: `{ outbound_configs: { address, transport, user?, password? } }`. | Add phone number sheet |
+| PUT | `/sip-numbers/:id` | Update. Body [`UpdateSipNumberRequest`](../lib/types/api.ts): `description?`, `config?` (same outbound shape). Phone number is immutable in UI after create. | Edit sheet |
+| DELETE | `/sip-numbers/:id` | Delete number. | Delete confirmation |
+| GET | `/sip-numbers/all/edit-status` | Pre-delete guard: repeated `phone_number_ids`. Response: `{ id, editable }[]` per [`SipNumberEditStatusItem`](../lib/types/api.ts). | Before delete |
+
+**Not used by this app (do not require for white-label parity here):** [`api.text`](./api.text) inbound SIP routes — e.g. bind/unbind inbound agent on a number, `GET /inbound-agent/sip-numbers/:phone_number_id`, `inbound_configs` / `inbound_agent_config` on create/update. A full Agora-style backend may still implement those for other clients; this UI and [`CreateSipNumberRequest`](../lib/types/api.ts) omit them.
+
+The UI labels the vendor as **“SIP Trunk”** while sending `source: "twilio"`.
+
+**Campaign linkage:** Outbound campaign flows (see **Campaign** in `api.text`) use **`phone_number_id`** — the SIP number **`id`** from `GET` / `POST /sip-numbers`. When you add a Campaign screen, populate the caller-number selector from this list.
+
+---
+
 ## Planned features (not in UI yet; scope for BE)
 
 Use [`api.text`](./api.text) for full paths and curl bodies until types land in the repo.
@@ -170,19 +193,9 @@ Logical groups (see **Campaign** section in `api.text`):
 - Per-campaign call history and exports  
 - System/custom evaluation metadata endpoints used by campaign flows  
 
-### SIP / phone numbers
+### SIP — analytics / reporting (not in UI yet)
 
-Purpose: provision numbers, bind inbound to deployed agents, call history, exports, overview/analysis.
-
-Logical groups (see **SIP** section in `api.text`):
-
-- CRUD on SIP numbers  
-- Bind/unbind inbound agent to deployment  
-- Inbound config lookup by phone  
-- Call detail, global call history, export, filter options, overview, analysis  
-- SIP edit-status polling  
-
-When you add **Campaign** or **Phone / SIP** screens to custom-studio-app, extend the tables above with exact methods and align [`api.ts`](../lib/types/api.ts).
+See **SIP** in [`api.text`](./api.text). Not wired in this app: call detail, global call history, export, filter options, overview, analysis. **Inbound-number and inbound-agent APIs** are out of product scope for custom-studio-app (see §9). `GET /sip-numbers/all/edit-status` is **used** for delete.
 
 ---
 

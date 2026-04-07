@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 const items = [
   { href: "/dashboard", label: "Overview" },
   { href: "/dashboard/agents", label: "Agents" },
+  { href: "/dashboard/phone-numbers", label: "Phone numbers" },
   { href: "/dashboard/integration", label: "Integration" },
   { href: "/dashboard/profile", label: "Profile" },
   { href: "/dashboard/settings", label: "Settings" },

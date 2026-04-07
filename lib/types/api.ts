@@ -448,3 +448,65 @@ export interface UpdateMcpRequest {
   config?: CreateMcpRequest["config"];
 }
 
+// ---------------------------------------------------------------------------
+// SIP numbers — outbound-only in custom-studio-app (see docs/White_label_api.md §9)
+// ---------------------------------------------------------------------------
+
+export type SipTransport = "tcp" | "udp" | "tls";
+
+/** Create/update uses `outbound_configs` only. Other keys may appear on API responses. */
+export interface SipNumberConfig {
+  outbound_configs?: {
+    address?: string;
+    user?: string;
+    password?: string;
+    transport?: string;
+  };
+  [key: string]: unknown;
+}
+
+export interface SipNumber {
+  id: string;
+  cid: string;
+  phone_number: string;
+  vendor: string;
+  created_from: string;
+  source: string;
+  type: string;
+  description: string;
+  config: SipNumberConfig;
+  status: number;
+  is_deleted: number;
+  creator: string;
+  create_time: string;
+  update_time: string;
+}
+
+export type SipNumberListParams = PaginationParams;
+
+export interface SipNumberListPayload {
+  list: SipNumber[];
+  total: number;
+  page?: number;
+  page_size?: number;
+}
+
+export interface CreateSipNumberRequest {
+  number: string;
+  source: string;
+  description?: string;
+  config: SipNumberConfig;
+}
+
+export interface UpdateSipNumberRequest {
+  number?: string;
+  source?: string;
+  description?: string;
+  config?: SipNumberConfig;
+}
+
+export interface SipNumberEditStatusItem {
+  id: string;
+  editable: boolean;
+}
+

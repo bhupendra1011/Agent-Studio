@@ -3,6 +3,7 @@ import type {
   DeployedAgentListParams,
   KnowledgeBaseListParams,
   McpListParams,
+  SipNumberListParams,
   StudioResourceListParams,
 } from "@/lib/types/api";
 
@@ -81,6 +82,22 @@ export function normalizeMcpKeyParams(params: McpListParams): McpListParams {
   }
   return n;
 }
+
+export function normalizeSipNumberKeyParams(
+  params: SipNumberListParams
+): SipNumberListParams {
+  const n = { ...params };
+  if (!n.keyword || n.keyword.trim() === "") delete n.keyword;
+  return n;
+}
+
+export const phoneNumberKeys = {
+  all: ["sip-numbers"] as const,
+  lists: () => [...phoneNumberKeys.all, "list"] as const,
+  list: (params: SipNumberListParams) =>
+    [...phoneNumberKeys.lists(), normalizeSipNumberKeyParams(params)] as const,
+  detail: (id: string) => [...phoneNumberKeys.all, "detail", id] as const,
+};
 
 export const integrationKeys = {
   resources: {
