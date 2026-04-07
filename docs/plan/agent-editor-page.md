@@ -4,6 +4,8 @@
 **Route:** `/dashboard/agents/[pipelineId]/edit`  
 **Related:** [Publish your agent — Agora Docs](https://docs.agora.io/en/conversational-ai/studio/deploy/deploy-agent), [Customize your agent](https://docs.agora.io/en/conversational-ai/studio/build/customize-agent)
 
+**White-label / BE contract:** Editor load/save/deploy maps to pipeline APIs in [docs/White_label_api.md](../White_label_api.md). [docs/api.text](../api.text) stays the verbose Agora reference; white-label gateways may use different URL prefixes with the same JSON shapes.
+
 ## Purpose
 
 Full-screen agent configuration workspace mirroring Agent Studio concepts: Prompt, Models, Advanced, Actions, Code tabs; Test panel (sheet); Deploy / Republish dialog. Entry from `/dashboard/agents` via row click or kebab **Edit**.

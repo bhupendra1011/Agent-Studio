@@ -4,6 +4,8 @@
 
 **API reference in-repo:** [docs/api.text](../api.text)
 
+**White-label / BE contract:** For a future tenant-owned API (paths may differ from Agora), see [docs/White_label_api.md](../White_label_api.md). It lists logical operations, payloads aligned with `lib/types/api.ts`, and planned Campaign/SIP scope; `api.text` remains the detailed Agora sample dump.
+
 ---
 
 ## Context (locked decisions)

@@ -10,6 +10,7 @@ This folder holds **design and implementation plans** for custom-studio-app so w
 
 | Document | Summary |
 |----------|---------|
+| [White_label_api.md](../White_label_api.md) | **BE contract** for white-label / micro-SaaS: logical APIs per screen, payloads, planned Campaign/SIP — complements `api.text` |
 | [custom-studio-agents-parity.md](./custom-studio-agents-parity.md) | Agents tab: MergedAgent parity, MSW mock mode, env-driven Studio API base, Create Agent POST — standalone port from convo-ai-studio patterns |
 | [agent-editor-page.md](./agent-editor-page.md) | Agent editor: `/dashboard/agents/[pipelineId]/edit`, tabs (Prompt / Models / Advanced / Actions / Code), Test sheet, Deploy dialog, types and services |
 | [integration-tab.md](./integration-tab.md) | Integration hub + Credentials / Knowledge bases / MCP servers: Studio EN APIs, React Query, MSW, dashboard routes |

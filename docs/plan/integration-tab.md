@@ -21,6 +21,8 @@
 
 Add a dashboard **Integration** area for **Credentials** (Studio `/resources` with `source=user_upload`), **Knowledge bases**, and **MCP servers**, aligned with [docs/api.text](../api.text) and [Agora — Manage integrations](https://docs.agora.io/en/conversational-ai/studio/build/integrations). Styling uses app tokens (`--studio-*`, Syne/Outfit) and shadcn—not a pixel copy of Agora Console.
 
+**White-label / BE contract:** Resource, KB, and MCP operations for partners are summarized in [docs/White_label_api.md](../White_label_api.md) (payloads and response envelope notes). [docs/api.text](../api.text) remains the long-form Agora path and curl reference; WL paths may differ.
+
 ## Reference (convo-ai-studio)
 
 - Segmented tabs + toolbar + table: `app/integration/[type]/page.tsx`, `components/integration/*`, `components/modals/credential-modal.tsx` (dynamic fields from `serviceMetaData`).

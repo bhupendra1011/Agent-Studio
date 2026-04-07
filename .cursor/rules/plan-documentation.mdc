@@ -12,6 +12,7 @@ For **custom-studio-app**, treat **`docs/plan/`** as the canonical place for des
 - **Before** repeating, refining, or “v2”-ing a multi-step plan in conversation, **write or edit** the matching Markdown file under `docs/plan/` (e.g. `docs/plan/my-feature.md`).
 - When adding a new plan file, **add a row** to the index in [`docs/plan/README.md`](docs/plan/README.md).
 - Prefer **one feature or epic per file**; link to Agora or internal docs when relevant.
+- When adding or changing a **user-facing feature** that calls the backend (e.g. **Campaign**, **phone numbers / SIP**, a new integration type), **update** [`docs/White_label_api.md`](docs/White_label_api.md) with the **full set of logical APIs** that feature needs (HTTP method, purpose, payload/response notes). Keep [`docs/api.text`](docs/api.text) as the verbose reference for Agora-shaped samples.
 
 ## File naming
 
