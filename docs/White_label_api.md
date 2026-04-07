@@ -90,11 +90,14 @@ Paths below are **relative** to the Studio EN base **except** where noted as **C
 
 ---
 
-### 3. Deployed agent status (pause / resume style)
+### 3. Deployed agents (list + status)
 
 | Method | Path (today) | Purpose | UI |
 |--------|----------------|---------|-----|
+| GET | `/agent-deploy-pipeline` | Paginated deployed pipelines. Query: `keyword`, `page`, `page_size`, `status` (optional). Response: `list`, `total`, optional `page` / `page_size`. Items: [`DeployedAgent`](../lib/types/api.ts) (`pipeline_deploy_uuid` is the **`agent_uuid`** for campaigns). | Campaign create/edit — AI agent dropdown |
 | PUT | `/agent-deploy-pipeline/:project_id/:deploy_id/status` | Body: `{ status: number }`. | [`use-agents`](../hooks/use-agents.ts) mutations |
+
+**White-label:** Same field semantics if paths are namespaced per tenant.
 
 ---
 
@@ -167,35 +170,61 @@ The list row `id` is the **`phone_number_id`** for outbound campaign and telepho
 | PUT | `/sip-numbers/:id` | Update. Body [`UpdateSipNumberRequest`](../lib/types/api.ts): `description?`, `config?` (same outbound shape). Phone number is immutable in UI after create. | Edit sheet |
 | DELETE | `/sip-numbers/:id` | Delete number. | Delete confirmation |
 | GET | `/sip-numbers/all/edit-status` | Pre-delete guard: repeated `phone_number_ids`. Response: `{ id, editable }[]` per [`SipNumberEditStatusItem`](../lib/types/api.ts). | Before delete |
+| GET | `/sip-numbers/call-history/:call_id` | Single-call detail for transcript, evaluation blobs, recording URL. Response: [`CallDetailByCallIdResponse`](../lib/types/api.ts). | Campaign results — call row → detail modal |
 
 **Not used by this app (do not require for white-label parity here):** [`api.text`](./api.text) inbound SIP routes — e.g. bind/unbind inbound agent on a number, `GET /inbound-agent/sip-numbers/:phone_number_id`, `inbound_configs` / `inbound_agent_config` on create/update. A full Agora-style backend may still implement those for other clients; this UI and [`CreateSipNumberRequest`](../lib/types/api.ts) omit them.
 
 The UI labels the vendor as **“SIP Trunk”** while sending `source: "twilio"`.
 
-**Campaign linkage:** Outbound campaign flows (see **Campaign** in `api.text`) use **`phone_number_id`** — the SIP number **`id`** from `GET` / `POST /sip-numbers`. When you add a Campaign screen, populate the caller-number selector from this list.
+**Campaign linkage:** Outbound campaigns use **`phone_number_id`** — the SIP number **`id`** from `GET` / `POST /sip-numbers`. Populate the caller-number selector from this list.
+
+---
+
+### 10. Metadata (system evaluations)
+
+| Method | Path (today) | Purpose | UI |
+|--------|----------------|---------|-----|
+| GET | `/metadata/system-evaluations` | Returns built-in evaluation variable names/types for post-call extraction. Response: [`SystemEvaluationsResponse`](../lib/types/api.ts). | Campaign create/edit — “Post call data extraction” |
+
+---
+
+### 11. Campaign (outbound)
+
+Purpose: list/create/update/delete campaigns, upload recipient CSV, run metrics, per-campaign call history, CSV exports, interrupt running jobs, redial cohorts. Types: [`CreateCampaignRequest`](../lib/types/api.ts), [`CampaignDetails`](../lib/types/api.ts), [`CampaignSummary`](../lib/types/api.ts), [`CampaignCallHistoryItem`](../lib/types/api.ts), export responses.
+
+**Recipient CSV:** Must include `phone_number` (E.164). Extra columns become prompt variables. **Limits:** Agora documents **25 MB** and **50,000** rows; if your product uses another cap, document it in your gateway and match UI copy.
+
+| Method | Path (today) | Purpose | UI |
+|--------|----------------|---------|-----|
+| GET | `/campaigns` | List. Query: `page`, `page_size`, `search_keyword`, `search_fields` (e.g. `campaign_name,phone_number,agent_name`), `campaign_ids`, `agent_uuids`, `phone_number_ids`, `status`, `sort_by`, `sort_order`. | `/dashboard/campaign` |
+| POST | `/campaigns/recipients/upload` | **multipart/form-data** field `file` (CSV). Response: `{ file_url }` used as `recipients_file_url` on create/update. | Create / edit |
+| POST | `/campaigns` | Body [`CreateCampaignRequest`](../lib/types/api.ts): `agent_uuid`, `campaign_name`, `is_send_immediately`, `phone_number_id`, `recipients_file_url`, optional `call_interval_ms`, `scheduled_start_time`, `timezone`, `hangup_configuration`, `scheduled_time_ranges_config`, `switch_configuration`, `llm_call_evaluation_configuration`, `sip_transfer`. | Create |
+| GET | `/campaigns/:campaign_id` | Full config for edit header. [`CampaignDetails`](../lib/types/api.ts). | Edit + results header |
+| PUT | `/campaigns/:campaign_id` | Body [`UpdateCampaignRequest`](../lib/types/api.ts) (same logical fields as create, all required per Agora shape). | Edit scheduled campaigns |
+| DELETE | `/campaigns/:campaign_id` | Remove campaign. | List actions |
+| POST | `/campaigns/:campaign_id/interrupt` | Stop an in-progress campaign. | List / results |
+| GET | `/campaigns/:campaign_id/summary` | Aggregate metrics for cards + donut. [`CampaignSummary`](../lib/types/api.ts). | Results |
+| GET | `/campaigns/:campaign_id/call-history` | Paginated calls. Query: `page`, `page_size`, `search_keyword`, `call_category`, `sort_by`, `sort_order`, time filters as supported. | Results table |
+| GET | `/campaigns/template/export` | CSV string (contact template). | Create — download template |
+| GET | `/campaigns/:campaign_id/summary/export` | CSV string (results summary). | Results — download |
+| GET | `/campaigns/:campaign_id/call-history/export` | CSV string; same filter query params as call-history where applicable. | Results |
+| GET | `/campaigns/:campaign_id/redial/export` | Query: `call_category` comma-separated cohort keys (`no_answer`, `human_answered`, `voicemail`, `failed`, `outbound_transferred_success`, `outbound_transferred_failed`, …). CSV for selected cohorts. | Redial modal |
+
+**Semantics notes:**
+
+- **`switch_configuration`:** `enable_user_auto_hangup` ≈ end-of-conversation hangup; `enable_voicemail` ≈ voicemail detection; `enable_max_silence_duration_hangup` + `hangup_configuration.max_silence_duration_seconds`; `enable_transcript` / `enable_recording`; `enable_llm_call_evaluation` drives post-call extraction (`llm_call_evaluation_configuration`).
+- **`scheduled_time_ranges_config`:** Array of `{ weekday, time_ranges: [{ start, end }] }` for call windows (local times interpreted with `timezone`).
+- **Redial:** Cohort counts in UI come from **`CampaignSummary`**; export uses **`redial/export`** with selected categories.
+
+**Optional (full call-modal parity):** Events and latency tabs in Agora Studio use debugging APIs, e.g. `GET /debugging/tasks/:task_id/detail` and `GET /debugging/tasks/:task_id/events` with a time window — see [`api.text`](./api.text). custom-studio-app phase 1 uses **call-by-id** detail only.
 
 ---
 
 ## Planned features (not in UI yet; scope for BE)
 
-Use [`api.text`](./api.text) for full paths and curl bodies until types land in the repo.
+### SIP — global analytics / reporting
 
-### Campaign
-
-Purpose: outbound campaign management, recipients, publish/interrupt, call summaries and exports, redial, evaluation metadata.
-
-Logical groups (see **Campaign** section in `api.text`):
-
-- CRUD + list + get detail  
-- Draft publish, interrupt, delete  
-- Recipients CSV upload  
-- Summary, exports, redial exports and analytics  
-- Per-campaign call history and exports  
-- System/custom evaluation metadata endpoints used by campaign flows  
-
-### SIP — analytics / reporting (not in UI yet)
-
-See **SIP** in [`api.text`](./api.text). Not wired in this app: call detail, global call history, export, filter options, overview, analysis. **Inbound-number and inbound-agent APIs** are out of product scope for custom-studio-app (see §9). `GET /sip-numbers/all/edit-status` is **used** for delete.
+See **SIP** in [`api.text`](./api.text). Not wired in this app: global call history list, export, filter options, overview, analysis. **Inbound-number and inbound-agent APIs** are out of product scope for custom-studio-app (see §9). Per-call detail **`GET /sip-numbers/call-history/:call_id`** is **used** from campaign results.
 
 ---
 

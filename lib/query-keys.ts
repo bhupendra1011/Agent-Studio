@@ -1,5 +1,6 @@
 import type {
   AgentPipelineListParams,
+  CampaignListParams,
   DeployedAgentListParams,
   KnowledgeBaseListParams,
   McpListParams,
@@ -45,6 +46,28 @@ export const agentKeys = {
   lists: () => [...agentKeys.all, "list"] as const,
   list: (params: DeployedAgentListParams) =>
     [...agentKeys.lists(), normalizeDeployedAgentKeyParams(params)] as const,
+};
+
+export function normalizeCampaignListParams(
+  params: CampaignListParams
+): CampaignListParams {
+  const n = { ...params };
+  if (!n.search_keyword?.trim()) delete n.search_keyword;
+  if (!n.status) delete n.status;
+  if (!n.sort_by) delete n.sort_by;
+  if (!n.sort_order) delete n.sort_order;
+  return n;
+}
+
+export const campaignKeys = {
+  all: ["campaigns"] as const,
+  lists: () => [...campaignKeys.all, "list"] as const,
+  list: (params: CampaignListParams) =>
+    [...campaignKeys.lists(), normalizeCampaignListParams(params)] as const,
+  detail: (id: string) => [...campaignKeys.all, "detail", id] as const,
+  summary: (id: string) => [...campaignKeys.all, "summary", id] as const,
+  callHistory: (id: string, qp: Record<string, unknown>) =>
+    [...campaignKeys.all, "call-history", id, qp] as const,
 };
 
 export function normalizeResourceKeyParams(

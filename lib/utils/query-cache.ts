@@ -1,5 +1,5 @@
 import { getPipelines } from "@/lib/data/pipelines";
-import { agentKeys, pipelineKeys } from "@/lib/query-keys";
+import { agentKeys, campaignKeys, pipelineKeys } from "@/lib/query-keys";
 import type { AgentPipelineListParams } from "@/lib/types/api";
 import type { QueryClient, QueryKey } from "@tanstack/react-query";
 
@@ -10,6 +10,10 @@ type QueryKeysFactory<TParams extends object = Record<string, unknown>> = {
 
 export function invalidateDeployedAgentsQueries(queryClient: QueryClient): void {
   queryClient.invalidateQueries({ queryKey: agentKeys.all });
+}
+
+export function invalidateCampaignQueries(queryClient: QueryClient): void {
+  queryClient.invalidateQueries({ queryKey: campaignKeys.all });
 }
 
 function invalidateAndPrefetchMultiple<TParams extends object>(

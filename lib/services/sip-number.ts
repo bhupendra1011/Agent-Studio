@@ -1,5 +1,6 @@
 import { axiosStudio } from "@/lib/api/clients";
 import type {
+  CallDetailByCallId,
   CreateSipNumberRequest,
   SipNumber,
   SipNumberEditStatusItem,
@@ -67,6 +68,13 @@ export async function updateSipNumber(
 
 export async function deleteSipNumber(id: string): Promise<void> {
   await axiosStudio.delete(`/sip-numbers/${id}`);
+}
+
+export async function getCallDetailByCallId(callId: string): Promise<CallDetailByCallId> {
+  const res = await axiosStudio.get(
+    `/sip-numbers/call-history/${encodeURIComponent(callId)}`
+  );
+  return unwrapStudioData<CallDetailByCallId>(res.data);
 }
 
 export async function checkSipNumberEditStatus(

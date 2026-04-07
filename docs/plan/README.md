@@ -15,3 +15,4 @@ This folder holds **design and implementation plans** for custom-studio-app so w
 | [agent-editor-page.md](./agent-editor-page.md) | Agent editor: `/dashboard/agents/[pipelineId]/edit`, tabs (Prompt / Models / Advanced / Actions / Code), Test sheet, Deploy dialog, types and services |
 | [integration-tab.md](./integration-tab.md) | Integration hub + Credentials / Knowledge bases / MCP servers: Studio EN APIs, React Query, MSW, dashboard routes |
 | [phone-numbers.md](./phone-numbers.md) | Phone numbers (SIP): outbound-only `/dashboard/phone-numbers`, no inbound/agent column, White_label §9 |
+| [campaign.md](./campaign.md) | Campaign: list / create / edit / results, MSW + hooks, White_label §10–11 |

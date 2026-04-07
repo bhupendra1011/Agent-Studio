@@ -2,6 +2,7 @@ import { http, HttpResponse } from "msw";
 import type { GraphData } from "@/lib/types/api";
 import { mockAgentPipelines } from "@/mocks/data/agent-pipelines";
 import { MSW_STUDIO_PREFIX } from "@/mocks/constants";
+import type { DeployedAgent } from "@/lib/types/api";
 
 const defaultGraphData: GraphData = {
   asr: {
@@ -162,4 +163,27 @@ export const agentPipelineHandlers = [
       return HttpResponse.json({ code: 0, message: "success" });
     }
   ),
+
+  http.get(`${MSW_STUDIO_PREFIX}/agent-deploy-pipeline`, ({ request }) => {
+    const url = new URL(request.url);
+    const page = Number(url.searchParams.get("page") || 1);
+    const pageSize = Number(url.searchParams.get("page_size") || 50);
+    const deployed = pipelines.filter((p) => p.deploy_status === 1);
+    const list: DeployedAgent[] = deployed.map((p) => ({
+      ...p,
+      pipeline_id: Number.parseInt(p.id, 10) || 0,
+      pipeline_uuid: p.id,
+      pipeline_deploy_uuid: `agent-deploy-${p.id}`,
+      pipeline_deploy_name: p.name,
+      current_version: p.current_pipeline_version,
+    }));
+    const start = (page - 1) * pageSize;
+    const slice = list.slice(start, start + pageSize);
+    return HttpResponse.json({
+      list: slice,
+      total: list.length,
+      page,
+      page_size: pageSize,
+    });
+  }),
 ];

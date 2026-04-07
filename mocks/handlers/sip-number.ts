@@ -32,6 +32,46 @@ function bodyCreateToRow(body: CreateSipNumberRequest): SipNumber {
 }
 
 export const sipNumberHandlers = [
+  http.get(`${MSW_STUDIO_PREFIX}/sip-numbers/call-history/:callId`, ({ params }) => {
+    const callId = params.callId as string;
+    return HttpResponse.json({
+      code: 0,
+      message: "success",
+      data: {
+        call_id: callId,
+        call_info: {
+          agent_name: "Customer Support Voice Agent",
+          agent_id: "agent-task-001",
+          call_category_v2: "no_answer" as const,
+          from_number: "+14155551234",
+          to_number: "+1234567890",
+          transcript: [],
+          transferred_number: "",
+          duration_seconds: 0,
+          record_file_url: "",
+          call_ts: Math.floor(Date.now() / 1000),
+          hangup_reason: "no_answer",
+          llm_call_evaluation_status: "completed" as const,
+          llm_call_evaluation_result: {
+            call_success_evaluation_result: false,
+            raw_custom_evaluation_results: {
+              call_outcome: false,
+            },
+          },
+        },
+        status: "completed",
+        call_type: "outbound" as const,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        raw_custom_evaluation_results: {
+          call_outcome: false,
+        },
+      },
+      request_id: "mock_call_detail",
+      ts: Date.now(),
+    });
+  }),
+
   http.get(`${MSW_STUDIO_PREFIX}/sip-numbers`, ({ request }) => {
     const url = new URL(request.url);
     const page = Number(url.searchParams.get("page") || 1);
