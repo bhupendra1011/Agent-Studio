@@ -26,7 +26,7 @@ import type {
   UpdateSipNumberRequest,
 } from "@/lib/types/api";
 import { cn } from "@/lib/utils";
-import { Lightbulb, Loader2, Plus } from "lucide-react";
+import { ChevronDown, Loader2, Plus } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 
@@ -68,16 +68,58 @@ export interface AddPhoneNumberSheetProps {
 }
 
 const TRANSPORTS: { value: SipTransport; label: string }[] = [
-  { value: "tcp", label: "TCP" },
   { value: "udp", label: "UDP" },
+  { value: "tcp", label: "TCP" },
   { value: "tls", label: "TLS" },
 ];
+
+type SipProviderId = "twilio" | "telnyx" | "exotel" | "other";
+
+const SIP_PROVIDERS: {
+  id: SipProviderId;
+  label: string;
+  defaultHost: string;
+  hint: string;
+}[] = [
+  {
+    id: "twilio",
+    label: "Twilio",
+    defaultHost: "sip.twilio.com",
+    hint: "Find SIP trunk credentials in the Twilio Console under Elastic SIP Trunking → Trunks.",
+  },
+  {
+    id: "telnyx",
+    label: "Telnyx",
+    defaultHost: "sip.telnyx.com",
+    hint: "Get SIP credentials from the Telnyx Portal under SIP Connections.",
+  },
+  {
+    id: "exotel",
+    label: "Exotel",
+    defaultHost: "",
+    hint: "Use the SIP endpoint Exotel provides for your region (see Exotel docs).",
+  },
+  {
+    id: "other",
+    label: "Other SIP",
+    defaultHost: "",
+    hint: "Enter your carrier’s SIP trunk host and optional credentials below.",
+  },
+];
+
+function inferSipProvider(host: string): SipProviderId {
+  const h = host.toLowerCase();
+  if (h.includes("twilio")) return "twilio";
+  if (h.includes("telnyx")) return "telnyx";
+  if (h.includes("exotel")) return "exotel";
+  return "other";
+}
 
 function readInitialFields(initial: SipNumber | null | undefined, mode: "create" | "edit") {
   if (mode === "edit" && initial) {
     const t = initial.config?.outbound_configs?.transport;
     const transport: SipTransport =
-      t === "udp" || t === "tls" || t === "tcp" ? t : "tcp";
+      t === "udp" || t === "tls" || t === "tcp" ? t : "udp";
     return {
       phoneNumber: initial.phone_number ?? "",
       displayName: initial.description ?? "",
@@ -93,7 +135,7 @@ function readInitialFields(initial: SipNumber | null | undefined, mode: "create"
     sipDomain: "",
     username: "",
     password: "",
-    transport: "tcp" as SipTransport,
+    transport: "udp" as SipTransport,
   };
 }
 
@@ -112,6 +154,13 @@ function PhoneNumberSheetForm({
   const [username, setUsername] = useState(start.username);
   const [password, setPassword] = useState(start.password);
   const [transport, setTransport] = useState<SipTransport>(start.transport);
+  const [sipProvider, setSipProvider] = useState<SipProviderId | null>(() =>
+    mode === "edit" && start.sipDomain
+      ? inferSipProvider(start.sipDomain)
+      : mode === "edit"
+        ? "other"
+        : null
+  );
   const [errors, setErrors] = useState<Partial<Record<string, string>>>({});
 
   const buildConfig = (): SipNumberConfig => {
@@ -129,6 +178,10 @@ function PhoneNumberSheetForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (mode === "create" && !sipProvider) {
+      setErrors({ sipProvider: "Select your SIP trunk provider." });
+      return;
+    }
     const parsed = formSchema.safeParse({
       phoneNumber: phoneNumber.replace(/[\s-]/g, ""),
       displayName: displayName.trim(),
@@ -174,12 +227,84 @@ function PhoneNumberSheetForm({
         <SheetDescription className="text-[var(--studio-ink-muted)]">
           {mode === "edit"
             ? "Update display name and SIP trunk settings."
-            : "Provision an outbound caller ID for campaigns and outbound APIs."}
+            : "Pick your carrier — we’ll pre-fill common SIP settings. Advanced options stay tucked away."}
         </SheetDescription>
       </SheetHeader>
 
       <div className="flex flex-1 flex-col gap-6 overflow-y-auto px-6 py-6">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {mode === "create" ? (
+          <div className="space-y-2">
+            <Label className="text-[var(--studio-ink)]">
+              SIP provider{" "}
+              <span className="text-destructive" aria-hidden>
+                *
+              </span>
+            </Label>
+            <div className="grid grid-cols-2 gap-2">
+              {SIP_PROVIDERS.map((p) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => {
+                    setSipProvider(p.id);
+                    setErrors((e) => {
+                      const { sipProvider: _, ...rest } = e;
+                      return rest;
+                    });
+                    if (p.defaultHost) setSipDomain(p.defaultHost);
+                    else setSipDomain("");
+                    setTransport("udp");
+                  }}
+                  className={cn(
+                    "flex items-center gap-3 rounded-xl border p-3 text-left text-sm font-medium transition-colors",
+                    sipProvider === p.id
+                      ? "border-[var(--studio-teal)] bg-[color-mix(in_oklch,var(--studio-teal)_10%,transparent)] text-[var(--studio-ink)]"
+                      : "border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/40 text-[var(--studio-ink-muted)] hover:border-[var(--studio-ink-muted)]"
+                  )}
+                >
+                  <span
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-white"
+                    style={{
+                      backgroundColor:
+                        p.id === "twilio"
+                          ? "#F22F46"
+                          : p.id === "telnyx"
+                            ? "#00C08B"
+                            : p.id === "exotel"
+                              ? "#4F46E5"
+                              : "#64748B",
+                    }}
+                  >
+                    {p.label[0]}
+                  </span>
+                  {p.label}
+                </button>
+              ))}
+            </div>
+            {errors.sipProvider ? (
+              <p className="text-xs text-destructive">{errors.sipProvider}</p>
+            ) : null}
+          </div>
+        ) : null}
+
+        {mode === "create" && sipProvider && (
+          <div className="rounded-xl border border-[var(--studio-teal)]/25 bg-[color-mix(in_oklch,var(--studio-teal)_6%,transparent)] px-3 py-2.5 text-xs leading-relaxed text-[var(--studio-teal)]">
+            {SIP_PROVIDERS.find((x) => x.id === sipProvider)?.hint}
+          </div>
+        )}
+
+        {mode === "edit" && sipProvider ? (
+          <p className="text-xs text-[var(--studio-ink-muted)]">
+            {SIP_PROVIDERS.find((x) => x.id === sipProvider)?.hint}
+          </p>
+        ) : null}
+
+        <div
+          className={cn(
+            "grid grid-cols-1 gap-4 md:grid-cols-2",
+            mode === "create" && !sipProvider && "pointer-events-none opacity-40"
+          )}
+        >
           <div className="space-y-1.5">
             <Label className="text-[var(--studio-ink)]">
               Phone number{" "}
@@ -204,7 +329,7 @@ function PhoneNumberSheetForm({
 
           <div className="space-y-1.5">
             <Label className="text-[var(--studio-ink)]">
-              Vendor{" "}
+              Resource label{" "}
               <span className="text-destructive" aria-hidden>
                 *
               </span>
@@ -239,105 +364,106 @@ function PhoneNumberSheetForm({
               <p className="text-xs text-destructive">{errors.displayName}</p>
             ) : null}
           </div>
-
-          <div className="space-y-1.5 md:col-span-2">
-            <Label className="text-[var(--studio-ink)]">
-              SIP trunk address{" "}
-              <span className="text-destructive" aria-hidden>
-                *
-              </span>
-            </Label>
-            <Input
-              value={sipDomain}
-              onChange={(e) => setSipDomain(e.target.value)}
-              placeholder="sip.example.com"
-              className="rounded-xl border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/50"
-              aria-invalid={Boolean(errors.sipDomain)}
-            />
-            {errors.sipDomain ? (
-              <p className="text-xs text-destructive">{errors.sipDomain}</p>
-            ) : null}
-          </div>
-
-          <div className="space-y-1.5">
-            <Label className="text-[var(--studio-ink)]">SIP trunk username</Label>
-            <Input
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Optional"
-              autoComplete="off"
-              className="rounded-xl border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/50"
-              aria-invalid={Boolean(errors.username)}
-            />
-            {errors.username ? (
-              <p className="text-xs text-destructive">{errors.username}</p>
-            ) : null}
-          </div>
-
-          <div className="space-y-1.5">
-            <Label className="text-[var(--studio-ink)]">SIP trunk password</Label>
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Optional"
-              autoComplete="new-password"
-              className="rounded-xl border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/50"
-            />
-          </div>
         </div>
 
-        <div className="space-y-2">
-          <Label className="text-[var(--studio-ink)]">
-            Transport protocol{" "}
-            <span className="text-destructive" aria-hidden>
-              *
-            </span>
-          </Label>
-          <div className="flex flex-wrap gap-2">
-            {TRANSPORTS.map(({ value, label }) => (
-              <button
-                key={value}
-                type="button"
-                onClick={() => setTransport(value)}
-                className={cn(
-                  "rounded-xl border px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
-                  transport === value
-                    ? "border-[var(--studio-teal)] bg-[var(--studio-teal)]/15 text-[var(--studio-ink)]"
-                    : "border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/40 text-[var(--studio-ink-muted)] hover:bg-[var(--studio-surface-muted)]"
+        {mode === "edit" || sipProvider ? (
+          <details className="group rounded-xl border border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/20">
+            <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-medium text-[var(--studio-ink)] [&::-webkit-details-marker]:hidden">
+              <ChevronDown className="h-4 w-4 shrink-0 transition-transform group-open:rotate-180" />
+              Advanced SIP settings
+            </summary>
+            <div className="grid grid-cols-1 gap-4 border-t border-[var(--studio-border)] px-4 py-4 md:grid-cols-2">
+              <div className="space-y-1.5 md:col-span-2">
+                <Label className="text-[var(--studio-ink)]">
+                  SIP trunk address{" "}
+                  <span className="text-destructive" aria-hidden>
+                    *
+                  </span>
+                </Label>
+                <Input
+                  value={sipDomain}
+                  onChange={(e) => setSipDomain(e.target.value)}
+                  placeholder="sip.example.com"
+                  readOnly={
+                    mode === "create" &&
+                    (sipProvider === "twilio" || sipProvider === "telnyx")
+                  }
+                  className={cn(
+                    "rounded-xl border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/50",
+                    mode === "create" &&
+                      (sipProvider === "twilio" || sipProvider === "telnyx")
+                      ? "opacity-90"
+                      : ""
+                  )}
+                  aria-invalid={Boolean(errors.sipDomain)}
+                />
+                {errors.sipDomain ? (
+                  <p className="text-xs text-destructive">{errors.sipDomain}</p>
+                ) : null}
+              </div>
+
+              <div className="space-y-2 md:col-span-2">
+                <Label className="text-[var(--studio-ink)]">
+                  Transport protocol{" "}
+                  <span className="text-destructive" aria-hidden>
+                    *
+                  </span>
+                </Label>
+                <div className="flex flex-wrap gap-2">
+                  {TRANSPORTS.map(({ value, label }) => (
+                    <button
+                      key={value}
+                      type="button"
+                      onClick={() => setTransport(value)}
+                      className={cn(
+                        "rounded-xl border px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
+                        transport === value
+                          ? "border-[var(--studio-teal)] bg-[var(--studio-teal)]/15 text-[var(--studio-ink)]"
+                          : "border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/40 text-[var(--studio-ink-muted)] hover:bg-[var(--studio-surface-muted)]"
+                      )}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+                {errors.transport ? (
+                  <p className="text-xs text-destructive">{errors.transport}</p>
+                ) : (
+                  <p className="text-xs text-[var(--studio-ink-muted)]">
+                    UDP is the most common default for many trunks.
+                  </p>
                 )}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-          {errors.transport ? (
-            <p className="text-xs text-destructive">{errors.transport}</p>
-          ) : (
-            <p className="text-xs text-[var(--studio-ink-muted)]">
-              Choose the protocol for SIP signaling to your provider.
-            </p>
-          )}
-        </div>
+              </div>
 
-        <div className="flex gap-3 rounded-xl border border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/40 p-4">
-          <Lightbulb
-            className="mt-0.5 h-5 w-5 shrink-0 text-[var(--studio-teal)]"
-            aria-hidden
-          />
-          <p className="text-sm text-[var(--studio-ink-muted)]">
-            Need help? See{" "}
-            <a
-              href="https://docs.agora.io/en/conversational-ai/overview/product-overview"
-              className="font-medium text-[var(--studio-teal)] underline-offset-2 hover:underline"
-              target="_blank"
-              rel="noreferrer"
-            >
-              telephony documentation
-            </a>{" "}
-            for SIP trunk setup (replace with your white-label docs when ready).
-          </p>
-        </div>
+              <div className="space-y-1.5">
+                <Label className="text-[var(--studio-ink)]">SIP username</Label>
+                <Input
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Optional"
+                  autoComplete="off"
+                  className="rounded-xl border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/50"
+                  aria-invalid={Boolean(errors.username)}
+                />
+                {errors.username ? (
+                  <p className="text-xs text-destructive">{errors.username}</p>
+                ) : null}
+              </div>
+
+              <div className="space-y-1.5">
+                <Label className="text-[var(--studio-ink)]">SIP password</Label>
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Optional"
+                  autoComplete="new-password"
+                  className="rounded-xl border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/50"
+                />
+              </div>
+            </div>
+          </details>
+        ) : null}
       </div>
 
       <SheetFooter className="border-t border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/30 px-6 py-4">

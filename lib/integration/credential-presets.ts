@@ -29,6 +29,30 @@ export const CREDENTIAL_PRESETS: CredentialPreset[] = [
     ],
   },
   {
+    id: "llm-anthropic",
+    type_key: "llm",
+    vendor: "anthropic",
+    label: "Anthropic (LLM)",
+    fields: [
+      { key: "api_key", label: "API key", secret: true },
+      {
+        key: "base_url",
+        label: "Base URL",
+        placeholder: "https://api.anthropic.com/v1",
+      },
+    ],
+  },
+  {
+    id: "llm-gemini",
+    type_key: "llm",
+    vendor: "google",
+    label: "Google Gemini (LLM)",
+    fields: [
+      { key: "api_key", label: "API key", secret: true },
+      { key: "base_url", label: "Base URL", placeholder: "Generative Language API base URL" },
+    ],
+  },
+  {
     id: "asr-microsoft",
     type_key: "asr",
     vendor: "microsoft",
@@ -37,6 +61,20 @@ export const CREDENTIAL_PRESETS: CredentialPreset[] = [
       { key: "key", label: "Key", secret: true },
       { key: "region", label: "Region", placeholder: "eastus" },
       { key: "language", label: "Language", placeholder: "en-US" },
+    ],
+  },
+  {
+    id: "asr-deepgram",
+    type_key: "asr",
+    vendor: "deepgram",
+    label: "Deepgram (ASR)",
+    fields: [
+      { key: "key", label: "API key", secret: true },
+      {
+        key: "url",
+        label: "WebSocket URL",
+        placeholder: "wss://api.deepgram.com/v1/listen",
+      },
     ],
   },
   {

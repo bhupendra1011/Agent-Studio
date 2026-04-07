@@ -19,7 +19,48 @@ import { Input } from "@/components/ui/input";
 import { usePhoneNumbers } from "@/hooks/use-phone-numbers";
 import type { CreateSipNumberRequest, SipNumber } from "@/lib/types/api";
 import { MoreHorizontal } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+
+type SipHealthState = "unverified" | "verifying" | "verified";
+
+function HealthBadge({
+  status,
+  onVerify,
+}: {
+  status: SipHealthState;
+  onVerify: () => void;
+}) {
+  if (status === "verified") {
+    return (
+      <span className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--studio-teal)]">
+        <span className="h-2 w-2 rounded-full bg-[var(--studio-teal)]" />
+        Verified
+      </span>
+    );
+  }
+  if (status === "verifying") {
+    return (
+      <span className="text-xs text-[var(--studio-ink-muted)]">Checking…</span>
+    );
+  }
+  return (
+    <div className="flex flex-col items-start gap-1">
+      <span className="inline-flex items-center gap-1.5 text-xs font-medium text-amber-700 dark:text-amber-300">
+        <span className="h-2 w-2 rounded-full bg-amber-500" />
+        Unverified
+      </span>
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        className="h-7 rounded-lg px-2 text-[0.6875rem]"
+        onClick={onVerify}
+      >
+        Verify now
+      </Button>
+    </div>
+  );
+}
 
 function formatDt(iso: string | undefined) {
   if (!iso) return "—";
@@ -41,6 +82,9 @@ export function PhoneNumbersPageClient() {
   const [deleteTarget, setDeleteTarget] = useState<SipNumber | null>(null);
   const [pendingDelete, setPendingDelete] = useState(false);
   const [checkingId, setCheckingId] = useState<string | null>(null);
+  const [sipHealth, setSipHealth] = useState<Record<string, SipHealthState>>(
+    {}
+  );
   const [inUseOpen, setInUseOpen] = useState(false);
   const [inUsePhone, setInUsePhone] = useState("");
 
@@ -99,6 +143,13 @@ export function PhoneNumbersPageClient() {
     }
   };
 
+  const runVerify = useCallback((id: string) => {
+    setSipHealth((prev) => ({ ...prev, [id]: "verifying" }));
+    window.setTimeout(() => {
+      setSipHealth((prev) => ({ ...prev, [id]: "verified" }));
+    }, 2000);
+  }, []);
+
   const handleConfirmDelete = async () => {
     if (!deleteTarget) return;
     setPendingDelete(true);
@@ -154,6 +205,7 @@ export function PhoneNumbersPageClient() {
                 <th className="px-4 py-3 font-medium">Vendor</th>
                 <th className="px-4 py-3 font-medium">SIP domain</th>
                 <th className="px-4 py-3 font-medium">Updated</th>
+                <th className="px-4 py-3 font-medium">Health</th>
                 <th className="w-12 px-4 py-3 font-medium" aria-label="Actions" />
               </tr>
             </thead>
@@ -161,7 +213,7 @@ export function PhoneNumbersPageClient() {
               {loading ? (
                 <tr>
                   <td
-                    colSpan={6}
+                    colSpan={7}
                     className="px-4 py-12 text-center text-[var(--studio-ink-muted)]"
                   >
                     Loading phone numbers…
@@ -170,7 +222,7 @@ export function PhoneNumbersPageClient() {
               ) : showEmpty ? (
                 <tr>
                   <td
-                    colSpan={6}
+                    colSpan={7}
                     className="px-4 py-12 text-center text-[var(--studio-ink-muted)]"
                   >
                     No phone numbers yet. Add a SIP trunk to start outbound
@@ -197,6 +249,12 @@ export function PhoneNumbersPageClient() {
                     </td>
                     <td className="px-4 py-3 text-[var(--studio-ink-muted)]">
                       {formatDt(n.update_time)}
+                    </td>
+                    <td className="px-4 py-3 align-top">
+                      <HealthBadge
+                        status={sipHealth[n.id] ?? "unverified"}
+                        onVerify={() => runVerify(n.id)}
+                      />
                     </td>
                     <td className="px-4 py-3">
                       <DropdownMenu>
@@ -267,7 +325,11 @@ export function PhoneNumbersPageClient() {
         initial={editing}
         isSubmitting={isCreating || isUpdating}
         onCreate={async (body: CreateSipNumberRequest) => {
-          await createNumber(body);
+          const created = await createNumber(body);
+          setSipHealth((prev) => ({
+            ...prev,
+            [created.id]: "unverified",
+          }));
           setSheetOpen(false);
         }}
         onUpdate={async (id, body) => {

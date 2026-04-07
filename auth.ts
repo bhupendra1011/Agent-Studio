@@ -5,6 +5,7 @@ import Google from "next-auth/providers/google";
 
 import { getExpectedCredentials } from "@/lib/auth-credentials";
 import { credentialsSchema } from "@/lib/credentials-schema";
+import { isStudioAdminIdentity } from "@/lib/admin-config";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
@@ -29,7 +30,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         } else {
           delete token.email;
         }
+        if (user.name) {
+          token.name = user.name;
+        }
       }
+      const email = (typeof token.email === "string" ? token.email : null) ?? null;
+      const name = (typeof token.name === "string" ? token.name : null) ?? null;
+      const id = (typeof token.sub === "string" ? token.sub : null) ?? null;
+      token.role = isStudioAdminIdentity({ email, name, id }) ? "admin" : "user";
       return token;
     },
     session({ session, token }) {
@@ -42,6 +50,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (token.email) {
           session.user.email = token.email as string;
         }
+        session.user.role = token.role === "admin" ? "admin" : "user";
       }
       return session;
     },

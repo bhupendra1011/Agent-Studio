@@ -1,10 +1,12 @@
 "use client";
 
 import { getAgentPipeline, updateAgentPipeline } from "@/lib/services/agent-pipeline";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import type { AgentPipeline } from "@/lib/types/api";
-import { useCallback, useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { ActionsTab } from "./actions-tab";
 import { AdvancedTab } from "./advanced-tab";
+import { AgentAnalyticsTab } from "./agent-analytics-tab";
 import { CodeTab } from "./code-tab";
 import { DeployDialog } from "./deploy-dialog";
 import { EditorHeader } from "./editor-header";
@@ -13,6 +15,7 @@ import type { EditorTab } from "./editor-types";
 import { editorReducer, initialEditorState } from "./editor-types";
 import { ModelsTab } from "./models-tab";
 import { PromptTab } from "./prompt-tab";
+import { AgentTestPanelContent } from "./test-panel-content";
 import { TestPanel } from "./test-panel";
 
 interface AgentEditorShellProps {
@@ -27,6 +30,13 @@ export function AgentEditorShell({ pipelineId }: AgentEditorShellProps) {
   const [error, setError] = useState<string | null>(null);
   const [testOpen, setTestOpen] = useState(false);
   const [deployOpen, setDeployOpen] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const saveInFlight = useRef(false);
+  const isLg = useMediaQuery("(min-width: 1024px)");
+
+  useEffect(() => {
+    if (isLg) setTestOpen(false);
+  }, [isLg]);
 
   useEffect(() => {
     let cancelled = false;
@@ -56,8 +66,10 @@ export function AgentEditorShell({ pipelineId }: AgentEditorShellProps) {
   }, [pipelineId]);
 
   const handleSave = useCallback(async () => {
-    if (!pipeline) return;
+    if (!pipeline || saveInFlight.current) return;
+    saveInFlight.current = true;
     dispatch({ type: "SET_SAVING", payload: true });
+    setSaveError(null);
     try {
       await updateAgentPipeline(Number(pipeline.id), {
         name: state.name,
@@ -65,12 +77,31 @@ export function AgentEditorShell({ pipelineId }: AgentEditorShellProps) {
         graph_data: state.graphData,
       });
       dispatch({ type: "MARK_CLEAN" });
-    } catch {
-      // TODO: toast error
+    } catch (e) {
+      setSaveError(e instanceof Error ? e.message : "Save failed");
     } finally {
+      saveInFlight.current = false;
       dispatch({ type: "SET_SAVING", payload: false });
     }
   }, [pipeline, state.name, state.description, state.graphData]);
+
+  const saveLatest = useRef(handleSave);
+  saveLatest.current = handleSave;
+
+  useEffect(() => {
+    if (!state.dirty || !pipeline) return;
+    const t = window.setTimeout(() => void saveLatest.current(), 600);
+    return () => window.clearTimeout(t);
+  }, [state.dirty, state.name, state.description, state.graphData, pipeline?.id]);
+
+  useEffect(() => {
+    if (!state.dirty) return;
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [state.dirty]);
 
   const agentStatus: "draft" | "live" | "paused" = pipeline
     ? pipeline.deploy_status === 1
@@ -101,6 +132,11 @@ export function AgentEditorShell({ pipelineId }: AgentEditorShellProps) {
     );
   }
 
+  const lastPublishedAt =
+    pipeline.deploy_status !== 0 && pipeline.last_deployed_time?.trim()
+      ? pipeline.last_deployed_time
+      : null;
+
   return (
     <div className="-m-6 sm:-m-8 flex min-h-[calc(100vh-3.5rem)] flex-col">
       <EditorHeader
@@ -108,42 +144,63 @@ export function AgentEditorShell({ pipelineId }: AgentEditorShellProps) {
         status={agentStatus}
         dirty={state.dirty}
         saving={state.saving}
+        showTestButton={!isLg}
+        lastPublishedAt={lastPublishedAt}
+        saveError={saveError}
         onNameChange={(n) => dispatch({ type: "SET_NAME", payload: n })}
         onSave={() => void handleSave()}
         onTestOpen={() => setTestOpen(true)}
         onDeployOpen={() => setDeployOpen(true)}
+        onDismissSaveError={() => setSaveError(null)}
       />
 
-      <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto w-full max-w-4xl px-6 py-6">
-          <EditorTabStrip activeTab={activeTab} onTabChange={setActiveTab} />
+      <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
+        <div className="min-h-0 flex-1 overflow-y-auto lg:max-w-[60%] lg:flex-none lg:basis-[60%]">
+          <div className="mx-auto w-full max-w-4xl px-6 py-6">
+            <EditorTabStrip activeTab={activeTab} onTabChange={setActiveTab} />
 
-          <div className="mt-6">
-            {activeTab === "prompt" && (
-              <PromptTab state={state} dispatch={dispatch} />
-            )}
-            {activeTab === "models" && (
-              <ModelsTab state={state} dispatch={dispatch} />
-            )}
-            {activeTab === "advanced" && (
-              <AdvancedTab state={state} dispatch={dispatch} />
-            )}
-            {activeTab === "actions" && (
-              <ActionsTab state={state} dispatch={dispatch} />
-            )}
-            {activeTab === "code" && (
-              <CodeTab pipeline={pipeline} />
-            )}
+            <div className="mt-6">
+              {activeTab === "prompt" && (
+                <PromptTab state={state} dispatch={dispatch} />
+              )}
+              {activeTab === "models" && (
+                <ModelsTab state={state} dispatch={dispatch} />
+              )}
+              {activeTab === "advanced" && (
+                <AdvancedTab state={state} dispatch={dispatch} />
+              )}
+              {activeTab === "actions" && (
+                <ActionsTab state={state} dispatch={dispatch} />
+              )}
+              {activeTab === "analytics" && (
+                <AgentAnalyticsTab pipeline={pipeline} />
+              )}
+              {activeTab === "code" && <CodeTab pipeline={pipeline} />}
+            </div>
           </div>
         </div>
+
+        {isLg ? (
+          <aside className="flex min-h-0 w-full flex-col border-t border-[var(--studio-border)] bg-[var(--studio-surface)] lg:max-w-[40%] lg:flex-none lg:basis-[40%] lg:border-l lg:border-t-0">
+            <div className="min-h-0 flex-1 overflow-y-auto">
+              <AgentTestPanelContent
+                pipeline={pipeline}
+                graphData={state.graphData}
+                variant="inline"
+              />
+            </div>
+          </aside>
+        ) : null}
       </div>
 
-      <TestPanel
-        open={testOpen}
-        onOpenChange={setTestOpen}
-        pipeline={pipeline}
-        graphData={state.graphData}
-      />
+      {!isLg ? (
+        <TestPanel
+          open={testOpen}
+          onOpenChange={setTestOpen}
+          pipeline={pipeline}
+          graphData={state.graphData}
+        />
+      ) : null}
 
       <DeployDialog
         open={deployOpen}

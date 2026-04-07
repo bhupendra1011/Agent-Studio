@@ -325,6 +325,36 @@
   animation: studio-copy-check 0.3s ease-out forwards;
 }
 
+/* Setup wizard — simulated call waveform */
+@keyframes studio-setup-wave-h {
+  from {
+    height: 4px;
+  }
+  to {
+    height: 18px;
+  }
+}
+
+.studio-setup-wave-bar {
+  animation: studio-setup-wave-h 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes studio-setup-ring-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 0.85;
+  }
+}
+
+.studio-setup-ring-pulse {
+  animation: studio-setup-ring-pulse 1s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .studio-reveal,
   .studio-section-reveal {
@@ -338,6 +368,10 @@
   .studio-packet-move,
   .studio-scale-in,
   .studio-copy-check {
+    animation: none !important;
+  }
+  .studio-setup-wave-bar,
+  .studio-setup-ring-pulse {
     animation: none !important;
   }
 }

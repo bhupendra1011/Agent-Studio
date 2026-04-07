@@ -34,6 +34,7 @@ import {
   type CallDetail,
 } from "@/lib/utils/campaign-details";
 import { downloadCSV } from "@/lib/utils/file-download";
+import { cn } from "@/lib/utils";
 import {
   ChevronLeft,
   ChevronRight,
@@ -45,16 +46,30 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 interface Props {
   campaignId: string;
 }
 
+type MainTab = "results" | "calls" | "settings";
+
 export function CampaignDetailPageClient({ campaignId }: Props) {
   const router = useRouter();
   const { campaignDetails, loading: dLoading } = useCampaignDetails(campaignId);
   const { summary, loading: sLoading } = useCampaignSummary(campaignId);
+  const [mainTab, setMainTab] = useState<MainTab>("results");
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [page, setPage] = useState(1);
@@ -66,6 +81,14 @@ export function CampaignDetailPageClient({ campaignId }: Props) {
     search_keyword: search.trim() || undefined,
     call_category: statusFilter === "all" ? undefined : statusFilter,
   });
+
+  const { list: hourlySample, loading: hourlyLoading } = useCampaignCallHistory(
+    campaignId,
+    {
+      page: 1,
+      page_size: 400,
+    }
+  );
 
   const interruptMut = useInterruptCampaign();
   const { setRedialCsvData, setRedialCampaignConfig } = useRedialCampaign();
@@ -81,6 +104,19 @@ export function CampaignDetailPageClient({ campaignId }: Props) {
     () => list.map((item, i) => transformCallHistoryItem(item, i)),
     [list]
   );
+
+  const hourlyBuckets = useMemo(() => {
+    const buckets = Array.from({ length: 24 }, (_, h) => ({
+      hour: `${h.toString().padStart(2, "0")}:00`,
+      count: 0,
+    }));
+    for (const row of hourlySample) {
+      const ms = row.call_ts < 1e12 ? row.call_ts * 1000 : row.call_ts;
+      const h = new Date(ms).getHours();
+      buckets[h].count += 1;
+    }
+    return buckets;
+  }, [hourlySample]);
 
   const cohorts: CohortOption[] = useMemo(() => {
     if (!summary) {
@@ -211,7 +247,33 @@ export function CampaignDetailPageClient({ campaignId }: Props) {
         </div>
       </div>
 
-      <div className="grid min-w-0 w-full gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7">
+      <div className="flex flex-wrap gap-2 rounded-xl border border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/40 p-1">
+        {(
+          [
+            ["results", "Results"] as const,
+            ["calls", "Call log"] as const,
+            ["settings", "Settings"] as const,
+          ] as const
+        ).map(([id, label]) => (
+          <button
+            key={id}
+            type="button"
+            onClick={() => setMainTab(id)}
+            className={cn(
+              "rounded-lg px-4 py-2 text-sm font-medium transition-colors",
+              mainTab === id
+                ? "bg-[var(--studio-surface)] text-[var(--studio-ink)] shadow-sm"
+                : "text-[var(--studio-ink-muted)] hover:text-[var(--studio-ink)]"
+            )}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {mainTab === "results" ? (
+        <>
+          <div className="grid min-w-0 w-full gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7">
         {[
           { label: "Total calls", value: summary?.total_calls ?? 0, Icon: Phone },
           {
@@ -320,6 +382,41 @@ export function CampaignDetailPageClient({ campaignId }: Props) {
         </Card>
       </div>
 
+          <Card className="border-[var(--studio-border)] bg-[var(--studio-surface)]">
+            <CardHeader>
+              <CardTitle className="text-base">Calls by hour of day</CardTitle>
+              <p className="text-sm text-[var(--studio-ink-muted)]">
+                Sample of up to 400 recent calls (local time).
+              </p>
+            </CardHeader>
+            <CardContent>
+              <div className="h-56">
+                {hourlyLoading ? (
+                  <p className="flex h-full items-center justify-center text-sm text-[var(--studio-ink-muted)]">
+                    Loading…
+                  </p>
+                ) : (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={hourlyBuckets}>
+                      <CartesianGrid strokeDasharray="3 3" className="opacity-40" />
+                      <XAxis dataKey="hour" tick={{ fontSize: 10 }} interval={3} />
+                      <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
+                      <Tooltip />
+                      <Bar
+                        dataKey="count"
+                        fill="var(--studio-teal)"
+                        radius={[4, 4, 0, 0]}
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </>
+      ) : null}
+
+      {mainTab === "calls" ? (
       <Card className="border-[var(--studio-border)] bg-[var(--studio-surface)]">
         <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <CardTitle className="text-base">Call details</CardTitle>
@@ -443,6 +540,72 @@ export function CampaignDetailPageClient({ campaignId }: Props) {
           )}
         </CardContent>
       </Card>
+      ) : null}
+
+      {mainTab === "settings" ? (
+        dLoading ? (
+          <p className="text-sm text-[var(--studio-ink-muted)]">Loading settings…</p>
+        ) : campaignDetails ? (
+          <Card className="border-[var(--studio-border)] bg-[var(--studio-surface)]">
+            <CardHeader>
+              <CardTitle className="text-base">Campaign settings</CardTitle>
+              <p className="text-sm text-[var(--studio-ink-muted)]">
+                Read-only snapshot — edit from the campaign editor if needed.
+              </p>
+            </CardHeader>
+            <CardContent className="grid gap-3 text-sm sm:grid-cols-2">
+              <div className="flex justify-between gap-4 sm:col-span-2">
+                <span className="text-[var(--studio-ink-muted)]">Status</span>
+                <span className="font-medium capitalize text-[var(--studio-ink)]">
+                  {campaignDetails.status}
+                </span>
+              </div>
+              <div className="flex justify-between gap-4 sm:col-span-2">
+                <span className="text-[var(--studio-ink-muted)]">Agent UUID</span>
+                <span className="max-w-[min(100%,16rem)] truncate font-mono text-xs text-[var(--studio-ink)]">
+                  {campaignDetails.agent_uuid}
+                </span>
+              </div>
+              <div className="flex justify-between gap-4">
+                <span className="text-[var(--studio-ink-muted)]">Phone number</span>
+                <span className="font-mono text-[var(--studio-ink)]">
+                  {campaignDetails.phone_number}
+                </span>
+              </div>
+              <div className="flex justify-between gap-4">
+                <span className="text-[var(--studio-ink-muted)]">Timezone</span>
+                <span className="text-[var(--studio-ink)]">{campaignDetails.timezone}</span>
+              </div>
+              <div className="flex justify-between gap-4">
+                <span className="text-[var(--studio-ink-muted)]">Recipients</span>
+                <span className="tabular-nums text-[var(--studio-ink)]">
+                  {campaignDetails.recipients_phone_number_count}
+                </span>
+              </div>
+              <div className="flex justify-between gap-4">
+                <span className="text-[var(--studio-ink-muted)]">Send immediately</span>
+                <span className="text-[var(--studio-ink)]">
+                  {campaignDetails.is_send_immediately ? "Yes" : "No"}
+                </span>
+              </div>
+              <div className="flex justify-between gap-4 sm:col-span-2">
+                <span className="text-[var(--studio-ink-muted)]">Updated</span>
+                <span className="text-[var(--studio-ink)]">{campaignDetails.updated_at}</span>
+              </div>
+              <div className="sm:col-span-2">
+                <Link
+                  href={`/dashboard/campaign/${campaignId}/edit`}
+                  className="inline-flex text-sm font-medium text-[var(--studio-teal)] hover:underline"
+                >
+                  Open editor →
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <p className="text-sm text-[var(--studio-ink-muted)]">Campaign not found.</p>
+        )
+      ) : null}
 
       <CampaignCallDetailSheet
         open={sheetOpen}

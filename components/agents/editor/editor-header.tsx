@@ -17,15 +17,34 @@ import {
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+function formatPublishedAgo(iso: string): string {
+  const t = new Date(iso).getTime();
+  if (Number.isNaN(t)) return "";
+  const diff = Date.now() - t;
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return "just now";
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 48) return `${h}h ago`;
+  const d = Math.floor(h / 24);
+  if (d < 14) return `${d}d ago`;
+  return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+}
+
 interface EditorHeaderProps {
   name: string;
   status: "draft" | "live" | "paused";
   dirty: boolean;
   saving: boolean;
+  /** When false, hide header Test (e.g. desktop inline test column). */
+  showTestButton?: boolean;
+  lastPublishedAt?: string | null;
+  saveError?: string | null;
   onNameChange: (name: string) => void;
   onSave: () => void;
   onTestOpen: () => void;
   onDeployOpen: () => void;
+  onDismissSaveError?: () => void;
 }
 
 export function EditorHeader({
@@ -33,10 +52,14 @@ export function EditorHeader({
   status,
   dirty,
   saving,
+  showTestButton = true,
+  lastPublishedAt,
+  saveError,
   onNameChange,
   onSave,
   onTestOpen,
   onDeployOpen,
+  onDismissSaveError,
 }: EditorHeaderProps) {
   const [editing, setEditing] = useState(false);
   const [localName, setLocalName] = useState(name);
@@ -124,6 +147,14 @@ export function EditorHeader({
             >
               {status}
             </Badge>
+
+            {dirty ? (
+              <span
+                className="h-2 w-2 shrink-0 rounded-full bg-amber-500 shadow-[0_0_0_3px_rgba(245,158,11,0.25)]"
+                title="Unsaved changes"
+                aria-label="Unsaved changes"
+              />
+            ) : null}
           </div>
         </div>
 
@@ -147,16 +178,18 @@ export function EditorHeader({
             </Button>
           )}
 
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={onTestOpen}
-            className="rounded-xl border-[var(--studio-teal)]/30 text-[var(--studio-teal)] hover:bg-[var(--studio-teal)]/10 studio-pulse-glow"
-          >
-            <Phone className="mr-1.5 h-3.5 w-3.5" />
-            Test
-          </Button>
+          {showTestButton ? (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={onTestOpen}
+              className="rounded-xl border-[var(--studio-teal)]/30 text-[var(--studio-teal)] hover:bg-[var(--studio-teal)]/10 studio-pulse-glow"
+            >
+              <Phone className="mr-1.5 h-3.5 w-3.5" />
+              Test
+            </Button>
+          ) : null}
 
           <Button
             type="button"
@@ -169,6 +202,29 @@ export function EditorHeader({
           </Button>
         </div>
       </div>
+
+      {saveError ? (
+        <div className="flex items-center justify-between gap-3 border-t border-red-500/25 bg-red-500/10 px-6 py-2 text-xs text-red-700 dark:text-red-200">
+          <span>{saveError}</span>
+          {onDismissSaveError ? (
+            <button
+              type="button"
+              className="shrink-0 font-medium underline-offset-2 hover:underline"
+              onClick={onDismissSaveError}
+            >
+              Dismiss
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+
+      {lastPublishedAt ? (
+        <div className="flex items-center gap-2 border-t border-[var(--studio-border)]/60 px-6 py-2 text-xs text-[var(--studio-ink-muted)]">
+          <span className="font-medium text-[var(--studio-ink)]/80">Last published</span>
+          <span>{formatPublishedAgo(lastPublishedAt)}</span>
+          {dirty ? <span className="text-amber-600/90">· Unsaved edits</span> : null}
+        </div>
+      ) : null}
     </div>
   );
 }

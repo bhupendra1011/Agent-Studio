@@ -2,6 +2,14 @@
 
 import { CampaignCallDetailSheet } from "@/components/campaign/campaign-call-detail-sheet";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -10,6 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useCampaigns } from "@/hooks/use-campaigns";
+import { useDeployedAgentsList } from "@/hooks/use-deployed-agents-list";
 import { useGlobalCallHistory } from "@/hooks/use-global-call-history";
 import type { CallHistoryItem } from "@/lib/types/api";
 import { getDefaultCallHistoryTimeRange } from "@/lib/utils/timestamp";
@@ -18,6 +28,7 @@ import {
   ArrowDown,
   ArrowUp,
   ArrowUpDown,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
@@ -26,7 +37,8 @@ import {
   PhoneOutgoing,
 } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 function formatDuration(seconds: number): string {
   const h = Math.floor(seconds / 3600);
@@ -62,61 +74,166 @@ function statusLabel(row: CallHistoryItem): string {
   return map[v2] ?? v2.replace(/_/g, " ");
 }
 
+function parseSortFromSearch(sortParam: string | null): {
+  sortBy: "call_ts" | "duration_seconds";
+  sortOrder: "asc" | "desc";
+} {
+  if (!sortParam?.includes(":")) {
+    return { sortBy: "call_ts", sortOrder: "desc" };
+  }
+  const [col, ord] = sortParam.split(":");
+  const sortBy =
+    col === "duration_seconds" ? "duration_seconds" : "call_ts";
+  const sortOrder = ord === "asc" ? "asc" : "desc";
+  return { sortBy, sortOrder };
+}
+
+const STATUS_OPTIONS: { id: string; label: string }[] = [
+  { id: "human_answered", label: "Answered" },
+  { id: "no_answer", label: "No answer" },
+  { id: "voicemail", label: "Voicemail" },
+  { id: "failed", label: "Failed" },
+  { id: "outbound_transferred_success", label: "Transferred" },
+  { id: "outbound_transferred_failed", label: "Transfer failed" },
+];
+
 export function CallHistoryPageClient() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const defaultRange = useMemo(() => getDefaultCallHistoryTimeRange(), []);
-  const [searchInput, setSearchInput] = useState("");
-  const [searchKeyword, setSearchKeyword] = useState("");
-  const [direction, setDirection] = useState<"all" | "inbound" | "outbound">(
-    "all"
+
+  const q = searchParams.get("q") ?? "";
+  const direction = (searchParams.get("dir") ?? "all") as
+    | "all"
+    | "inbound"
+    | "outbound";
+  const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10) || 1);
+  const psRaw = parseInt(searchParams.get("ps") ?? "10", 10);
+  const pageSize = [10, 25, 50].includes(psRaw) ? psRaw : 10;
+  const agentUuid = searchParams.get("agent")?.trim() || "";
+  const campaignId = searchParams.get("campaign")?.trim() || "";
+  const catRaw = searchParams.get("cat")?.trim() || "";
+  const statusFilters = catRaw
+    ? catRaw.split(",").map((s) => s.trim()).filter(Boolean)
+    : [];
+
+  const sortParam = searchParams.get("sort");
+  const { sortBy, sortOrder } = useMemo(
+    () => parseSortFromSearch(sortParam),
+    [sortParam]
   );
-  const [sortBy, setSortBy] = useState<"call_ts" | "duration_seconds">(
-    "call_ts"
-  );
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+
+  const [searchInput, setSearchInput] = useState(q);
   const [detailRow, setDetailRow] = useState<CallHistoryItem | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  useEffect(() => {
+    setSearchInput(q);
+  }, [q]);
+
+  const { agents, loading: agentsLoading } = useDeployedAgentsList({
+    page: 1,
+    page_size: 100,
+  });
+  const { campaigns, loading: campaignsLoading } = useCampaigns({
+    page: 1,
+    page_size: 100,
+  });
+
+  const setQuery = useCallback(
+    (updates: Record<string, string | undefined | null>) => {
+      const p = new URLSearchParams(searchParams.toString());
+      for (const [key, value] of Object.entries(updates)) {
+        if (value === undefined || value === null || value === "") {
+          p.delete(key);
+        } else {
+          p.set(key, value);
+        }
+      }
+      router.replace(`${pathname}?${p.toString()}`, { scroll: false });
+    },
+    [pathname, router, searchParams]
+  );
 
   const filters = useMemo(
     () => ({
       call_type: direction,
       from_time: defaultRange.fromTime,
       to_time: defaultRange.toTime,
-      search_keyword: searchKeyword || undefined,
+      search_keyword: q || undefined,
       sort_by: sortBy,
       sort_order: sortOrder,
+      agent_uuids: agentUuid || undefined,
+      campaign_ids: campaignId || undefined,
+      call_category: statusFilters.length ? statusFilters : undefined,
     }),
-    [direction, defaultRange.fromTime, defaultRange.toTime, searchKeyword, sortBy, sortOrder]
+    [
+      direction,
+      defaultRange.fromTime,
+      defaultRange.toTime,
+      q,
+      sortBy,
+      sortOrder,
+      agentUuid,
+      campaignId,
+      statusFilters,
+    ]
   );
 
   const {
     calls,
     total,
-    page,
-    pageSize,
     totalPages,
     loading,
     error,
-    setPage,
-    setPageSize,
-  } = useGlobalCallHistory({ filters });
+  } = useGlobalCallHistory({
+    filters,
+    controlledPage: page,
+    controlledPageSize: pageSize,
+  });
+
+  const setPage = (n: number) =>
+    setQuery({ page: n <= 1 ? undefined : String(n) });
+  const setPageSize = (n: number) =>
+    setQuery({ ps: n === 10 ? undefined : String(n), page: undefined });
 
   const toggleSort = (col: "call_ts" | "duration_seconds") => {
-    if (sortBy === col) {
-      setSortOrder((o) => (o === "asc" ? "desc" : "asc"));
-    } else {
-      setSortBy(col);
-      setSortOrder(col === "call_ts" ? "desc" : "desc");
-    }
+    const sameCol = sortBy === col;
+    const nextOrder = sameCol
+      ? sortOrder === "asc"
+        ? "desc"
+        : "asc"
+      : "desc";
+    const nextSort = `${col}:${nextOrder}`;
+    const isDefault = nextSort === "call_ts:desc";
+    setQuery({
+      sort: isDefault ? undefined : nextSort,
+      page: undefined,
+    });
   };
 
   const SortIcon = ({ col }: { col: "call_ts" | "duration_seconds" }) => {
-    if (sortBy !== col) return <ArrowUpDown className="ml-1 h-3.5 w-3.5 opacity-50" />;
+    if (sortBy !== col)
+      return <ArrowUpDown className="ml-1 h-3.5 w-3.5 opacity-50" />;
     return sortOrder === "asc" ? (
       <ArrowUp className="ml-1 h-3.5 w-3.5" />
     ) : (
       <ArrowDown className="ml-1 h-3.5 w-3.5" />
     );
   };
+
+  const toggleStatus = (id: string) => {
+    const next = statusFilters.includes(id)
+      ? statusFilters.filter((x) => x !== id)
+      : [...statusFilters, id];
+    setQuery({
+      cat: next.length ? next.join(",") : undefined,
+      page: undefined,
+    });
+  };
+
+  const filtersReady = !agentsLoading && !campaignsLoading;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -125,7 +242,8 @@ export function CallHistoryPageClient() {
           Call history
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          View and manage inbound and outbound calls across your workspace.
+          Filters sync to the URL — share or bookmark a view. Default window: last
+          90 days.
         </p>
       </header>
 
@@ -136,8 +254,10 @@ export function CallHistoryPageClient() {
           onChange={(e) => setSearchInput(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              setSearchKeyword(searchInput.trim());
-              setPage(1);
+              setQuery({
+                q: searchInput.trim() || undefined,
+                page: undefined,
+              });
             }
           }}
           className="max-w-md rounded-xl"
@@ -146,20 +266,22 @@ export function CallHistoryPageClient() {
           variant="secondary"
           size="sm"
           className="rounded-xl"
-          onClick={() => {
-            setSearchKeyword(searchInput.trim());
-            setPage(1);
-          }}
+          onClick={() =>
+            setQuery({
+              q: searchInput.trim() || undefined,
+              page: undefined,
+            })
+          }
         >
           Search
         </Button>
+
         <div className="flex items-center gap-2 rounded-xl border border-[var(--studio-border)] bg-card px-3 py-1.5">
           <Select
             value={direction}
             onValueChange={(v) => {
               if (v === "all" || v === "inbound" || v === "outbound") {
-                setDirection(v);
-                setPage(1);
+                setQuery({ dir: v === "all" ? undefined : v, page: undefined });
               }
             }}
           >
@@ -173,7 +295,89 @@ export function CallHistoryPageClient() {
             </SelectContent>
           </Select>
         </div>
+
+        <div className="flex items-center gap-2 rounded-xl border border-[var(--studio-border)] bg-card px-3 py-1.5">
+          <Select
+            value={agentUuid || "all"}
+            disabled={!filtersReady}
+            onValueChange={(v) => {
+              setQuery({
+                agent: v === "all" ? undefined : v,
+                page: undefined,
+              });
+            }}
+          >
+            <SelectTrigger className="h-8 w-[min(200px,50vw)] border-0 shadow-none">
+              <SelectValue placeholder="Agent" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All agents</SelectItem>
+              {agents.map((a) => (
+                <SelectItem key={a.pipeline_deploy_uuid} value={a.pipeline_deploy_uuid}>
+                  {a.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex items-center gap-2 rounded-xl border border-[var(--studio-border)] bg-card px-3 py-1.5">
+          <Select
+            value={campaignId || "all"}
+            disabled={!filtersReady}
+            onValueChange={(v) => {
+              setQuery({
+                campaign: v === "all" ? undefined : v,
+                page: undefined,
+              });
+            }}
+          >
+            <SelectTrigger className="h-8 w-[min(200px,50vw)] border-0 shadow-none">
+              <SelectValue placeholder="Campaign" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All campaigns</SelectItem>
+              {campaigns.map((c) => (
+                <SelectItem key={c.campaign_id} value={c.campaign_id}>
+                  {c.campaign_name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            disabled={!filtersReady}
+            className="inline-flex h-9 items-center gap-1 rounded-xl border border-[var(--studio-border)] bg-card px-3 text-sm font-normal hover:bg-accent disabled:opacity-50"
+          >
+            {statusFilters.length
+              ? `${statusFilters.length} status filters`
+              : "All statuses"}
+            <ChevronDown className="h-4 w-4 opacity-60" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56" align="start">
+            <DropdownMenuLabel>Call status</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {STATUS_OPTIONS.map((o) => (
+              <DropdownMenuCheckboxItem
+                key={o.id}
+                checked={statusFilters.includes(o.id)}
+                onCheckedChange={() => toggleStatus(o.id)}
+              >
+                {o.label}
+              </DropdownMenuCheckboxItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
+
+      <p className="text-sm text-muted-foreground">
+        Showing{" "}
+        <span className="font-medium tabular-nums text-foreground">{calls.length}</span>{" "}
+        on this page ·{" "}
+        <span className="font-medium tabular-nums text-foreground">{total}</span> total
+      </p>
 
       {error && (
         <p className="text-sm text-destructive" role="alert">

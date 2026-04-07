@@ -3,7 +3,13 @@ import type {
   GraphDataParamsConfig,
 } from "@/lib/types/api";
 
-export type EditorTab = "prompt" | "models" | "advanced" | "actions" | "code";
+export type EditorTab =
+  | "prompt"
+  | "models"
+  | "advanced"
+  | "actions"
+  | "code"
+  | "analytics";
 
 export interface EditorState {
   name: string;

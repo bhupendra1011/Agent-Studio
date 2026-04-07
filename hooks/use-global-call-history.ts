@@ -12,18 +12,32 @@ export interface UseGlobalCallHistoryOptions {
   initialPage?: number;
   initialPageSize?: number;
   enabled?: boolean;
+  /** When set, pagination is driven externally (e.g. URL query). */
+  controlledPage?: number;
+  controlledPageSize?: number;
 }
 
 export function useGlobalCallHistory(options: UseGlobalCallHistoryOptions) {
-  const { filters, initialPage = 1, initialPageSize = 10, enabled = true } =
-    options;
-  const [page, setPageState] = useState(initialPage);
-  const [pageSize, setPageSizeState] = useState(initialPageSize);
+  const {
+    filters,
+    initialPage = 1,
+    initialPageSize = 10,
+    enabled = true,
+    controlledPage,
+    controlledPageSize,
+  } = options;
+  const [internalPage, setInternalPage] = useState(initialPage);
+  const [internalPageSize, setInternalPageSize] = useState(initialPageSize);
+
+  const page = controlledPage ?? internalPage;
+  const pageSize = controlledPageSize ?? internalPageSize;
 
   const filterKey = JSON.stringify(filters);
   useEffect(() => {
-    setPageState(1);
-  }, [filterKey]);
+    if (controlledPage === undefined) {
+      setInternalPage(1);
+    }
+  }, [filterKey, controlledPage]);
 
   const params: CallHistoryParams = useMemo(
     () => ({
@@ -43,11 +57,23 @@ export function useGlobalCallHistory(options: UseGlobalCallHistoryOptions) {
     enabled,
   });
 
-  const setPage = useCallback((n: number) => setPageState(n), []);
-  const setPageSize = useCallback((n: number) => {
-    setPageSizeState(n);
-    setPageState(1);
-  }, []);
+  const setPage = useCallback(
+    (n: number) => {
+      if (controlledPage === undefined) {
+        setInternalPage(n);
+      }
+    },
+    [controlledPage]
+  );
+  const setPageSize = useCallback(
+    (n: number) => {
+      if (controlledPageSize === undefined) {
+        setInternalPageSize(n);
+        setInternalPage(1);
+      }
+    },
+    [controlledPageSize]
+  );
 
   const calls: CallHistoryItem[] = query.data?.list ?? [];
   const total = query.data?.total ?? 0;

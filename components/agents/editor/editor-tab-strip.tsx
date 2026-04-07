@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import {
+  BarChart3,
   BookOpen,
   BrainCircuit,
   Code2,
@@ -16,6 +17,7 @@ const TABS: { id: EditorTab; label: string; icon: React.ElementType }[] = [
   { id: "models", label: "Models", icon: BrainCircuit },
   { id: "advanced", label: "Advanced", icon: Settings2 },
   { id: "actions", label: "Actions", icon: Zap },
+  { id: "analytics", label: "Analytics", icon: BarChart3 },
   { id: "code", label: "Code", icon: Code2 },
 ];
 

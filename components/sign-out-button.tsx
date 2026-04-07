@@ -1,5 +1,7 @@
-import { signOutAction } from "@/lib/auth-actions";
+"use client";
 
+import { signOutAction } from "@/lib/auth-actions";
+import { clearSetupWizardSessionDismissal } from "@/lib/setup-onboarding";
 import { Button } from "@/components/ui/button";
 
 type Props = {
@@ -16,7 +18,12 @@ export function SignOutButton({
   label = "Logout",
 }: Props) {
   return (
-    <form action={signOutAction}>
+    <form
+      action={signOutAction}
+      onSubmit={() => {
+        clearSetupWizardSessionDismissal();
+      }}
+    >
       <Button type="submit" variant={variant} size={size} className={className}>
         {label}
       </Button>

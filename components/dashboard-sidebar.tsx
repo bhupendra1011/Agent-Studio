@@ -28,6 +28,8 @@ const settingsPanel = {
   label: "Settings Panel",
 } as const;
 
+const adminItem = { href: "/dashboard/admin/users", label: "Admin" } as const;
+
 function navLinkClass(active: boolean) {
   return (
     "rounded-xl px-3 py-2.5 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-[var(--studio-teal)] focus-visible:outline-none " +
@@ -103,7 +105,7 @@ function NavSection({
   );
 }
 
-export function DashboardSidebar() {
+export function DashboardSidebar({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname();
 
   return (
@@ -135,6 +137,15 @@ export function DashboardSidebar() {
             pathname={pathname}
             isFirst={false}
           />
+
+          {isAdmin ? (
+            <NavSection
+              title="Admin"
+              items={[adminItem]}
+              pathname={pathname}
+              isFirst={false}
+            />
+          ) : null}
 
           <SidebarSectionRule dense={false} />
           <div className="pt-2">

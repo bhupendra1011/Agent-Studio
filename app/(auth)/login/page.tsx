@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 
+import { ClearSetupSessionOnLogin } from "@/components/auth/clear-setup-session-on-login";
 import { SignInForm } from "@/components/sign-in-form";
 import { ThemeSwitchPanel } from "@/components/theme-switch-panel";
 import { auth } from "@/auth";
@@ -18,6 +19,7 @@ export default async function LoginPage({ searchParams }: Props) {
 
   return (
     <div className="relative flex flex-1 flex-col items-center justify-center px-4 py-16">
+      <ClearSetupSessionOnLogin />
       <div className="absolute right-4 top-4 sm:right-6 sm:top-6">
         <ThemeSwitchPanel />
       </div>

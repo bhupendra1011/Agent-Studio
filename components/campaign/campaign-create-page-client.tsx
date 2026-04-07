@@ -36,14 +36,21 @@ import {
 } from "@/lib/utils/campaign-form-population";
 import {
   formatScheduledStartTime,
+  validateCallIntervalMs,
   validateCampaignForm,
 } from "@/lib/utils/campaign-form-validation";
+import {
+  parseCsvPreview,
+  readFileAsText,
+  type CsvPreviewResult,
+} from "@/lib/utils/csv-preview";
+import { cn } from "@/lib/utils";
 import type { DayOfWeek } from "@/lib/utils/campaign-form-types";
 import { downloadCampaignTemplate } from "@/lib/services/campaign";
 import { downloadCSV } from "@/lib/utils/file-download";
 import { CampaignCallAnalysisCard } from "@/components/campaign/campaign-call-analysis-card";
 import { useSystemEvaluations } from "@/hooks/use-system-evaluations";
-import { ArrowLeft, Upload } from "lucide-react";
+import { AlertCircle, ArrowLeft, ChevronRight, Pencil, Upload } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -140,6 +147,10 @@ export function CampaignCreatePageClient({ campaignId }: Props) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [initialized, setInitialized] = useState(false);
 
+  const isWizard = !isEdit;
+  const [wizardStep, setWizardStep] = useState(1);
+  const [csvPreview, setCsvPreview] = useState<CsvPreviewResult | null>(null);
+
   useEffect(() => {
     if (!campaignId || !campaignDetails || initialized) return;
     populateCampaignFormFromDetails(campaignDetails, {
@@ -181,6 +192,7 @@ export function CampaignCreatePageClient({ campaignId }: Props) {
     if (campaignId || initialized || !redialData.csvData) return;
     setUploadedFile({ file_url: "redial-inline" });
     setFileLabel(redialData.csvFilename || "redial.csv");
+    setCsvPreview(parseCsvPreview(redialData.csvData));
     const cfg = redialData.campaignConfig;
     if (cfg?.timezone) setTimezone(cfg.timezone);
     if (cfg?.agent_uuid) setAiAgent(cfg.agent_uuid);
@@ -189,6 +201,11 @@ export function CampaignCreatePageClient({ campaignId }: Props) {
       setLaunchOption(cfg.is_send_immediately ? "now" : "later");
     }
   }, [campaignId, redialData, initialized]);
+
+  useEffect(() => {
+    if (!isWizard || !redialData.csvData) return;
+    setCsvPreview(parseCsvPreview(redialData.csvData, 5));
+  }, [isWizard, redialData.csvData]);
 
   const timezoneGroups = useMemo(() => groupedTimezoneOptions, []);
 
@@ -206,7 +223,20 @@ export function CampaignCreatePageClient({ campaignId }: Props) {
   const onFile = async (file: File | null) => {
     if (!file) return;
     setSubmitError(null);
+    const maxBytes = 25 * 1024 * 1024;
+    if (file.size > maxBytes) {
+      setSubmitError("CSV must be 25 MB or smaller.");
+      return;
+    }
+    if (!file.name.toLowerCase().endsWith(".csv")) {
+      setSubmitError("Please upload a .csv file.");
+      return;
+    }
     try {
+      if (isWizard) {
+        const text = await readFileAsText(file);
+        setCsvPreview(parseCsvPreview(text, 5));
+      }
       const res = await uploadMut.mutateAsync(file);
       setUploadedFile({ file_url: res.data.file_url });
       setFileLabel(file.name);
@@ -370,6 +400,263 @@ export function CampaignCreatePageClient({ campaignId }: Props) {
     uploadMut.isPending ||
     (isEdit && detailsLoading);
 
+  const selectedPhoneLabel =
+    sipNumbers.find((n) => n.id === phoneNumber)?.phone_number ?? phoneNumber;
+  const selectedAgentLabel =
+    agents.find((a) => a.pipeline_deploy_uuid === aiAgent)?.pipeline_deploy_name ??
+    aiAgent;
+
+  const wizardStep1Error = (): string | null => {
+    if (campaignName.trim().length < 3) {
+      return "Campaign name must be at least 3 characters.";
+    }
+    if (!phoneNumber) return "Select a phone number for caller ID.";
+    if (!aiAgent) return "Select a deployed AI agent.";
+    return null;
+  };
+
+  const wizardStep2Error = (): string | null => {
+    if (!uploadedFile?.file_url) return "Upload a contacts CSV file.";
+    if (uploadedFile.file_url === "redial-inline" && redialData.csvData) {
+      const p = parseCsvPreview(redialData.csvData, 5);
+      if (!p.hasPhoneColumn) {
+        return "CSV must include a phone_number column (E.164).";
+      }
+      return null;
+    }
+    if (csvPreview && !csvPreview.hasPhoneColumn) {
+      return "CSV must include a phone_number column (E.164).";
+    }
+    return null;
+  };
+
+  const wizardStep3Error = (): string | null => {
+    if (launchOption === "later") {
+      if (!selectedDate || !selectedTime) {
+        return "Choose a start date and time for a scheduled campaign.";
+      }
+      const combined = new Date(selectedDate);
+      combined.setHours(selectedTime.getHours());
+      combined.setMinutes(selectedTime.getMinutes());
+      combined.setSeconds(0, 0);
+      if (combined < new Date()) {
+        return "Campaign start time cannot be in the past.";
+      }
+    }
+    if (!timezone) return "Select a timezone.";
+    if (rangeCards[0]?.timeRanges?.length) {
+      const invalid = rangeCards[0].timeRanges.filter((range) => {
+        if (!range.fromTime || !range.toTime) return true;
+        return range.toTime.getTime() <= range.fromTime.getTime();
+      });
+      if (invalid.length > 0) {
+        return "Each call window needs a valid start and end (end after start).";
+      }
+    }
+    const dialErr = validateCallIntervalMs(dialingSpeed);
+    if (dialErr) return dialErr;
+    const validDataPoints = dataPoints.filter(
+      (e) => e.variable_name.trim() && e.criteria.trim()
+    );
+    if (isPostCallDataExtraction && validDataPoints.length === 0) {
+      return "Post-call extraction needs at least one data point, or turn it off.";
+    }
+    return null;
+  };
+
+  const WIZARD_STEP_META = [
+    { n: 1, label: "Details" },
+    { n: 2, label: "Contacts" },
+    { n: 3, label: "Schedule & settings" },
+    { n: 4, label: "Review" },
+  ] as const;
+
+  const detailsCard = (
+    <Card className="border-[var(--studio-border)] bg-[var(--studio-surface)]">
+      <CardHeader>
+        <CardTitle className="text-base">Campaign details</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <Label>Campaign name</Label>
+          <Input
+            value={campaignName}
+            onChange={(e) => setCampaignName(e.target.value)}
+            className="rounded-xl"
+            placeholder="e.g. Survey follow-up"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label>Phone number (caller ID)</Label>
+          <Select
+            value={phoneNumber}
+            onValueChange={(v) => setPhoneNumber(v ?? "")}
+            disabled={sipLoading}
+          >
+            <SelectTrigger className="rounded-xl">
+              <SelectValue
+                placeholder={sipLoading ? "Loading…" : "Select number"}
+              />
+            </SelectTrigger>
+            <SelectContent>
+              {sipNumbers.map((n) => (
+                <SelectItem key={n.id} value={n.id}>
+                  {n.phone_number}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {!sipLoading && sipNumbers.length === 0 ? (
+            <p className="text-xs text-[var(--studio-ink-muted)]">
+              No numbers yet —{" "}
+              <Link
+                href="/dashboard/phone-numbers"
+                className="text-[var(--studio-teal)] underline underline-offset-2"
+              >
+                import a phone number
+              </Link>
+              .
+            </p>
+          ) : null}
+        </div>
+        <div className="space-y-2">
+          <Label>AI agent</Label>
+          <Select
+            value={aiAgent}
+            onValueChange={(v) => setAiAgent(v ?? "")}
+            disabled={agentsLoading}
+          >
+            <SelectTrigger className="rounded-xl">
+              <SelectValue
+                placeholder={agentsLoading ? "Loading…" : "Select agent"}
+              />
+            </SelectTrigger>
+            <SelectContent>
+              {agents.map((a) => (
+                <SelectItem
+                  key={a.pipeline_deploy_uuid}
+                  value={a.pipeline_deploy_uuid}
+                >
+                  {a.pipeline_deploy_name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {!agentsLoading && agents.length === 0 ? (
+            <p className="text-xs text-[var(--studio-ink-muted)]">
+              No deployed agents —{" "}
+              <Link
+                href="/dashboard/agents"
+                className="text-[var(--studio-teal)] underline underline-offset-2"
+              >
+                create and publish an agent
+              </Link>
+              .
+            </p>
+          ) : null}
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  const csvCard = (
+    <Card className="border-[var(--studio-border)] bg-[var(--studio-surface)]">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0">
+        <CardTitle className="text-base">Contacts (CSV)</CardTitle>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="rounded-lg text-xs"
+          onClick={onDownloadTemplate}
+        >
+          Download template
+        </Button>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <p className="text-xs text-[var(--studio-ink-muted)]">
+          Required column: <code className="font-mono">phone_number</code>{" "}
+          (E.164). Max 25 MB / 50k rows per product docs.
+        </p>
+        <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/40 px-4 py-8 text-center text-sm text-[var(--studio-ink-muted)]">
+          <Upload className="mb-2 h-6 w-6 opacity-60" />
+          <span>Drag and drop or click to upload</span>
+          <input
+            type="file"
+            accept=".csv,text/csv"
+            className="hidden"
+            onChange={(e) => void onFile(e.target.files?.[0] ?? null)}
+          />
+        </label>
+        {fileLabel && (
+          <div className="space-y-2">
+            <p className="text-sm text-[var(--studio-ink)]">
+              Selected: <span className="font-medium">{fileLabel}</span>
+            </p>
+            {csvPreview && uploadedFile?.file_url !== "redial-inline" ? (
+              <div className="flex flex-wrap items-center gap-2 text-xs">
+                <span
+                  className={cn(
+                    "inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-medium",
+                    csvPreview.hasPhoneColumn
+                      ? "bg-[var(--studio-teal)]/15 text-[var(--studio-teal)]"
+                      : "bg-destructive/15 text-destructive"
+                  )}
+                >
+                  {csvPreview.hasPhoneColumn ? (
+                    <>phone_number column found</>
+                  ) : (
+                    <>
+                      <AlertCircle className="h-3.5 w-3.5" />
+                      Missing phone_number column
+                    </>
+                  )}
+                </span>
+                <span className="text-[var(--studio-ink-muted)]">
+                  ~{csvPreview.rowCountEstimate.toLocaleString()} rows
+                </span>
+                {csvPreview.invalidE164Count > 0 ? (
+                  <span className="text-amber-700 dark:text-amber-300">
+                    {csvPreview.invalidE164Count} value(s) may not be E.164
+                  </span>
+                ) : null}
+              </div>
+            ) : null}
+            {csvPreview && csvPreview.rows.length > 0 ? (
+              <div className="overflow-x-auto rounded-lg border border-[var(--studio-border)]">
+                <table className="w-full min-w-[320px] text-left text-xs">
+                  <thead>
+                    <tr className="border-b border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/60 text-[var(--studio-ink-muted)]">
+                      {csvPreview.headers.map((h) => (
+                        <th key={h} className="px-2 py-2 font-medium">
+                          {h}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {csvPreview.rows.map((row, ri) => (
+                      <tr
+                        key={ri}
+                        className="border-b border-[var(--studio-border)]/80 last:border-0"
+                      >
+                        {row.map((cell, ci) => (
+                          <td key={ci} className="px-2 py-1.5 text-[var(--studio-ink)]">
+                            <span className="line-clamp-2">{cell}</span>
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : null}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -385,18 +672,49 @@ export function CampaignCreatePageClient({ campaignId }: Props) {
             {isEdit ? "Edit campaign" : "Create campaign"}
           </h2>
           <p className="mt-1 text-sm text-[var(--studio-ink-muted)]">
-            Configure outbound caller ID, agent, contacts CSV, schedule, and call behavior.
+            {isWizard
+              ? "Step-by-step: details, contacts, schedule, then review and launch."
+              : "Configure outbound caller ID, agent, contacts CSV, schedule, and call behavior."}
           </p>
         </div>
-        <Button
-          type="button"
-          className="rounded-xl bg-[var(--studio-teal)] text-[var(--studio-ink)] hover:opacity-90"
-          disabled={busy}
-          onClick={onSubmit}
-        >
-          {isEdit ? "Save campaign" : "Schedule campaign"}
-        </Button>
+        {!isWizard || wizardStep === 4 ? (
+          <Button
+            type="button"
+            className="rounded-xl bg-[var(--studio-teal)] text-[var(--studio-ink)] hover:opacity-90"
+            disabled={busy}
+            onClick={onSubmit}
+          >
+            {isEdit ? "Save campaign" : launchOption === "now" ? "Launch now" : "Schedule campaign"}
+          </Button>
+        ) : null}
       </div>
+
+      {isWizard ? (
+        <div className="flex flex-wrap gap-2 border-b border-[var(--studio-border)] pb-4">
+          {WIZARD_STEP_META.map((s) => (
+            <button
+              key={s.n}
+              type="button"
+              onClick={() => {
+                if (s.n <= wizardStep) setWizardStep(s.n);
+              }}
+              className={cn(
+                "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-colors",
+                wizardStep === s.n
+                  ? "bg-[var(--studio-teal)] text-[var(--studio-ink)]"
+                  : s.n < wizardStep
+                    ? "bg-[var(--studio-surface-muted)] text-[var(--studio-ink)] hover:bg-[var(--studio-border)]"
+                    : "text-[var(--studio-ink-muted)]"
+              )}
+            >
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-background/50 text-[0.625rem]">
+                {s.n}
+              </span>
+              {s.label}
+            </button>
+          ))}
+        </div>
+      ) : null}
 
       {submitError && (
         <p className="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-2 text-sm text-red-700 dark:text-red-200">
@@ -404,98 +722,19 @@ export function CampaignCreatePageClient({ campaignId }: Props) {
         </p>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <Card className="border-[var(--studio-border)] bg-[var(--studio-surface)]">
-          <CardHeader>
-            <CardTitle className="text-base">Campaign details</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label>Campaign name</Label>
-              <Input
-                value={campaignName}
-                onChange={(e) => setCampaignName(e.target.value)}
-                className="rounded-xl"
-                placeholder="e.g. Survey follow-up"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Phone number (caller ID)</Label>
-              <Select
-                value={phoneNumber}
-                onValueChange={(v) => setPhoneNumber(v ?? "")}
-                disabled={sipLoading}
-              >
-                <SelectTrigger className="rounded-xl">
-                  <SelectValue placeholder={sipLoading ? "Loading…" : "Select number"} />
-                </SelectTrigger>
-                <SelectContent>
-                  {sipNumbers.map((n) => (
-                    <SelectItem key={n.id} value={n.id}>
-                      {n.phone_number}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label>AI agent</Label>
-              <Select
-                value={aiAgent}
-                onValueChange={(v) => setAiAgent(v ?? "")}
-                disabled={agentsLoading}
-              >
-                <SelectTrigger className="rounded-xl">
-                  <SelectValue placeholder={agentsLoading ? "Loading…" : "Select agent"} />
-                </SelectTrigger>
-                <SelectContent>
-                  {agents.map((a) => (
-                    <SelectItem key={a.pipeline_deploy_uuid} value={a.pipeline_deploy_uuid}>
-                      {a.pipeline_deploy_name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </CardContent>
-        </Card>
+      {isEdit ? (
+        <div className="grid gap-6 lg:grid-cols-2">
+          {detailsCard}
+          {csvCard}
+        </div>
+      ) : wizardStep === 1 ? (
+        <div className="max-w-2xl">{detailsCard}</div>
+      ) : wizardStep === 2 ? (
+        <div className="max-w-3xl">{csvCard}</div>
+      ) : null}
 
-        <Card className="border-[var(--studio-border)] bg-[var(--studio-surface)]">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-base">Contacts (CSV)</CardTitle>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="rounded-lg text-xs"
-              onClick={onDownloadTemplate}
-            >
-              Download template
-            </Button>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <p className="text-xs text-[var(--studio-ink-muted)]">
-              Required column: <code className="font-mono">phone_number</code> (E.164). Max
-              25 MB; backend may enforce row limits (see docs).
-            </p>
-            <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/40 px-4 py-8 text-center text-sm text-[var(--studio-ink-muted)]">
-              <Upload className="mb-2 h-6 w-6 opacity-60" />
-              <span>Drag and drop or click to upload</span>
-              <input
-                type="file"
-                accept=".csv,text/csv"
-                className="hidden"
-                onChange={(e) => void onFile(e.target.files?.[0] ?? null)}
-              />
-            </label>
-            {fileLabel && (
-              <p className="text-sm text-[var(--studio-ink)]">
-                Selected: <span className="font-medium">{fileLabel}</span>
-              </p>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+      {isEdit || wizardStep === 3 ? (
+        <>
 
       <Card className="border-[var(--studio-border)] bg-[var(--studio-surface)]">
         <CardHeader>
@@ -781,6 +1020,158 @@ export function CampaignCreatePageClient({ campaignId }: Props) {
         onSuccessCriteriaChange={setLlmSuccessEvaluationCriteria}
         systemEvaluations={systemEvaluations}
       />
+        </>
+      ) : null}
+
+      {isWizard && wizardStep === 4 ? (
+        <div className="grid gap-4 lg:grid-cols-3">
+          <Card className="border-[var(--studio-border)] bg-[var(--studio-surface)] lg:col-span-1">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Campaign</CardTitle>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="h-8 gap-1 text-xs text-[var(--studio-teal)]"
+                onClick={() => setWizardStep(1)}
+              >
+                <Pencil className="h-3.5 w-3.5" />
+                Edit
+              </Button>
+            </CardHeader>
+            <CardContent className="text-sm text-[var(--studio-ink-muted)]">
+              <p className="font-medium text-[var(--studio-ink)]">
+                {campaignName || "—"}
+              </p>
+              <p className="mt-2">Caller ID: {selectedPhoneLabel || "—"}</p>
+              <p className="mt-1">Agent: {selectedAgentLabel || "—"}</p>
+            </CardContent>
+          </Card>
+          <Card className="border-[var(--studio-border)] bg-[var(--studio-surface)] lg:col-span-1">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Contacts</CardTitle>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="h-8 gap-1 text-xs text-[var(--studio-teal)]"
+                onClick={() => setWizardStep(2)}
+              >
+                <Pencil className="h-3.5 w-3.5" />
+                Edit
+              </Button>
+            </CardHeader>
+            <CardContent className="text-sm text-[var(--studio-ink-muted)]">
+              <p className="font-medium text-[var(--studio-ink)]">
+                {fileLabel ?? "No file"}
+              </p>
+              {csvPreview ? (
+                <p className="mt-2">
+                  ~{csvPreview.rowCountEstimate.toLocaleString()} rows
+                </p>
+              ) : null}
+            </CardContent>
+          </Card>
+          <Card className="border-[var(--studio-border)] bg-[var(--studio-surface)] lg:col-span-1">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Launch and behavior
+              </CardTitle>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="h-8 gap-1 text-xs text-[var(--studio-teal)]"
+                onClick={() => setWizardStep(3)}
+              >
+                <Pencil className="h-3.5 w-3.5" />
+                Edit
+              </Button>
+            </CardHeader>
+            <CardContent className="space-y-2 text-sm text-[var(--studio-ink-muted)]">
+              <p>
+                {launchOption === "now"
+                  ? "Launch immediately after creation"
+                  : `Scheduled: ${formatScheduledStartTime(selectedDate, selectedTime) ?? "—"}`}
+              </p>
+              <p className="text-xs">Timezone: {timezone}</p>
+              <p className="text-xs">
+                Transcripts {isStoreTranscriptsEnabled ? "on" : "off"} · Recording{" "}
+                {isStoreCallRecordingEnabled ? "on" : "off"}
+                {isPostCallDataExtraction ? " · Post-call extraction on" : ""}
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      ) : null}
+
+      {isWizard && wizardStep < 4 ? (
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--studio-border)] pt-6">
+          <Button
+            type="button"
+            variant="outline"
+            className="rounded-xl"
+            disabled={wizardStep === 1 || busy}
+            onClick={() => {
+              setSubmitError(null);
+              setWizardStep((s) => Math.max(1, s - 1));
+            }}
+          >
+            Back
+          </Button>
+          <Button
+            type="button"
+            className="rounded-xl bg-[var(--studio-teal)] text-[var(--studio-ink)] hover:opacity-90"
+            disabled={busy}
+            onClick={() => {
+              setSubmitError(null);
+              if (wizardStep === 1) {
+                const err = wizardStep1Error();
+                if (err) {
+                  setSubmitError(err);
+                  return;
+                }
+                setWizardStep(2);
+              } else if (wizardStep === 2) {
+                const err = wizardStep2Error();
+                if (err) {
+                  setSubmitError(err);
+                  return;
+                }
+                if (
+                  uploadedFile?.file_url &&
+                  uploadedFile.file_url !== "redial-inline" &&
+                  !csvPreview
+                ) {
+                  setSubmitError(
+                    "Could not read CSV preview. Re-upload the file."
+                  );
+                  return;
+                }
+                setWizardStep(3);
+              } else if (wizardStep === 3) {
+                const err = wizardStep3Error();
+                if (err) {
+                  setSubmitError(err);
+                  return;
+                }
+                setWizardStep(4);
+              }
+            }}
+          >
+            Continue
+            <ChevronRight className="ml-1 h-4 w-4" />
+          </Button>
+        </div>
+      ) : null}
+
+      {isWizard && wizardStep === 4 ? (
+        <div className="rounded-xl border border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/30 px-4 py-3 text-xs text-[var(--studio-ink-muted)]">
+          Reminder: comply with applicable dialing rules (e.g. consent and
+          quiet hours) for your jurisdiction before launching outbound
+          campaigns.
+        </div>
+      ) : null}
     </div>
   );
 }

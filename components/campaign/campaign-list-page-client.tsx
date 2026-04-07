@@ -39,13 +39,18 @@ function statusBadge(status: string) {
   );
 }
 
-function progress(c: Campaign) {
+function progressCounts(c: Campaign) {
   const done = c.already_dialed_count ?? 0;
   const total =
     c.recipients_phone_number_count ??
     c.total_calls ??
     c.phone_numbers ??
     0;
+  return { done, total };
+}
+
+function progress(c: Campaign) {
+  const { done, total } = progressCounts(c);
   return `${done}/${total || "—"}`;
 }
 
@@ -108,7 +113,7 @@ export function CampaignListPageClient() {
           </p>
         </div>
         <Link
-          href="/dashboard/campaign/create"
+          href="/dashboard/campaign/new"
           className="inline-flex h-9 items-center justify-center rounded-xl bg-[var(--studio-teal)] px-4 text-sm font-medium text-[var(--studio-ink)] transition-opacity hover:opacity-90"
         >
           <Plus className="mr-2 h-4 w-4" />
@@ -173,8 +178,30 @@ export function CampaignListPageClient() {
                     <td className="px-4 py-3 font-mono text-xs text-[var(--studio-ink-muted)]">
                       {c.phone_number || "—"}
                     </td>
-                    <td className="px-4 py-3 text-[var(--studio-ink-muted)]">
-                      {progress(c)}
+                    <td className="max-w-[200px] px-4 py-3 text-[var(--studio-ink-muted)]">
+                      <div className="text-xs tabular-nums">{progress(c)}</div>
+                      {(c.status?.toLowerCase() === "running" ||
+                        c.status?.toLowerCase() === "active") &&
+                      progressCounts(c).total > 0 ? (
+                        <div
+                          className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-[var(--studio-surface-muted)]"
+                          title="Calls completed"
+                        >
+                          <div
+                            className="h-full rounded-full bg-[var(--studio-teal)] transition-all"
+                            style={{
+                              width: `${Math.min(
+                                100,
+                                Math.round(
+                                  (progressCounts(c).done /
+                                    progressCounts(c).total) *
+                                    100
+                                )
+                              )}%`,
+                            }}
+                          />
+                        </div>
+                      ) : null}
                     </td>
                     <td className="px-4 py-3">{statusBadge(c.status)}</td>
                     <td className="px-4 py-3 text-[var(--studio-ink-muted)]">

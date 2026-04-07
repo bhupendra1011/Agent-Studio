@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { SetupWizardShortcut } from "@/components/setup/setup-wizard-shortcut";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { SignOutButton } from "@/components/sign-out-button";
@@ -36,6 +37,7 @@ export function DashboardTopBar({
         </Button>
       </nav>
       <div className="flex items-center gap-2 sm:gap-4">
+        <SetupWizardShortcut />
         <ThemeSwitchPanel />
         <div className="hidden items-center gap-2 sm:flex">
           <Avatar

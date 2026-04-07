@@ -139,6 +139,7 @@ export function CampaignCallDetailSheet({
   const durationSeconds =
     data?.call_info?.duration_seconds ?? row?.duration_seconds ?? 0;
   const callTs = data?.call_info?.call_ts ?? row?.call_ts;
+  const recordUrl = data?.call_info?.record_file_url?.trim();
 
   const tabButton = (id: DetailTab, label: string) => (
     <button
@@ -285,6 +286,20 @@ export function CampaignCallDetailSheet({
                 </span>
               </div>
             </div>
+
+            {recordUrl ? (
+              <div className="mb-4 shrink-0 rounded-xl border border-[var(--studio-border)] bg-[var(--studio-surface-muted)]/40 px-4 py-3">
+                <p className="text-xs font-medium text-[var(--studio-ink-muted)]">
+                  Recording
+                </p>
+                <audio
+                  controls
+                  preload="metadata"
+                  className="mt-2 h-9 w-full max-w-full"
+                  src={recordUrl}
+                />
+              </div>
+            ) : null}
 
             {/* Tabbed content (convo-ai-studio) */}
             <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-[var(--studio-border)]">

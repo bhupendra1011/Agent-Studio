@@ -16,9 +16,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { InsightsBar } from "@/components/analytics/insights-bar";
 import { useCallAnalytics } from "@/hooks/use-call-analytics";
 import { useCampaigns } from "@/hooks/use-campaigns";
 import { useDeployedAgentsList } from "@/hooks/use-deployed-agents-list";
+import { buildAnalyticsInsights } from "@/lib/utils/analytics-insights";
 import {
   buildKpiCards,
   buildStatusDistribution,
@@ -153,6 +155,15 @@ export function AnalyticsPageClient() {
     () => buildTransferRateSeries(analysisData, callType),
     [analysisData, callType]
   );
+
+  const insights = useMemo(() => {
+    return buildAnalyticsInsights(
+      overviewData,
+      analysisData,
+      callType,
+      statusDist
+    );
+  }, [overviewData, analysisData, callType, statusDist]);
 
   const filtersReady = !agentsLoading && !campaignsLoading;
 
@@ -337,6 +348,8 @@ export function AnalyticsPageClient() {
           </div>
         ))}
       </section>
+
+      <InsightsBar insights={insights} />
 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border border-[var(--studio-border)] bg-card p-5 shadow-sm">
